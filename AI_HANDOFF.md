@@ -92,8 +92,8 @@ git add -A && git commit -m "post: 文章标题" && git push   # main 分支,推
 
 给 AI 的注意事项:
 
-- 用户环境:Ubuntu 22.04,Node 22;`gh` CLI 未必可用,SSH 认证可用(`git@github.com:taozibb23/...`)
-- 用户全局 git 身份是真名,**不要**用 `--global` 改任何东西,仓库级已配好
+- 环境注意:Ubuntu 22.04,Node 22;`gh` CLI 未必可用,SSH 认证可用(`git@github.com:taozibb23/...`)
+- git 只用本仓库已配置的仓库级身份提交,**不要**改全局配置
 - 站点参考素材在用户本地私有目录(求职画像、博客素材库);让用户粘贴需要的内容,不要把私有路径写进公开文件
 - 大改布局前先 `npm run build` 确认基线是绿的,改完再跑一次;CSS 里 `.container-prose` 靠 `margin: 0 auto` 居中,别的类**不要用 margin 简写覆盖它**(2026-10-02 修过一次这种 bug)
 

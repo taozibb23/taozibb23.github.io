@@ -39,7 +39,7 @@ const currentPath = Astro.url.pathname;
             <path d="M12 2v4M12 18v4M2 12h4M18 12h4" />
             <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none" />
           </svg>
-          {SITE.author}
+          <span class="brand-name">{SITE.author}</span>
         </a>
         <nav class="site-nav">
           <a href="/" aria-current={currentPath === '/' ? 'page' : undefined}>首页</a>

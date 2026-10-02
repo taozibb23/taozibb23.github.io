@@ -30,10 +30,11 @@ blog/
     └── styles/global.css   # ⭐ 设计令牌在 :root 一段(纯亮色,无暗色主题)
 ```
 
-> 视觉语言:漫画分层风 —— 背景层(网点+四角晕染,画在 body 多重背景上)之上,内容是大小不一的
-> 云朵模块(每卡独立有机圆角,文本面板用 --cloud-* "安全云形"防裁字),hero 有放射冲击线与漂浮
-> 装饰云,整体不对称、不规整。云形预设(--blob-*/--cloud-*)在 global.css 顶部,新模块从这里取,
-> 不要自造直角方框。
+> 视觉语言:Apple 风(参考 apple.com,2026-10-02 五改定稿;此前巨构/漫画涂鸦/软萌玻璃/素描线稿四版均被否)——
+> #f5f5f7/白全宽分节交替(.band--gray/.band--white),超大紧字距标题(-0.03em)+ 渐变点睛词(.grad),
+> 毛玻璃胶囊导航,玻璃白卡 28px 圆角,蓝色药丸按钮 #0071e3,发布式大数字统计排(.cloud-row 四列+发丝线)。
+> 丝滑浮现:[data-reveal]/[data-reveal-group] + IntersectionObserver(html.js 门控防 FOUC),
+> hero 滚动缩放用 CSS animation-timeline: view() 渐进增强。一致性即美感:新模块不要自造花样,沿用现有令牌。
 
 ## 3. 常见任务(5 分钟一个)
 

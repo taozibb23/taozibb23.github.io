@@ -12,11 +12,14 @@ const latest = posts.slice(0, 3);
 
 <Base>
   <section class="hero container">
-    <div class="float-cloud fc1" aria-hidden="true"></div>
-    <div class="float-cloud fc2" aria-hidden="true"></div>
-    <div class="float-cloud fc3" aria-hidden="true"></div>
+    <div class="cloud cloud--far cloud--typeA cloud--sky" style="width:240px;height:92px;top:2.5rem;left:-2%" aria-hidden="true"><i></i></div>
+    <div class="cloud cloud--far cloud--typeB" style="width:320px;height:118px;top:9rem;right:-4%" aria-hidden="true"><i></i></div>
+    <div class="cloud cloud--mid cloud--typeC cloud--candy" style="width:160px;height:66px;top:1rem;right:10%" aria-hidden="true"><i></i></div>
+    <div class="cloud cloud--mid cloud--typeA cloud--sky" style="width:190px;height:76px;bottom:16rem;left:3%" aria-hidden="true"><i></i></div>
+    <div class="cloud cloud--near cloud--typeB cloud--mint" style="width:120px;height:52px;top:15.5rem;left:7%" aria-hidden="true"><i></i></div>
+    <div class="cloud cloud--near cloud--typeC" style="width:140px;height:58px;top:12rem;right:5%" aria-hidden="true"><i></i></div>
     <p class="eyebrow">ROBOT VISION / 感知 / 部署</p>
-    <h1>你好，我是 {SITE.author}。</h1>
+    <h1>你好，我是 <span class="grad">{SITE.author}</span>。</h1>
     <p class="lead">
       {SITE.intro}
     </p>
@@ -80,7 +83,7 @@ const latest = posts.slice(0, 3);
   <section class="container">
     <div class="section-head">
       <p class="eyebrow">BLOG</p>
-      <h2>最新文章</h2>
+      <h2><span class="grad">最新文章</span></h2>
       <a class="more" href="/blog/">全部 {posts.length} 篇 →</a>
     </div>
     <div class="post-grid">
@@ -91,7 +94,7 @@ const latest = posts.slice(0, 3);
   <section class="container">
     <div class="section-head">
       <p class="eyebrow">PROJECTS</p>
-      <h2>项目</h2>
+      <h2><span class="grad">项目</span></h2>
       <a class="more" href="/projects/">全部项目 →</a>
     </div>
     <div class="proj-grid">

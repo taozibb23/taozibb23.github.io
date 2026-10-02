@@ -29,6 +29,9 @@ const currentPath = Astro.url.pathname;
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="application/rss+xml" title={SITE.title} href="/rss.xml" />
     <meta name="generator" content={Astro.generator} />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
   </head>
   <body>
     <header class="site-header">
@@ -73,5 +76,25 @@ const currentPath = Astro.url.pathname;
         </span>
       </div>
     </footer>
+
+    <script>
+      const revealables = document.querySelectorAll('[data-reveal], [data-reveal-group]');
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -6% 0px' }
+        );
+        revealables.forEach((el) => io.observe(el));
+      } else {
+        revealables.forEach((el) => el.classList.add('in'));
+      }
+    </script>
   </body>
 </html>

@@ -11,18 +11,18 @@ const latest = posts.slice(0, 3);
 ---
 
 <Base>
-  <section class="hero container">
-    <div class="cloud cloud--far cloud--typeA cloud--sky cloud--p1" aria-hidden="true"><i></i></div>
-    <div class="cloud cloud--far cloud--typeB cloud--p2" aria-hidden="true"><i></i></div>
-    <div class="cloud cloud--mid cloud--typeC cloud--candy cloud--p3" aria-hidden="true"><i></i></div>
-    <div class="cloud cloud--mid cloud--typeA cloud--sky cloud--p4" aria-hidden="true"><i></i></div>
-    <div class="cloud cloud--near cloud--typeB cloud--mint cloud--p5" aria-hidden="true"><i></i></div>
-    <div class="cloud cloud--near cloud--typeC cloud--p6" aria-hidden="true"><i></i></div>
+  <section class="hero">
+    <div class="container hero-inner" data-reveal-group>
     <p class="eyebrow">ROBOT VISION / 感知 / 部署</p>
     <h1>你好，我是 <span class="grad">{SITE.author}</span>。</h1>
     <p class="lead">
       {SITE.intro}
     </p>
+
+    <div class="hero-cta">
+      <a class="btn-primary" href="/projects/">查看项目</a>
+      <a class="link-more" href="/blog/">阅读博客 <span aria-hidden="true">›</span></a>
+    </div>
 
     <div class="term">
       <div class="term-bar">
@@ -60,60 +60,30 @@ const latest = posts.slice(0, 3);
         <span class="label">CPU 推理实测帧率(6299 帧分段计时)</span>
       </div>
     </div>
-
-    <div class="ticker" aria-hidden="true">
-      <div class="ticker-track">
-        {Array.from({ length: 2 }).map(() => (
-          <>
-            <span>YOLO26-POSE</span><i>✦</i>
-            <span>ONNX</span><i>✦</i>
-            <span>C++ ONNXRUNTIME</span><i>✦</i>
-            <span>ROS2 HUMBLE</span><i>✦</i>
-            <span>CAMERA CALIBRATION</span><i>✦</i>
-            <span>PnP 测距</span><i>✦</i>
-            <span>KALMAN / EKF</span><i>✦</i>
-            <span>ARMOR DETECTION</span><i>✦</i>
-            <span>DATA-DRIVEN DEBUG</span><i>✦</i>
-          </>
-        ))}
-      </div>
-    </div>
+  </div>
   </section>
 
-  <div class="stream" aria-hidden="true">
-    <svg viewBox="0 0 1200 80" preserveAspectRatio="none">
-      <path class="s1" d="M0 40 C 150 10, 300 70, 450 40 S 750 10, 900 40 S 1150 70, 1200 40" />
-      <path class="s2" d="M0 55 C 150 25, 300 85, 450 55 S 750 25, 900 55 S 1150 85, 1200 55" />
-      <path class="s3" d="M0 25 C 150 -5, 300 55, 450 25 S 750 -5, 900 25 S 1150 55, 1200 25" />
-    </svg>
-  </div>
-
-  <section class="container">
-    <div class="section-head">
+  <section class="band band--gray">
+    <div class="container">
+    <div class="section-head" data-reveal>
       <p class="eyebrow">BLOG</p>
       <h2><span class="grad">最新文章</span></h2>
-      <a class="more" href="/blog/">全部 {posts.length} 篇 →</a>
+      <a class="more" href="/blog/">全部 {posts.length} 篇 <span aria-hidden="true">›</span></a>
     </div>
-    <div class="post-grid">
+    <div class="post-grid" data-reveal-group>
       {latest.map((post) => <PostCard post={post} />)}
+    </div>
     </div>
   </section>
 
-  <div class="stream" aria-hidden="true">
-    <svg viewBox="0 0 1200 80" preserveAspectRatio="none">
-      <path class="s2" d="M0 40 C 150 12, 320 68, 480 40 S 780 12, 940 40 S 1140 66, 1200 40" />
-      <path class="s1" d="M0 56 C 160 30, 320 82, 480 56 S 780 30, 940 56 S 1140 80, 1200 56" />
-      <path class="s3" d="M0 24 C 160 0, 320 54, 480 24 S 780 0, 940 24 S 1140 50, 1200 24" />
-    </svg>
-  </div>
-
-  <section class="container">
-    <div class="section-head">
+  <section class="band band--white">
+    <div class="container">
+    <div class="section-head" data-reveal>
       <p class="eyebrow">PROJECTS</p>
       <h2><span class="grad">项目</span></h2>
-      <a class="more" href="/projects/">全部项目 →</a>
+      <a class="more" href="/projects/">全部项目 <span aria-hidden="true">›</span></a>
     </div>
-    <div class="proj-grid">
+    <div class="proj-grid" data-reveal-group>
       <article class="proj-card">
         <p class="eyebrow">个人项目</p>
         <h3>rm-armor-vision · 装甲板视觉识别全链路</h3>
@@ -147,6 +117,7 @@ const latest = posts.slice(0, 3);
           <a href="https://github.com/ZQU-Foray/foray_interfaces" target="_blank" rel="noopener">foray_interfaces →</a>
         </div>
       </article>
+    </div>
     </div>
   </section>
 </Base>

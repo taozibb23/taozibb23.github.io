@@ -16,8 +16,6 @@
   --blue-hover: #0077ed;
   --link: #0066cc;
 
-  --grad-text: linear-gradient(92deg, #0090f7 0%, #8250ff 52%, #ff5e8a 100%);
-
   --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.05);
   --shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.12);
   --shadow-shot: 0 40px 80px -24px rgba(0, 0, 0, 0.22);
@@ -115,12 +113,9 @@ hr {
   margin-bottom: 0.7rem;
 }
 
-/* 渐变点睛词 */
+/* 点睛词:不加色,与正文同色(.grad 兼容旧标记) */
 .grad {
-  background: var(--grad-text);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: inherit;
 }
 
 .container {
@@ -136,11 +131,12 @@ hr {
 }
 
 /* ==========================================================================
-   丝滑浮现(滚动进入):html.js 门控防 FOUC
+   丝滑浮现(滚动进入):苹果宣传片式"对焦拉入"
+   文字 = blur+scale+fade 对焦成形;卡片/面板 = 纯淡入上移(大表面不加滤镜)
    ========================================================================== */
 html.js [data-reveal] {
   opacity: 0;
-  transform: translateY(26px);
+  transform: translateY(24px);
   transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
   transition-delay: var(--rd, 0s);
 }
@@ -150,15 +146,41 @@ html.js [data-reveal].in {
   transform: none;
 }
 
+/* 对焦拉入:标题块用(面积小,一次性过渡) */
+html.js [data-reveal="focus"] {
+  opacity: 0;
+  transform: scale(1.045);
+  filter: blur(10px);
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out),
+    filter 0.9s var(--ease-out);
+  transition-delay: var(--rd, 0s);
+}
+
+html.js [data-reveal="focus"].in {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
 html.js [data-reveal-group] > * {
   opacity: 0;
-  transform: translateY(26px);
-  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+  transform: translateY(24px);
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out),
+    filter 0.9s var(--ease-out);
+}
+
+/* 组内文字元素走对焦拉入,面板走淡入上移 */
+html.js [data-reveal-group] > .eyebrow,
+html.js [data-reveal-group] > h1,
+html.js [data-reveal-group] > .lead {
+  transform: scale(1.04);
+  filter: blur(9px);
 }
 
 html.js [data-reveal-group].in > * {
   opacity: 1;
   transform: none;
+  filter: blur(0);
 }
 
 html.js [data-reveal-group].in > :nth-child(2) { transition-delay: 0.08s; }
@@ -418,8 +440,8 @@ a.card:active {
   }
   @keyframes hero-settle {
     to {
-      transform: scale(0.955);
-      opacity: 0.45;
+      transform: scale(0.92);
+      opacity: 0.35;
     }
   }
 }

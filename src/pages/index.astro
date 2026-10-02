@@ -14,7 +14,7 @@ const latest = posts.slice(0, 3);
   <section class="hero">
     <div class="container hero-inner" data-reveal-group>
     <p class="eyebrow">ROBOT VISION / 感知 / 部署</p>
-    <h1>你好，我是 <span class="grad">{SITE.author}</span>。</h1>
+    <h1>你好，我是 {SITE.author}。</h1>
     <p class="lead">
       {SITE.intro}
     </p>
@@ -65,7 +65,7 @@ const latest = posts.slice(0, 3);
 
   <section class="band band--gray">
     <div class="container">
-    <div class="section-head" data-reveal>
+    <div class="section-head" data-reveal="focus">
       <p class="eyebrow">BLOG</p>
       <h2><span class="grad">最新文章</span></h2>
       <a class="more" href="/blog/">全部 {posts.length} 篇 <span aria-hidden="true">›</span></a>
@@ -78,7 +78,7 @@ const latest = posts.slice(0, 3);
 
   <section class="band band--white">
     <div class="container">
-    <div class="section-head" data-reveal>
+    <div class="section-head" data-reveal="focus">
       <p class="eyebrow">PROJECTS</p>
       <h2><span class="grad">项目</span></h2>
       <a class="more" href="/projects/">全部项目 <span aria-hidden="true">›</span></a>

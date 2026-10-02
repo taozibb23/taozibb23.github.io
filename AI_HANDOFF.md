@@ -24,11 +24,16 @@ blog/
     ├── config.ts           # ⭐ 全站身份:作者名、一句话定位、GitHub/CSDN 链接(改动最频繁)
     ├── content.config.ts   # frontmatter 的 zod schema(加字段先改这里)
     ├── content/blog/       # ⭐ 文章(每篇一个 .md,文件名 = 永久链接,起了别改名)
-    ├── layouts/Base.astro  # 顶栏/页脚/主题切换脚本
+    ├── layouts/Base.astro  # 顶栏/页脚
     ├── components/         # PostCard / FormattedDate
     ├── pages/              # index(首页) / blog/ / projects / about / 404 / rss
-    └── styles/global.css   # ⭐ 设计令牌全在 :root 和 [data-theme='dark'] 两段 CSS 变量里
+    └── styles/global.css   # ⭐ 设计令牌在 :root 一段(纯亮色,无暗色主题)
 ```
+
+> 视觉语言:漫画分层风 —— 背景层(网点+四角晕染,画在 body 多重背景上)之上,内容是大小不一的
+> 云朵模块(每卡独立有机圆角,文本面板用 --cloud-* "安全云形"防裁字),hero 有放射冲击线与漂浮
+> 装饰云,整体不对称、不规整。云形预设(--blob-*/--cloud-*)在 global.css 顶部,新模块从这里取,
+> 不要自造直角方框。
 
 ## 3. 常见任务(5 分钟一个)
 
@@ -36,7 +41,12 @@ blog/
 
 **改首页数字/文案**:`src/pages/index.astro`(hero、终端窗口、指标卡、项目卡)+ `src/config.ts`(名字、定位句)。
 
-**换配色**:只动 `global.css` 顶部两个变量块(`--accent`、`--bg` 等),全站联动。暗色代码高亮配的是 shiki 双主题,在 `astro.config.mjs`。
+**换配色**:只动 `global.css` 顶部令牌段(现在没有暗色主题,是纯亮色漫画分层风)。
+
+**⚠️ 渲染性能红线(2026-10-02 血泪教训)**:这些写法会让内嵌浏览器整页栅格化卡死(截图超时、滚动掉帧):
+- `filter: drop-shadow()` —— 云朵圆角盒上用 `box-shadow` 视觉完全等价且便宜,全站已统一 box-shadow,**不要再引入 filter**
+- `position: fixed` 伪元素背景层 / `background-attachment: fixed` —— 背景网点与晕染画在 body 自身的多重背景上(随文档滚动),不要改回 fixed 层
+改完样式必须实际截图/滚动验证,不能只看构建通过。
 
 **改导航/页脚链接**:`src/layouts/Base.astro`。
 

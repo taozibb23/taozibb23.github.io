@@ -50,8 +50,26 @@ const latest = posts.slice(0, 3);
         <span class="label">1 米工作距离下的定位精度(PnP)</span>
       </div>
       <div class="metric">
-        <span class="num">549<small> 行</small></span>
-        <span class="label">手写 C++(串口协议 / 灯条配对,25 commits)</span>
+        <span class="num">36.8<small> FPS</small></span>
+        <span class="label">CPU 推理实测帧率(6299 帧分段计时)</span>
+      </div>
+    </div>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        {Array.from({ length: 2 }).map(() => (
+          <>
+            <span>YOLO26-POSE</span><i>✦</i>
+            <span>ONNX</span><i>✦</i>
+            <span>C++ ONNXRUNTIME</span><i>✦</i>
+            <span>ROS2 HUMBLE</span><i>✦</i>
+            <span>CAMERA CALIBRATION</span><i>✦</i>
+            <span>PnP 测距</span><i>✦</i>
+            <span>KALMAN / EKF</span><i>✦</i>
+            <span>ARMOR DETECTION</span><i>✦</i>
+            <span>DATA-DRIVEN DEBUG</span><i>✦</i>
+          </>
+        ))}
       </div>
     </div>
   </section>
@@ -88,6 +106,23 @@ const latest = posts.slice(0, 3);
         </div>
         <div class="links">
           <a href="https://github.com/taozibb23/rm-armor-vision" target="_blank" rel="noopener">GitHub →</a>
+        </div>
+      </article>
+      <article class="proj-card">
+        <p class="eyebrow">团队 · RoboMaster 战队视觉</p>
+        <h3>战队视觉模块 · 我负责的部分</h3>
+        <p>
+          暑假通过招新考核后正式入队,负责视觉方向:装甲板检测跟踪、多源态势融合、弹道解算与机间通信接口。
+          相关模块仓库公开,可直接查看代码:
+        </p>
+        <div class="metrics">
+          <div class="metric"><span class="num">2</span><span class="label">已合并模块</span></div>
+          <div class="metric"><span class="num">1</span><span class="label">包骨架 PR</span></div>
+        </div>
+        <div class="links">
+          <a href="https://github.com/ZQU-Foray/foray_vision" target="_blank" rel="noopener">foray_vision →</a>
+          <a href="https://github.com/ZQU-Foray/foray_auto_aim" target="_blank" rel="noopener">foray_auto_aim →</a>
+          <a href="https://github.com/ZQU-Foray/foray_interfaces" target="_blank" rel="noopener">foray_interfaces →</a>
         </div>
       </article>
     </div>

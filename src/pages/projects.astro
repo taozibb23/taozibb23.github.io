@@ -7,7 +7,7 @@ import Base from '../layouts/Base.astro';
     <p class="eyebrow">PROJECTS</p>
     <h1>项目</h1>
     <p class="desc">
-      两个项目串成一条成长线:传统视觉打基础 → 深度学习全链路。每个数字都来自实测,来源可查。
+      三个板块串成一条成长线:传统视觉打基础 → 深度学习全链路 → 战队真实系统。每个数字都来自实测,来源可查。
     </p>
   </section>
 
@@ -46,14 +46,13 @@ import Base from '../layouts/Base.astro';
         <p class="eyebrow">个人项目 · 2026.04 - 2026.06</p>
         <h3>RM_project · 装甲板灯条传统视觉</h3>
         <p>
-          学习期的第一个完整项目:HSV 阈值 → 轮廓提取 → 灯条几何配对 → 装甲板分类 → 测距 → 串口输出,
-          549 行自己写的 C++,9 个文件,25 个 commit。自主设计串口通信协议(帧头 + 坐标高低字节 + 累加和校验位);
-          主动做了一次类封装重构(算法拆为独立的 armor_algo 类,头/实现分离);
-          独立定位并修复 3 个隐蔽 bug(变量遮蔽、循环自增误写成死循环、IoU 变量抄错)。
+          深度学习之前打基础的项目:HSV 阈值 → 轮廓提取 → 灯条几何配对 → 装甲板分类 → 测距 → 串口输出,25 个 commit 从零走到能跑。
+          自主设计串口通信协议(帧头 + 坐标高低字节 + 累加和校验位);主动做了一次类封装重构(算法拆为独立的
+          armor_algo 类,头/实现分离);独立定位并修复 3 个隐蔽 bug(变量遮蔽、循环自增误写成死循环、IoU 变量抄错)。
         </p>
         <div class="metrics">
-          <div class="metric"><span class="num">549<small> 行</small></span><span class="label">手写 C++</span></div>
           <div class="metric"><span class="num">25</span><span class="label">commits</span></div>
+          <div class="metric"><span class="num">1</span><span class="label">主动类封装重构</span></div>
           <div class="metric"><span class="num">3</span><span class="label">独立修复的隐蔽 bug</span></div>
         </div>
         <div class="tags" style="display:flex;flex-wrap:wrap;gap:.4rem;">
@@ -61,6 +60,32 @@ import Base from '../layouts/Base.astro';
         </div>
         <div class="links">
           <a href="https://github.com/taozibb23/RM_project" target="_blank" rel="noopener">GitHub 仓库 →</a>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <p class="eyebrow">团队项目 · 2026.09 - 至今</p>
+        <h3>战队视觉模块 · 我负责的部分</h3>
+        <p>
+          暑假完成招新考核(YOLO 训练部署 / UART 二进制协议解析与回发 / ROS2 图像话题),考核要求"用题目提供的推理代码跑通",
+          我额外把推理管线自己重构了一遍。9 月正式入队,负责视觉方向:装甲板检测跟踪、多源态势融合、弹道解算与机间通信接口。
+        </p>
+        <ul style="font-size:.94rem;color:var(--ink-2);padding-left:1.3rem;">
+          <li><code>foray_vision</code>:装甲板检测跟踪 · 多源态势融合 · WorldSnapshot 生成;</li>
+          <li><code>foray_auto_aim</code>:弹道解算 · 多源目标融合 · 装甲板跟踪;</li>
+          <li><code>foray_interfaces</code>:上位机接口契约,msg/srv/action · 机间态势协议 · 裁判系统消息。</li>
+        </ul>
+        <div class="metrics">
+          <div class="metric"><span class="num">2</span><span class="label">已合并模块</span></div>
+          <div class="metric"><span class="num">1</span><span class="label">包骨架 PR</span></div>
+        </div>
+        <div class="tags" style="display:flex;flex-wrap:wrap;gap:.4rem;">
+          <span class="tag">ROS2</span><span class="tag">C++</span><span class="tag">EKF</span><span class="tag">团队协作</span>
+        </div>
+        <div class="links">
+          <a href="https://github.com/ZQU-Foray/foray_vision" target="_blank" rel="noopener">foray_vision →</a>
+          <a href="https://github.com/ZQU-Foray/foray_auto_aim" target="_blank" rel="noopener">foray_auto_aim →</a>
+          <a href="https://github.com/ZQU-Foray/foray_interfaces" target="_blank" rel="noopener">foray_interfaces →</a>
         </div>
       </article>
     </div>

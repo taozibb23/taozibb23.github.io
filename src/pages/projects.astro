@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="项目" description="rm-armor-vision 装甲板视觉全链路、RM_project 传统视觉与串口协议。">
+  <section class="page-head container">
+    <p class="eyebrow">PROJECTS</p>
+    <h1>项目</h1>
+    <p class="desc">
+      两个项目串成一条成长线:传统视觉打基础 → 深度学习全链路。每个数字都来自实测,来源可查。
+    </p>
+  </section>
+
+  <section class="container" style="margin-top:2rem;">
+    <div class="proj-grid">
+      <article class="proj-card">
+        <p class="eyebrow">个人项目 · 2026.06 - 至今</p>
+        <h3>rm-armor-vision · 装甲板视觉识别全链路</h3>
+        <p>
+          一条完整走通的视觉工程链路:用 ultralytics 的 yolo26-pose 结构文件配合自己的数据集配置,从随机初始化训练关键点模型
+          (XJTLU 数据集 6732 张,14 类 4 角点);导出 ONNX 后用 C++ onnxruntime 独立实现推理管线——letterbox 预处理、
+          输出张量 (1, 26, 8400) 解码、手写 IoU/NMS、坐标还原;封装为 ROS2 Humble 节点(cv_bridge 发布图像话题,RViz2 验证);
+          自己搭采集工具做相机标定,并用 PnP 实现单目测距。
+        </p>
+        <p>
+          排错记录:用 <code>ldd</code> / <code>readelf -d</code> 定位 SONAME 与 rpath 缺失;分段计时定位 CPU 推理瓶颈;
+          标定误差从 2.96 px 逐批降到 0.48 px(定位到棋盘格平整度与视场覆盖两个根因)。
+        </p>
+        <div class="metrics">
+          <div class="metric"><span class="num">0.842</span><span class="label">检测框 mAP50</span></div>
+          <div class="metric"><span class="num">0.675</span><span class="label">角点 mAP50</span></div>
+          <div class="metric"><span class="num">0.48<small> px</small></span><span class="label">标定重投影误差</span></div>
+          <div class="metric"><span class="num">≈1<small> mm</small></span><span class="label">1 米处定位精度</span></div>
+        </div>
+        <div class="tags" style="display:flex;flex-wrap:wrap;gap:.4rem;">
+          <span class="tag">C++</span><span class="tag">ONNX Runtime</span><span class="tag">ultralytics</span>
+          <span class="tag">ROS2</span><span class="tag">OpenCV</span><span class="tag">标定 / PnP</span>
+        </div>
+        <div class="links">
+          <a href="https://github.com/taozibb23/rm-armor-vision" target="_blank" rel="noopener">GitHub 仓库 →</a>
+          <a href="https://blog.csdn.net/2604_96052374" target="_blank" rel="noopener">配套系列博客(CSDN) →</a>
+        </div>
+      </article>
+
+      <article class="proj-card">
+        <p class="eyebrow">个人项目 · 2026.04 - 2026.06</p>
+        <h3>RM_project · 装甲板灯条传统视觉</h3>
+        <p>
+          学习期的第一个完整项目:HSV 阈值 → 轮廓提取 → 灯条几何配对 → 装甲板分类 → 测距 → 串口输出,
+          549 行自己写的 C++,9 个文件,25 个 commit。自主设计串口通信协议(帧头 + 坐标高低字节 + 累加和校验位);
+          主动做了一次类封装重构(算法拆为独立的 armor_algo 类,头/实现分离);
+          独立定位并修复 3 个隐蔽 bug(变量遮蔽、循环自增误写成死循环、IoU 变量抄错)。
+        </p>
+        <div class="metrics">
+          <div class="metric"><span class="num">549<small> 行</small></span><span class="label">手写 C++</span></div>
+          <div class="metric"><span class="num">25</span><span class="label">commits</span></div>
+          <div class="metric"><span class="num">3</span><span class="label">独立修复的隐蔽 bug</span></div>
+        </div>
+        <div class="tags" style="display:flex;flex-wrap:wrap;gap:.4rem;">
+          <span class="tag">C++</span><span class="tag">OpenCV</span><span class="tag">串口协议</span>
+        </div>
+        <div class="links">
+          <a href="https://github.com/taozibb23/RM_project" target="_blank" rel="noopener">GitHub 仓库 →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+</Base>

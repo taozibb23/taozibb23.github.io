@@ -1,0 +1,95 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PostCard from '../components/PostCard.astro';
+import { SITE } from '../config';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const latest = posts.slice(0, 3);
+---
+
+<Base>
+  <section class="hero container">
+    <p class="eyebrow">ROBOT VISION / 感知 / 部署</p>
+    <h1>你好，我是 {SITE.author}。</h1>
+    <p class="lead">
+      {SITE.intro}
+    </p>
+
+    <div class="term">
+      <div class="term-bar">
+        <i></i><i></i><i></i>
+        <span class="title">vision-pipeline — zsh</span>
+      </div>
+      <div class="term-body">
+        <div><span class="p">$</span> cat pipeline.md</div>
+        <div>
+          <span class="c"># 一条完整的视觉工程链路,每一环都亲手跑通并测过数据</span>
+        </div>
+        <div>
+          YOLO26-pose 训练 <span class="c">→</span> ONNX 导出 <span class="c">→</span> C++ onnxruntime 推理
+          <span class="c">→</span> ROS2 节点 <span class="c">→</span> 相机标定 <span class="c">→</span> PnP 测距
+          <span class="c">→</span> 卡尔曼滤波<span class="cursor"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric">
+        <span class="num">0.842</span>
+        <span class="label">检测框 mAP50(自训练 YOLO26-pose)</span>
+      </div>
+      <div class="metric">
+        <span class="num">0.48<small> px</small></span>
+        <span class="label">相机标定重投影误差(三批迭代 2.96 → 0.48)</span>
+      </div>
+      <div class="metric">
+        <span class="num">≈1<small> mm</small></span>
+        <span class="label">1 米工作距离下的定位精度(PnP)</span>
+      </div>
+      <div class="metric">
+        <span class="num">549<small> 行</small></span>
+        <span class="label">手写 C++(串口协议 / 灯条配对,25 commits)</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="section-head">
+      <p class="eyebrow">BLOG</p>
+      <h2>最新文章</h2>
+      <a class="more" href="/blog/">全部 {posts.length} 篇 →</a>
+    </div>
+    <div class="post-grid">
+      {latest.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="section-head">
+      <p class="eyebrow">PROJECTS</p>
+      <h2>项目</h2>
+      <a class="more" href="/projects/">全部项目 →</a>
+    </div>
+    <div class="proj-grid">
+      <article class="proj-card">
+        <p class="eyebrow">个人项目</p>
+        <h3>rm-armor-vision · 装甲板视觉识别全链路</h3>
+        <p>
+          从数据集到测距的完整链路:YOLO26-pose 从随机初始化训练 → ONNX 导出 → C++ 手写推理管线(letterbox / 8400 解码 / IoU / NMS)
+          → ROS2 节点 → 相机标定 → PnP 单目测距。仓库含演示 GIF、训练曲线与构建说明。
+        </p>
+        <div class="metrics">
+          <div class="metric"><span class="num">0.842</span><span class="label">框 mAP50</span></div>
+          <div class="metric"><span class="num">0.675</span><span class="label">角点 mAP50</span></div>
+          <div class="metric"><span class="num">0.48<small>px</small></span><span class="label">标定误差</span></div>
+        </div>
+        <div class="links">
+          <a href="https://github.com/taozibb23/rm-armor-vision" target="_blank" rel="noopener">GitHub →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+</Base>

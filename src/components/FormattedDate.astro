@@ -1,0 +1,18 @@
+---
+interface Props {
+  date: Date;
+}
+const { date } = Astro.props;
+const y = date.getFullYear();
+const m = String(date.getMonth() + 1).padStart(2, '0');
+const d = String(date.getDate()).padStart(2, '0');
+---
+<span class="date-num">{y}-{m}-{d}</span>
+
+<style>
+  .date-num {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--ink-3);
+  }
+</style>

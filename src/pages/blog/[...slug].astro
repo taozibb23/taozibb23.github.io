@@ -1,0 +1,78 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, description, pubDate, updated, tags, csdn } = post.data;
+
+const all = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const idx = all.findIndex((p) => p.id === post.id);
+const newer = idx > 0 ? all[idx - 1] : undefined;
+const older = idx < all.length - 1 ? all[idx + 1] : undefined;
+---
+
+<Base title={title} description={description}>
+  <article>
+    <header class="post-header container-prose">
+      <p class="eyebrow">POST</p>
+      <h1>{title}</h1>
+      <div class="post-meta">
+        <FormattedDate date={pubDate} />
+        {updated && (
+          <>
+            <span class="dot">·</span>
+            <span>更新于 <FormattedDate date={updated} /></span>
+          </>
+        )}
+        <span class="dot">·</span>
+        <span>{tags.join(' / ')}</span>
+      </div>
+      {
+        csdn && (
+          <aside class="csdn-note">
+            本文已同步发布于 <a href={csdn} target="_blank" rel="noopener">我的 CSDN 博客</a>,两边内容一致。
+          </aside>
+        )
+      }
+    </header>
+
+    <div class="prose container-prose">
+      <Content />
+    </div>
+
+    <nav class="post-nav container-prose">
+      {
+        older ? (
+          <a href={`/blog/${older.id}/`}>
+            <span class="dir">← 上一篇(更早)</span>
+            {older.data.title}
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        newer ? (
+          <a class="next" href={`/blog/${newer.id}/`}>
+            <span class="dir">下一篇(更新) →</span>
+            {newer.data.title}
+          </a>
+        ) : (
+          <span />
+        )
+      }
+    </nav>
+  </article>
+</Base>

@@ -1,0 +1,17 @@
+{
+  "name": "taozibb-blog",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "taozibb 的个人博客 —— 机器人视觉 · 感知 · 部署",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.12",
+    "@astrojs/sitemap": "^3.4.1",
+    "astro": "^5.13.2"
+  }
+}

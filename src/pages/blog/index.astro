@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PostCard from '../../components/PostCard.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+---
+
+<Base title="博客" description="机器人视觉技术博客:部署、训练、ROS2、标定、滤波与工程排错的实测记录。">
+  <section class="page-head container">
+    <p class="eyebrow">BLOG</p>
+    <h1>博客</h1>
+    <p class="desc">
+      每一篇都遵循同一条原则:模型能跑通、图看着也对,数据分布仍可能是错的。所以这里的每个数字都能追溯到文件或命令。
+    </p>
+    <div class="filter-bar" id="filter-bar">
+      <button data-tag="" class="active">全部</button>
+      {allTags.map((t) => <button data-tag={t}>{t}</button>)}
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="post-grid" id="post-grid">
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+    <p id="empty-hint" hidden style="color:var(--ink-3);font-size:.9rem;">这个标签下暂时没有文章。</p>
+  </section>
+</Base>
+
+<script>
+  const bar = document.getElementById('filter-bar');
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('#post-grid .post-card'));
+  const hint = document.getElementById('empty-hint');
+
+  bar?.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest('button');
+    if (!btn) return;
+    bar.querySelectorAll('button').forEach((b) => b.classList.toggle('active', b === btn));
+    const tag = btn.dataset.tag ?? '';
+    let visible = 0;
+    for (const card of cards) {
+      const tags = (card.dataset.tags ?? '').split(' ').filter(Boolean);
+      const show = !tag || tags.includes(tag);
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    }
+    if (hint) hint.hidden = visible > 0;
+  });
+</script>

@@ -789,65 +789,98 @@ a.card:active {
 }
 
 /* ==========================================================================
+   横向画廊:全部文章,左右滑动切换,居中强调(两侧小而淡)
+   ========================================================================== */
+.scroller {
+  --sc-w: min(24rem, 82vw);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-block: 1.2rem 1.8rem;
+  padding-inline: max(1.5rem, calc(50% - var(--sc-w) / 2));
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.scroller-track {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+}
+
+.scroller .post-card {
+  flex: 0 0 auto;
+  width: var(--sc-w);
+  scroll-snap-align: center;
+  animation: sc-emphasis linear both;
+  animation-timeline: view(inline);
+  animation-range: cover 0% cover 100%;
+}
+
+/* 居中卡大而清晰,两侧小而淡(随滚动连续插值) */
+@keyframes sc-emphasis {
+  0% { opacity: 0.4; transform: scale(0.86); }
+  50% { opacity: 1; transform: scale(1.04); }
+  100% { opacity: 0.4; transform: scale(0.86); }
+}
+
+.scroller a.card:hover {
+  transform: none;
+  box-shadow: var(--shadow-hover);
+}
+
+.scroller-nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 0.6rem;
+}
+
+.scroller-btn {
+  width: 2.9rem;
+  height: 2.9rem;
+  border-radius: 50%;
+  border: 1px solid var(--hairline);
+  background: #fff;
+  color: var(--ink);
+  font-size: 1.5rem;
+  line-height: 0;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease),
+    opacity 0.25s var(--ease);
+}
+
+.scroller-btn:hover:not(:disabled) {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-hover);
+}
+
+.scroller-btn:active:not(:disabled) {
+  transform: scale(0.93);
+  transition-duration: 0.12s;
+}
+
+.scroller-btn:disabled {
+  opacity: 0.28;
+  cursor: default;
+}
+
+@media (max-width: 900px) {
+  /* 触屏滑动即自然交互,隐藏箭头 */
+  .scroller-nav {
+    display: none;
+  }
+}
+
+/* ==========================================================================
    博客卡片透视阵列:中间突出,两侧后收变淡,灭点在背景深处
    (桌面 3 列;hover 任意卡转正拉近;窄屏自动退回平面)
    ========================================================================== */
-@media (min-width: 1024px) {
-  /* 灭点在背景深处;transform-origin 与之重合 → 滚动时阵列绕灭点旋转。
-     不用 preserve-3d、不用卡内 perspective():命中测试走标准路径,侧卡可点 */
-  .post-grid--stage {
-    perspective: 1500px;
-    perspective-origin: 50% 18%;
-    transform-origin: 50% 18%;
-  }
-
-  /* 滚动驱动:绕灭点左右旋转(渐进增强) */
-  @supports (animation-timeline: view()) {
-    .post-grid--stage {
-      animation: stage-orbit linear both;
-      animation-timeline: view();
-      animation-range: cover 0% cover 100%;
-    }
-    @keyframes stage-orbit {
-      from { transform: rotateY(-9deg); }
-      to { transform: rotateY(9deg); }
-    }
-  }
-
-  /* 两侧卡:向后收 + 朝向中心,淡一点 */
-  .post-grid--stage .post-card:nth-child(3n + 1) {
-    transform: rotateY(15deg) translateZ(-90px);
-    opacity: 0.78;
-    filter: brightness(0.96);
-  }
-  .post-grid--stage .post-card:nth-child(3n) {
-    transform: rotateY(-15deg) translateZ(-90px);
-    opacity: 0.78;
-    filter: brightness(0.96);
-  }
-
-  /* 中间卡:面向你,略前突,阴影更深 */
-  .post-grid--stage .post-card:nth-child(3n + 2) {
-    transform: rotateY(0deg) translateZ(40px) scale(1.02);
-    opacity: 1;
-    box-shadow: var(--shadow-hover);
-    z-index: 1;
-  }
-
-  /* hover:任意卡转正拉近,回到完全清晰 */
-  .post-grid--stage a.card.post-card:nth-child(n):hover {
-    transform: rotateY(0deg) translateZ(90px) scale(1.02);
-    opacity: 1;
-    filter: none;
-    box-shadow: var(--shadow-hover);
-  }
-
-  /* 卡片转正的过渡要丝滑 */
-  .post-grid--stage .post-card {
-    transition: transform 0.55s var(--ease-out), opacity 0.4s var(--ease-out),
-      filter 0.4s var(--ease-out), box-shadow 0.45s var(--ease-out);
-  }
-}
 
 /* ==========================================================================
    文章正文排版(prose)
@@ -1260,6 +1293,13 @@ a.card:active {
 @media (max-width: 640px) {
   .hero {
     padding: 4rem 0 3rem;
+  }
+  .scroller {
+    --sc-w: 84vw;
+    padding-block: 0.8rem 1.4rem;
+  }
+  .scroller .post-card {
+    padding: 1.35rem 1.35rem;
   }
   .band {
     padding: 4rem 0;

@@ -7,7 +7,6 @@ import { SITE } from '../config';
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
-const latest = posts.slice(0, 3);
 ---
 
 <Base>
@@ -70,9 +69,15 @@ const latest = posts.slice(0, 3);
       <h2><span class="grad">最新文章</span></h2>
       <a class="more" href="/blog/">全部 {posts.length} 篇 <span aria-hidden="true">›</span></a>
     </div>
-    <div class="post-grid post-grid--stage" data-reveal>
-      {latest.map((post) => <PostCard post={post} />)}
     </div>
+    <div class="scroller" data-scroller>
+      <div class="scroller-track">
+        {posts.map((post) => <PostCard post={post} />)}
+      </div>
+    </div>
+    <div class="scroller-nav container">
+      <button class="scroller-btn" data-sc-prev aria-label="上一张">‹</button>
+      <button class="scroller-btn" data-sc-next aria-label="下一张">›</button>
     </div>
   </section>
 
@@ -121,4 +126,32 @@ const latest = posts.slice(0, 3);
     </div>
     </div>
   </section>
+<script>
+  // 画廊箭头:按卡宽步进滚动;端点自动禁用
+  function bindScroller() {
+    const sc = document.querySelector('[data-scroller]');
+    if (!sc || sc.dataset.scBound) return;
+    sc.dataset.scBound = '1';
+    const track = sc.querySelector('.scroller-track');
+    const prev = document.querySelector('[data-sc-prev]');
+    const next = document.querySelector('[data-sc-next]');
+    const step = () => {
+      const card = track && track.querySelector('.post-card');
+      if (!card) return 400;
+      const gap = parseFloat(getComputedStyle(track).gap || '24') || 24;
+      return card.getBoundingClientRect().width + gap;
+    };
+    prev?.addEventListener('click', () => sc.scrollBy({ left: -step(), behavior: 'smooth' }));
+    next?.addEventListener('click', () => sc.scrollBy({ left: step(), behavior: 'smooth' }));
+    const update = () => {
+      const max = sc.scrollWidth - sc.clientWidth - 1;
+      if (prev) prev.disabled = sc.scrollLeft <= 1;
+      if (next) next.disabled = sc.scrollLeft >= max;
+    };
+    sc.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+  bindScroller();
+  document.addEventListener('astro:page-load', bindScroller);
+</script>
 </Base>

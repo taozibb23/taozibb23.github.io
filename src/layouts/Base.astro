@@ -115,6 +115,42 @@ const currentPath = Astro.url.pathname;
         }
       });
       probe.observe(document.body);
+
+      // 画廊居中强调的 JS 回退:Firefox/旧 Safari 无滚动驱动动画
+      // (0s 定格末帧 = 整排淡框),按"与画廊中心距离"套用同一套阶梯
+      function bindEmphasisFallback() {
+        // 支持滚动驱动且未被手动禁用(sdt-off 测试钩子)→ 走原生,无需回退
+        if ((!window.CSS || CSS.supports('animation-timeline: view()')) && !document.documentElement.classList.contains('sdt-off')) return;
+        document.documentElement.classList.add('no-sdt');
+        const sc = document.querySelector('[data-scroller]');
+        if (!sc || sc.dataset.empBound) return;
+        sc.dataset.empBound = '1';
+        const apply = () => {
+          // 注意:clientWidth 是元素属性,DOMRect 上不存在(这里曾踩 NaN 坑)
+          const mid = sc.getBoundingClientRect().left + sc.clientWidth / 2;
+          const half = sc.clientWidth / 2;
+          for (const card of sc.querySelectorAll('.post-card')) {
+            const r = card.getBoundingClientRect();
+            const d = Math.min(Math.abs(r.x + r.width / 2 - mid) / (half + r.width / 2), 1);
+            const dir = r.x + r.width / 2 < mid ? -1 : 1;
+            card.style.opacity = (1 - 0.7 * d).toFixed(3);
+            card.style.transform = `rotateY(${(dir * 14 * d).toFixed(1)}deg) scale(${(1.06 - 0.36 * d).toFixed(3)})`;
+          }
+        };
+        let ticking = false;
+        const onScroll = () => {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => { apply(); ticking = false; });
+        };
+        sc.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+        window.__emphasisApply = apply;
+        apply();
+      }
+      window.__bindEmphasis = bindEmphasisFallback;
+      document.addEventListener('astro:page-load', () => bindEmphasisFallback());
+      bindEmphasisFallback();
     </script>
   </body>
 </html>

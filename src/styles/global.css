@@ -808,7 +808,6 @@ a.card:active {
 
 .scroller {
   cursor: grab;
-  touch-action: pan-x;
 }
 
 .scroller.dragging {
@@ -833,9 +832,16 @@ a.card:active {
   flex: 0 0 auto;
   width: var(--sc-w);
   scroll-snap-align: center;
-  animation: sc-emphasis linear both;
-  animation-timeline: view(inline);
-  animation-range: cover 0% cover 100%;
+}
+
+/* 滚动驱动强调必须包 @supports:不支持的浏览器里
+   无时长动画会 0s 定格末帧(整排淡框)——由 JS 回退接手 */
+@supports (animation-timeline: view()) {
+  .scroller .post-card {
+    animation: sc-emphasis linear both;
+    animation-timeline: view(inline);
+    animation-range: cover 0% cover 100%;
+  }
 }
 
 /* 纵深阶梯:中间正常色最大,两侧淡而小且透视侧倾,更远更淡更小(依次类推) */

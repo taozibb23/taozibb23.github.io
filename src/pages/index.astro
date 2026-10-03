@@ -44,19 +44,19 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
     <div class="cloud-row">
       <div class="metric">
         <span class="num">0.842</span>
-        <span class="label">检测框 mAP50(自训练 YOLO26-pose)</span>
+        <span class="label">检测框 mAP50</span>
       </div>
       <div class="metric">
         <span class="num">0.48<small> px</small></span>
-        <span class="label">相机标定重投影误差(三批迭代 2.96 → 0.48)</span>
+        <span class="label">标定误差(三批迭代)</span>
       </div>
       <div class="metric">
         <span class="num">≈1<small> mm</small></span>
-        <span class="label">1 米工作距离下的定位精度(PnP)</span>
+        <span class="label">1 米定位精度(PnP)</span>
       </div>
       <div class="metric">
         <span class="num">36.8<small> FPS</small></span>
-        <span class="label">CPU 推理实测帧率(6299 帧分段计时)</span>
+        <span class="label">CPU 推理帧率(实测)</span>
       </div>
     </div>
   </div>
@@ -150,6 +150,47 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
     };
     sc.addEventListener('scroll', update, { passive: true });
     update();
+
+    // 鼠标拖动滑动(触屏走原生;拖后松手吸附最近卡,拖动过的点击不触发导航)
+    let down = false, sx = 0, sl = 0, movedPx = 0;
+    sc.addEventListener('dragstart', (e) => e.preventDefault());
+    sc.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'touch') return;
+      down = true; movedPx = 0;
+      sx = e.clientX; sl = sc.scrollLeft;
+      sc.style.scrollSnapType = 'none';
+      sc.classList.add('dragging');
+    });
+    window.addEventListener('pointermove', (e) => {
+      if (!down) return;
+      const dx = e.clientX - sx;
+      movedPx = Math.max(movedPx, Math.abs(dx));
+      sc.scrollLeft = sl - dx;
+    });
+    const settle = () => {
+      if (!down) return;
+      down = false;
+      sc.classList.remove('dragging');
+      const card = sc.querySelector('.post-card');
+      const gap = parseFloat(getComputedStyle(sc.querySelector('.scroller-track')).gap || '24') || 24;
+      const step = card ? card.getBoundingClientRect().width + gap : 400;
+      const target = Math.round(sc.scrollLeft / step) * step;
+      sc.scrollTo({ left: target, behavior: 'smooth' });
+      setTimeout(() => { sc.style.scrollSnapType = ''; }, 500);
+    };
+    window.addEventListener('pointerup', settle);
+    window.addEventListener('pointercancel', settle);
+    sc.addEventListener(
+      'click',
+      (e) => {
+        if (movedPx > 6) {
+          e.preventDefault();
+          e.stopPropagation();
+          movedPx = 0;
+        }
+      },
+      true
+    );
   }
   bindScroller();
   document.addEventListener('astro:page-load', bindScroller);

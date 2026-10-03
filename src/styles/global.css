@@ -547,7 +547,7 @@ a.card:active {
   justify-content: center;
   align-items: center;
   gap: 1.4rem;
-  margin-bottom: 4rem;
+  margin-bottom: 3.1rem;
 }
 
 .btn-primary {
@@ -594,7 +594,7 @@ a.card:active {
 /* 终端窗:产品镜头级静置 */
 .term {
   max-width: 42rem;
-  margin: 0 auto 4.5rem;
+  margin: 0 auto 3.4rem;
   border-radius: 22px;
   background: #fff;
   border: 1px solid var(--hairline-soft);
@@ -666,7 +666,7 @@ a.card:active {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
-  margin: 0 auto 4.5rem;
+  margin: 0 auto 3.4rem;
   max-width: 58rem;
 }
 
@@ -806,10 +806,27 @@ a.card:active {
   display: none;
 }
 
+.scroller {
+  cursor: grab;
+  touch-action: pan-x;
+}
+
+.scroller.dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.scroller a {
+  -webkit-user-drag: none;
+}
+
 .scroller-track {
   display: flex;
   gap: 1.5rem;
   width: max-content;
+  /* 环绕:灭点在画廊中心(父级 perspective 属性,不用 preserve-3d/卡内函数——命中安全) */
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
 }
 
 .scroller .post-card {
@@ -821,11 +838,11 @@ a.card:active {
   animation-range: cover 0% cover 100%;
 }
 
-/* 居中卡大而清晰,两侧小而淡(随滚动连续插值) */
+/* 居中卡大而清晰转正,两侧小而淡侧倾(环绕,随滚动连续插值) */
 @keyframes sc-emphasis {
-  0% { opacity: 0.4; transform: scale(0.86); }
-  50% { opacity: 1; transform: scale(1.04); }
-  100% { opacity: 0.4; transform: scale(0.86); }
+  0% { opacity: 0.4; transform: rotateY(13deg) scale(0.86); }
+  50% { opacity: 1; transform: rotateY(0deg) scale(1.04); }
+  100% { opacity: 0.4; transform: rotateY(-13deg) scale(0.86); }
 }
 
 .scroller a.card:hover {

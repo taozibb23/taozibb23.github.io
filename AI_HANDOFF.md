@@ -33,8 +33,11 @@ blog/
 > 视觉语言:Apple 风(参考 apple.com,2026-10-02 五改定稿;此前巨构/漫画涂鸦/软萌玻璃/素描线稿四版均被否)——
 > #f5f5f7/白全宽分节交替(.band--gray/.band--white),超大紧字距标题(-0.03em),名字与全站不加彩色(.grad 仅兼容旧标记、同墨色),
 > 毛玻璃胶囊导航,玻璃白卡 28px 圆角,蓝色药丸按钮 #0071e3,发布式大数字统计排(.cloud-row 四列+发丝线)。
-> 博客卡透视阵列(仅首页 .post-grid--stage,≥1024px):perspective 1500px 灭点在背景,
-> 滚动驱动绕灭点 ±9° 旋转(view-timeline);中间卡前突、两侧后收变淡,hover 转正拉近;窄屏/博客列表页回退平面。
+> 首页博客预览 = 横向画廊(.scroller):全部文章,scroll-snap 居中对齐,
+> view(inline) 滚联动画做居中强调(居中 scale1.04/全清晰,两侧 scale0.86/opacity0.4),
+> 圆形箭头按卡宽步进(端点禁用,<900px 触屏隐藏),手机卡宽 84vw。
+> ⚠️ 3D 命中测试坑:preserve-3d + 卡内 perspective() 会让 elementFromPoint 命中网格本身(点击失效)——
+> 若复用 3D,灭点必须由父级 perspective 属性提供,禁止两者叠加。
 > ⚠️ 3D 命中测试:preserve-3d + 卡内 perspective() 会让侧卡 elementFromPoint 命中网格本身(点击失效)——
 > 灭点必须由父级 perspective 属性提供,禁止 preserve-3d 与卡内 perspective() 叠加。
 > 项目详情页:/projects/rm-armor-vision/ 与 /projects/rm-project/,卡片 transition:name 与详情页头同名(点击长成)。

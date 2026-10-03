@@ -792,7 +792,7 @@ a.card:active {
    横向画廊:全部文章,左右滑动切换,居中强调(两侧小而淡)
    ========================================================================== */
 .scroller {
-  --sc-w: min(24rem, 82vw);
+  --sc-w: calc((100vw - 5rem) / 3);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -838,11 +838,13 @@ a.card:active {
   animation-range: cover 0% cover 100%;
 }
 
-/* 居中卡大而清晰转正,两侧小而淡侧倾(环绕,随滚动连续插值) */
+/* 纵深阶梯:中间正常色最大,两侧淡而小且透视侧倾,更远更淡更小(依次类推) */
 @keyframes sc-emphasis {
-  0% { opacity: 0.4; transform: rotateY(13deg) scale(0.86); }
-  50% { opacity: 1; transform: rotateY(0deg) scale(1.04); }
-  100% { opacity: 0.4; transform: rotateY(-13deg) scale(0.86); }
+  0% { opacity: 0.3; transform: rotateY(14deg) scale(0.7); }
+  25% { opacity: 0.5; transform: rotateY(8deg) scale(0.86); }
+  50% { opacity: 1; transform: rotateY(0deg) scale(1.06); }
+  75% { opacity: 0.5; transform: rotateY(-8deg) scale(0.86); }
+  100% { opacity: 0.3; transform: rotateY(-14deg) scale(0.7); }
 }
 
 .scroller a.card:hover {

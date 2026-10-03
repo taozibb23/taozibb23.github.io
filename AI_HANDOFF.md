@@ -35,7 +35,10 @@ blog/
 > 毛玻璃胶囊导航,玻璃白卡 28px 圆角,蓝色药丸按钮 #0071e3,发布式大数字统计排(.cloud-row 四列+发丝线)。
 > 首页博客预览 = 横向画廊(.scroller):全部文章,scroll-snap 居中对齐,
 > view(inline) 滚联动画做居中强调(居中 scale1.04/全清晰,两侧 scale0.86/opacity0.4),
-> 圆形箭头按卡宽步进(端点禁用,<900px 触屏隐藏),手机卡宽 84vw。
+> 侧卡 cover-flow 环绕(rotateY ±13°→0 连续插值,track 父级 perspective 1400px 供灭点);
+> 鼠标拖动滑动(pointer 流 1:1 跟手,松手吸附整卡,拖动超 6px 的点击被抑制防误导航,
+> 触屏走原生滑动),圆形箭头按卡宽步进(端点禁用,<900px 触屏隐藏),手机卡宽 84vw;
+> 首屏苹果式精简:导语一句话、统计标签短化、区块间距收紧。
 > ⚠️ 3D 命中测试坑:preserve-3d + 卡内 perspective() 会让 elementFromPoint 命中网格本身(点击失效)——
 > 若复用 3D,灭点必须由父级 perspective 属性提供,禁止两者叠加。
 > ⚠️ 3D 命中测试:preserve-3d + 卡内 perspective() 会让侧卡 elementFromPoint 命中网格本身(点击失效)——

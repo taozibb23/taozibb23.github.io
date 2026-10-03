@@ -41,6 +41,11 @@ blog/
 > 首屏苹果式精简:导语一句话、统计标签短化、区块间距收紧。
 > ⚠️ 3D 命中测试坑:preserve-3d + 卡内 perspective() 会让 elementFromPoint 命中网格本身(点击失效)——
 > 若复用 3D,灭点必须由父级 perspective 属性提供,禁止两者叠加。
+> ⚠️ 跨浏览器:滚动驱动动画声明必须包 @supports(animation-timeline)——不支持的浏览器(Firefox/旧 Safari)
+> 里无时长动画会 0s 定格末帧(整排淡框,用户实测踩坑);这些浏览器走 JS 回退(Base.astro
+> bindEmphasisFallback,按与画廊中心距离套同一套阶梯,rAF 节流;测试钩子:html.sdt-off + window.__bindEmphasis)。
+> ⚠️ DOMRect 没有 clientWidth 属性(元素才有)——回退函数曾因此 NaN 全空。
+> ⚠️ 触摸滚动:横向滚动容器禁止设 touch-action: pan-x(会挡住从卡片区域竖向滚页)。
 > ⚠️ 3D 命中测试:preserve-3d + 卡内 perspective() 会让侧卡 elementFromPoint 命中网格本身(点击失效)——
 > 灭点必须由父级 perspective 属性提供,禁止 preserve-3d 与卡内 perspective() 叠加。
 > 项目详情页:/projects/rm-armor-vision/ 与 /projects/rm-project/,卡片 transition:name 与详情页头同名(点击长成)。

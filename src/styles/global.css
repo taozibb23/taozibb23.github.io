@@ -793,42 +793,57 @@ a.card:active {
    (桌面 3 列;hover 任意卡转正拉近;窄屏自动退回平面)
    ========================================================================== */
 @media (min-width: 1024px) {
-  .post-grid {
+  /* 灭点在背景深处;transform-origin 与之重合 → 滚动时阵列绕灭点旋转。
+     不用 preserve-3d、不用卡内 perspective():命中测试走标准路径,侧卡可点 */
+  .post-grid--stage {
     perspective: 1500px;
     perspective-origin: 50% 18%;
-    transform-style: preserve-3d;
+    transform-origin: 50% 18%;
+  }
+
+  /* 滚动驱动:绕灭点左右旋转(渐进增强) */
+  @supports (animation-timeline: view()) {
+    .post-grid--stage {
+      animation: stage-orbit linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+    @keyframes stage-orbit {
+      from { transform: rotateY(-9deg); }
+      to { transform: rotateY(9deg); }
+    }
   }
 
   /* 两侧卡:向后收 + 朝向中心,淡一点 */
-  .post-card:nth-child(3n + 1) {
-    transform: perspective(1500px) rotateY(15deg) translateZ(-90px);
+  .post-grid--stage .post-card:nth-child(3n + 1) {
+    transform: rotateY(15deg) translateZ(-90px);
     opacity: 0.78;
     filter: brightness(0.96);
   }
-  .post-card:nth-child(3n) {
-    transform: perspective(1500px) rotateY(-15deg) translateZ(-90px);
+  .post-grid--stage .post-card:nth-child(3n) {
+    transform: rotateY(-15deg) translateZ(-90px);
     opacity: 0.78;
     filter: brightness(0.96);
   }
 
   /* 中间卡:面向你,略前突,阴影更深 */
-  .post-card:nth-child(3n + 2) {
-    transform: perspective(1500px) rotateY(0deg) translateZ(40px) scale(1.02);
+  .post-grid--stage .post-card:nth-child(3n + 2) {
+    transform: rotateY(0deg) translateZ(40px) scale(1.02);
     opacity: 1;
     box-shadow: var(--shadow-hover);
     z-index: 1;
   }
 
   /* hover:任意卡转正拉近,回到完全清晰 */
-  a.card.post-card:nth-child(n):hover {
-    transform: perspective(1500px) rotateY(0deg) translateZ(90px) scale(1.02);
+  .post-grid--stage a.card.post-card:nth-child(n):hover {
+    transform: rotateY(0deg) translateZ(90px) scale(1.02);
     opacity: 1;
     filter: none;
     box-shadow: var(--shadow-hover);
   }
 
-  /* 卡片转正的过渡要丝滑(比默认 hover 更长) */
-  .post-card {
+  /* 卡片转正的过渡要丝滑 */
+  .post-grid--stage .post-card {
     transition: transform 0.55s var(--ease-out), opacity 0.4s var(--ease-out),
       filter 0.4s var(--ease-out), box-shadow 0.45s var(--ease-out);
   }
@@ -1041,6 +1056,12 @@ a.card:active {
   box-shadow: var(--shadow-hover);
 }
 
+.proj-card h3 a {
+  color: inherit;
+}
+.proj-card h3 a:hover {
+  color: var(--link);
+}
 .proj-card h3 {
   margin: 0.4rem 0 0.35rem;
   font-size: 1.42rem;

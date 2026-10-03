@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="RM_project · 装甲板灯条传统视觉" description="深度学习之前打基础的项目:HSV 阈值到串口输出的完整流水线,25 个 commit 从零走到能跑。">
+  <section class="page-head container-prose" data-reveal="focus" transition:name="proj-rmp">
+    <p class="eyebrow">PROJECT · 个人项目 · 2026.04 - 2026.06</p>
+    <h1>RM_project · 装甲板灯条传统视觉</h1>
+    <p class="desc">深度学习之前打基础的项目:HSV 阈值到串口输出的完整流水线,25 个 commit 从零走到能跑。</p>
+    <div class="hero-cta" style="margin:1.6rem 0 0;">
+      <a class="btn-primary" href="https://github.com/taozibb23/RM_project" target="_blank" rel="noopener">GitHub 仓库</a>
+      <a class="link-more" href="/projects/">返回项目 <span aria-hidden="true">›</span></a>
+    </div>
+  </section>
+
+  <section class="container-prose prose" style="margin-top:1rem;" data-reveal>
+
+    <h2>流水线</h2>
+    <p>HSV 阈值 → 轮廓提取 → 灯条几何配对 → 装甲板分类 → 测距 → 串口输出。</p>
+
+    <h2>三件值得说的事</h2>
+    <ol>
+      <li><strong>自主设计串口协议</strong>:帧头 + 坐标高低字节 + 累加和校验位——自己定的帧格式,自己写的收发两端。</li>
+      <li><strong>主动重构</strong>:把算法拆成独立的 armor_algo 类(头/实现分离)——重构只动结构不动行为。</li>
+      <li><strong>独立修复 3 个隐蔽 bug</strong>:变量遮蔽(内外层同名 <code>i</code>)、循环自增误写成 <code>i++</code> 带分号的死循环、IoU 里 <code>ay1</code> 抄成 <code>ax1</code>。都 是"程序能跑但结果不对"的那类。</li>
+    </ol>
+
+    <h2>数据一览</h2>
+    <table>
+      <tr><th>项</th><th>数值</th></tr>
+      <tr><td>commits</td><td>25</td></tr>
+      <tr><td>类封装重构</td><td>1 次</td></tr>
+      <tr><td>独立修复隐蔽 bug</td><td>3 个</td></tr>
+    </table>
+
+  </section>
+</Base>

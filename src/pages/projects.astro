@@ -13,9 +13,9 @@ import Base from '../layouts/Base.astro';
 
   <section class="container" style="margin-top:2rem;">
     <div class="proj-grid" data-reveal-group>
-      <article class="proj-card">
+      <article class="proj-card" transition:name="proj-rmav">
         <p class="eyebrow">个人项目 · 2026.06 - 至今</p>
-        <h3>rm-armor-vision · 装甲板视觉识别全链路</h3>
+        <h3><a href="/projects/rm-armor-vision/">rm-armor-vision · 装甲板视觉识别全链路</a></h3>
         <p>
           一条完整走通的视觉工程链路:用 ultralytics 的 yolo26-pose 结构文件配合自己的数据集配置,从随机初始化训练关键点模型
           (XJTLU 数据集 6732 张,14 类 4 角点);导出 ONNX 后用 C++ onnxruntime 独立实现推理管线——letterbox 预处理、
@@ -37,14 +37,15 @@ import Base from '../layouts/Base.astro';
           <span class="tag">ROS2</span><span class="tag">OpenCV</span><span class="tag">标定 / PnP</span>
         </div>
         <div class="links">
+          <a href="/projects/rm-armor-vision/">查看详情 <span aria-hidden="true">›</span></a>
           <a href="https://github.com/taozibb23/rm-armor-vision" target="_blank" rel="noopener">GitHub 仓库 →</a>
           <a href="https://blog.csdn.net/2604_96052374" target="_blank" rel="noopener">配套系列博客(CSDN) →</a>
         </div>
       </article>
 
-      <article class="proj-card">
+      <article class="proj-card" transition:name="proj-rmp">
         <p class="eyebrow">个人项目 · 2026.04 - 2026.06</p>
-        <h3>RM_project · 装甲板灯条传统视觉</h3>
+        <h3><a href="/projects/rm-project/">RM_project · 装甲板灯条传统视觉</a></h3>
         <p>
           深度学习之前打基础的项目:HSV 阈值 → 轮廓提取 → 灯条几何配对 → 装甲板分类 → 测距 → 串口输出,25 个 commit 从零走到能跑。
           自主设计串口通信协议(帧头 + 坐标高低字节 + 累加和校验位);主动做了一次类封装重构(算法拆为独立的
@@ -59,6 +60,7 @@ import Base from '../layouts/Base.astro';
           <span class="tag">C++</span><span class="tag">OpenCV</span><span class="tag">串口协议</span>
         </div>
         <div class="links">
+          <a href="/projects/rm-project/">查看详情 <span aria-hidden="true">›</span></a>
           <a href="https://github.com/taozibb23/RM_project" target="_blank" rel="noopener">GitHub 仓库 →</a>
         </div>
       </article>

@@ -1,0 +1,45 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="rm-armor-vision · 装甲板视觉识别全链路" description="从数据集到测距的完整链路:训练、部署、集成、标定,每一步都有实测指标与排错记录。">
+  <section class="page-head container-prose" data-reveal="focus" transition:name="proj-rmav">
+    <p class="eyebrow">PROJECT · 个人项目 · 2026.06 - 至今</p>
+    <h1>rm-armor-vision · 装甲板视觉识别全链路</h1>
+    <p class="desc">从数据集到测距的完整链路:训练、部署、集成、标定,每一步都有实测指标与排错记录。</p>
+    <div class="hero-cta" style="margin:1.6rem 0 0;">
+      <a class="btn-primary" href="https://github.com/taozibb23/rm-armor-vision" target="_blank" rel="noopener">GitHub 仓库</a>
+      <a class="link-more" href="/projects/">返回项目 <span aria-hidden="true">›</span></a>
+    </div>
+  </section>
+
+  <section class="container-prose prose" style="margin-top:1rem;" data-reveal>
+
+    <h2>链路五环,环环实测</h2>
+    <ul>
+      <li><strong>训练</strong>:ultralytics 的 yolo26-pose 结构文件 + 自备数据集配置,从随机初始化训练(XJTLU 数据集 6732 张,14 类 4 角点);检测框 mAP50 0.842,角点 mAP50 0.675。</li>
+      <li><strong>部署</strong>:导出 ONNX(10.2MB),C++ onnxruntime 独立实现推理管线——letterbox 预处理、输出张量 (1, 26, 8400) 解码、手写 IoU/NMS、坐标还原。</li>
+      <li><strong>集成</strong>:封装为 ROS2 Humble 节点,cv_bridge 发布图像话题,RViz2 验证。</li>
+      <li><strong>标定</strong>:自己写采集工具(3×3 覆盖提示)与标定程序,重投影误差三批迭代 2.96 → 1.14 → 0.48 像素。</li>
+      <li><strong>测距</strong>:PnP 单目测距,1 米工作距离定位精度约 1mm。</li>
+    </ul>
+
+    <h2>三个排错故事(面试可展开的那种)</h2>
+    <ol>
+      <li><strong>SONAME 之坑</strong>:接入 ROS2 后报 <code>libonnxruntime.so.1: cannot open shared object file</code>——用 <code>ldd</code> / <code>readelf -d</code> 定位到 colcon 产物无 rpath,补 INSTALL_RPATH 与软链接解决。编译期找得到库 ≠ 运行期找得到。</li>
+      <li><strong>标定 2.96 → 0.48</strong>:先定位"纸是手拿的会弯"(不满足角点共面),再统计出"左侧 1/3 画面从未拍到"(畸变只能外推),最后剔掉一张单张误差 1.29 的坏图。用 <code>CALIB_FIX_PRINCIPAL_POINT</code> 做控制变量,区分数据问题与模型问题。</li>
+      <li><strong>帧率瓶颈</strong>:分段计时发现 <code>sys</code> 远小于 <code>user</code>、CPU 并行度 ≈14,说明瓶颈在算力不在 IO——结论是该换推理后端而不是加线程。</li>
+    </ol>
+
+    <h2>数据一览</h2>
+    <table>
+      <tr><th>指标</th><th>数值</th><th>出处</th></tr>
+      <tr><td>检测框 mAP50</td><td>0.842</td><td>results.csv 第 100 轮</td></tr>
+      <tr><td>角点 mAP50</td><td>0.675</td><td>同上</td></tr>
+      <tr><td>标定重投影误差</td><td>0.4827 px</td><td>calib_result.yaml</td></tr>
+      <tr><td>1 米处定位精度</td><td>≈1 mm</td><td>Z/fx 换算</td></tr>
+      <tr><td>CPU 推理帧率</td><td>36.8 FPS</td><td>6299 帧分段计时</td></tr>
+    </table>
+
+  </section>
+</Base>

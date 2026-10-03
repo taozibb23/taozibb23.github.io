@@ -31,11 +31,15 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
 </Base>
 
 <script>
-  const bar = document.getElementById('filter-bar');
-  const cards = Array.from(document.querySelectorAll<HTMLElement>('#post-grid .post-card'));
-  const hint = document.getElementById('empty-hint');
+  // ClientRouter 导航后脚本不重跑,靠 astro:page-load 重绑(首载也触发,防重挂)
+  function bindFilter() {
+    const bar = document.getElementById('filter-bar');
+    if (!bar || bar.dataset.filterBound) return;
+    bar.dataset.filterBound = '1';
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('#post-grid .post-card'));
+    const hint = document.getElementById('empty-hint');
 
-  bar?.addEventListener('click', (e) => {
+    bar.addEventListener('click', (e) => {
     const btn = (e.target as HTMLElement).closest('button');
     if (!btn) return;
     bar.querySelectorAll('button').forEach((b) => b.classList.toggle('active', b === btn));
@@ -48,5 +52,8 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
       if (show) visible++;
     }
     if (hint) hint.hidden = visible > 0;
-  });
+    });
+  }
+  bindFilter();
+  document.addEventListener('astro:page-load', bindFilter);
 </script>

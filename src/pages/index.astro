@@ -70,7 +70,7 @@ const latest = posts.slice(0, 3);
       <h2><span class="grad">最新文章</span></h2>
       <a class="more" href="/blog/">全部 {posts.length} 篇 <span aria-hidden="true">›</span></a>
     </div>
-    <div class="post-grid" data-reveal>
+    <div class="post-grid post-grid--stage" data-reveal>
       {latest.map((post) => <PostCard post={post} />)}
     </div>
     </div>
@@ -84,9 +84,9 @@ const latest = posts.slice(0, 3);
       <a class="more" href="/projects/">全部项目 <span aria-hidden="true">›</span></a>
     </div>
     <div class="proj-grid" data-reveal-group>
-      <article class="proj-card">
+      <article class="proj-card" transition:name="proj-rmav">
         <p class="eyebrow">个人项目</p>
-        <h3>rm-armor-vision · 装甲板视觉识别全链路</h3>
+        <h3><a href="/projects/rm-armor-vision/">rm-armor-vision · 装甲板视觉识别全链路</a></h3>
         <p>
           从数据集到测距的完整链路:YOLO26-pose 从随机初始化训练 → ONNX 导出 → C++ 手写推理管线(letterbox / 8400 解码 / IoU / NMS)
           → ROS2 节点 → 相机标定 → PnP 单目测距。仓库含演示 GIF、训练曲线与构建说明。
@@ -97,6 +97,7 @@ const latest = posts.slice(0, 3);
           <div class="metric"><span class="num">0.48<small>px</small></span><span class="label">标定误差</span></div>
         </div>
         <div class="links">
+          <a href="/projects/rm-armor-vision/">查看详情 <span aria-hidden="true">›</span></a>
           <a href="https://github.com/taozibb23/rm-armor-vision" target="_blank" rel="noopener">GitHub →</a>
         </div>
       </article>

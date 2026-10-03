@@ -34,7 +34,7 @@ blog/
 > #f5f5f7/白全宽分节交替(.band--gray/.band--white),超大紧字距标题(-0.03em),名字与全站不加彩色(.grad 仅兼容旧标记、同墨色),
 > 毛玻璃胶囊导航,玻璃白卡 28px 圆角,蓝色药丸按钮 #0071e3,发布式大数字统计排(.cloud-row 四列+发丝线)。
 > 丝滑浮现:[data-reveal]/[data-reveal-group] + IntersectionObserver(html.js 门控防 FOUC),
-> hero 滚动缩放用 CSS animation-timeline: view() 渐进增强。一致性即美感:新模块不要自造花样,沿用现有令牌。
+> 浮现双向可重触发(离开视口退场、重进重播,上下滚动都有转场),ClientRouter 页面切换交叉溶解+博客卡共享元素变形,hero 滚动缩放用 CSS animation-timeline: view() 渐进增强。一致性即美感:新模块不要自造花样,沿用现有令牌。
 
 ## 3. 常见任务(5 分钟一个)
 

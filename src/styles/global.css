@@ -35,7 +35,8 @@
 }
 
 /* ==========================================================================
-   View Transitions:页面切换 = 苹果宣传片式交叉溶解
+   View Transitions:不同入口不同专场
+   进博客 = 推近(zoom);进项目 = 升起(rise);进关于 = 淡放
    ========================================================================== */
 ::view-transition-old(root),
 ::view-transition-new(root) {
@@ -47,11 +48,62 @@
   animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
 }
 
+/* 进博客:文章区块"推近放大"成博客页(镜头 dolly-in) */
+::view-transition-group(blog-stage) {
+  animation-duration: 0.6s;
+  animation-timing-function: var(--ease-out);
+}
+::view-transition-old(blog-stage) {
+  animation: stage-soft-out 0.3s var(--ease) both;
+}
+::view-transition-new(blog-stage) {
+  animation: stage-zoom-in 0.6s var(--ease-out) both;
+}
+
+@keyframes stage-zoom-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* 进项目:项目区块"升起展开" */
+::view-transition-group(projects-stage) {
+  animation-duration: 0.65s;
+  animation-timing-function: var(--ease-out);
+}
+::view-transition-old(projects-stage) {
+  animation: stage-soft-out 0.3s var(--ease) both;
+}
+::view-transition-new(projects-stage) {
+  animation: stage-rise-in 0.65s var(--ease-out) both;
+}
+
+@keyframes stage-rise-in {
+  from { opacity: 0; transform: translateY(56px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 进关于:安静淡放(对比前两者的克制收尾) */
+::view-transition-group(about-stage) {
+  animation-duration: 0.5s;
+}
+::view-transition-new(about-stage) {
+  animation: stage-soft-in 0.5s var(--ease-out) both;
+}
+
+@keyframes stage-soft-out {
+  to { opacity: 0; }
+}
+
+@keyframes stage-soft-in {
+  from { opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
   ::view-transition-new(root),
   ::view-transition-old(*),
-  ::view-transition-new(*) {
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
     animation: none !important;
   }
 }
@@ -734,6 +786,52 @@ a.card:active {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
+}
+
+/* ==========================================================================
+   博客卡片透视阵列:中间突出,两侧后收变淡,灭点在背景深处
+   (桌面 3 列;hover 任意卡转正拉近;窄屏自动退回平面)
+   ========================================================================== */
+@media (min-width: 1024px) {
+  .post-grid {
+    perspective: 1500px;
+    perspective-origin: 50% 18%;
+    transform-style: preserve-3d;
+  }
+
+  /* 两侧卡:向后收 + 朝向中心,淡一点 */
+  .post-card:nth-child(3n + 1) {
+    transform: perspective(1500px) rotateY(15deg) translateZ(-90px);
+    opacity: 0.78;
+    filter: brightness(0.96);
+  }
+  .post-card:nth-child(3n) {
+    transform: perspective(1500px) rotateY(-15deg) translateZ(-90px);
+    opacity: 0.78;
+    filter: brightness(0.96);
+  }
+
+  /* 中间卡:面向你,略前突,阴影更深 */
+  .post-card:nth-child(3n + 2) {
+    transform: perspective(1500px) rotateY(0deg) translateZ(40px) scale(1.02);
+    opacity: 1;
+    box-shadow: var(--shadow-hover);
+    z-index: 1;
+  }
+
+  /* hover:任意卡转正拉近,回到完全清晰 */
+  a.card.post-card:nth-child(n):hover {
+    transform: perspective(1500px) rotateY(0deg) translateZ(90px) scale(1.02);
+    opacity: 1;
+    filter: none;
+    box-shadow: var(--shadow-hover);
+  }
+
+  /* 卡片转正的过渡要丝滑(比默认 hover 更长) */
+  .post-card {
+    transition: transform 0.55s var(--ease-out), opacity 0.4s var(--ease-out),
+      filter 0.4s var(--ease-out), box-shadow 0.45s var(--ease-out);
+  }
 }
 
 /* ==========================================================================

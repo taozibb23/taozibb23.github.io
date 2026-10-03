@@ -63,20 +63,20 @@ const latest = posts.slice(0, 3);
   </div>
   </section>
 
-  <section class="band band--gray">
+  <section class="band band--gray" transition:name="blog-stage">
     <div class="container">
     <div class="section-head" data-reveal="focus">
       <p class="eyebrow">BLOG</p>
       <h2><span class="grad">最新文章</span></h2>
       <a class="more" href="/blog/">全部 {posts.length} 篇 <span aria-hidden="true">›</span></a>
     </div>
-    <div class="post-grid" data-reveal-group>
+    <div class="post-grid" data-reveal>
       {latest.map((post) => <PostCard post={post} />)}
     </div>
     </div>
   </section>
 
-  <section class="band band--white">
+  <section class="band band--white" transition:name="projects-stage">
     <div class="container">
     <div class="section-head" data-reveal="focus">
       <p class="eyebrow">PROJECTS</p>

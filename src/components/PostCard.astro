@@ -10,7 +10,12 @@ const { post } = Astro.props;
 const { title, description, pubDate, tags } = post.data;
 ---
 
-<a class="card post-card" href={`/blog/${post.id}/`} data-tags={tags.join(' ')}>
+<a
+  class="card post-card"
+  href={`/blog/${post.id}/`}
+  data-tags={tags.join(' ')}
+  transition:name={`post-${post.id}`}
+>
   <FormattedDate date={pubDate} />
   <h3>{title}</h3>
   <p>{description}</p>

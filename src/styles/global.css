@@ -35,6 +35,28 @@
 }
 
 /* ==========================================================================
+   View Transitions:页面切换 = 苹果宣传片式交叉溶解
+   ========================================================================== */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.55s;
+  animation-timing-function: var(--ease);
+}
+
+::view-transition-old(root) {
+  animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
    基础
    ========================================================================== */
 *,
@@ -134,20 +156,20 @@ hr {
    丝滑浮现(滚动进入):苹果宣传片式"对焦拉入"
    文字 = blur+scale+fade 对焦成形;卡片/面板 = 纯淡入上移(大表面不加滤镜)
    ========================================================================== */
-html.js [data-reveal] {
+html.io-ok [data-reveal] {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
   transition-delay: var(--rd, 0s);
 }
 
-html.js [data-reveal].in {
+html.io-ok [data-reveal].in {
   opacity: 1;
   transform: none;
 }
 
 /* 对焦拉入:标题块用(面积小,一次性过渡) */
-html.js [data-reveal="focus"] {
+html.io-ok [data-reveal="focus"] {
   opacity: 0;
   transform: scale(1.045);
   filter: blur(10px);
@@ -156,13 +178,13 @@ html.js [data-reveal="focus"] {
   transition-delay: var(--rd, 0s);
 }
 
-html.js [data-reveal="focus"].in {
+html.io-ok [data-reveal="focus"].in {
   opacity: 1;
   transform: none;
   filter: blur(0);
 }
 
-html.js [data-reveal-group] > * {
+html.io-ok [data-reveal-group] > * {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out),
@@ -170,29 +192,29 @@ html.js [data-reveal-group] > * {
 }
 
 /* 组内文字元素走对焦拉入,面板走淡入上移 */
-html.js [data-reveal-group] > .eyebrow,
-html.js [data-reveal-group] > h1,
-html.js [data-reveal-group] > .lead {
+html.io-ok [data-reveal-group] > .eyebrow,
+html.io-ok [data-reveal-group] > h1,
+html.io-ok [data-reveal-group] > .lead {
   transform: scale(1.04);
   filter: blur(9px);
 }
 
-html.js [data-reveal-group].in > * {
+html.io-ok [data-reveal-group].in > * {
   opacity: 1;
   transform: none;
   filter: blur(0);
 }
 
-html.js [data-reveal-group].in > :nth-child(2) { transition-delay: 0.08s; }
-html.js [data-reveal-group].in > :nth-child(3) { transition-delay: 0.16s; }
-html.js [data-reveal-group].in > :nth-child(4) { transition-delay: 0.24s; }
-html.js [data-reveal-group].in > :nth-child(5) { transition-delay: 0.32s; }
-html.js [data-reveal-group].in > :nth-child(6) { transition-delay: 0.4s; }
-html.js [data-reveal-group].in > :nth-child(7) { transition-delay: 0.48s; }
+html.io-ok [data-reveal-group].in > :nth-child(2) { transition-delay: 0.08s; }
+html.io-ok [data-reveal-group].in > :nth-child(3) { transition-delay: 0.16s; }
+html.io-ok [data-reveal-group].in > :nth-child(4) { transition-delay: 0.24s; }
+html.io-ok [data-reveal-group].in > :nth-child(5) { transition-delay: 0.32s; }
+html.io-ok [data-reveal-group].in > :nth-child(6) { transition-delay: 0.4s; }
+html.io-ok [data-reveal-group].in > :nth-child(7) { transition-delay: 0.48s; }
 
 @media (prefers-reduced-motion: reduce) {
-  html.js [data-reveal],
-  html.js [data-reveal-group] > * {
+  html.io-ok [data-reveal],
+  html.io-ok [data-reveal-group] > * {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;

@@ -10,7 +10,7 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
 ---
 
 <Base title="博客" description="机器人视觉技术博客:部署、训练、ROS2、标定、滤波与工程排错的实测记录。">
-  <section class="page-head container">
+  <section class="page-head container" data-reveal="focus">
     <p class="eyebrow">BLOG</p>
     <h1><span class="grad">博客</span></h1>
     <p class="desc">
@@ -23,7 +23,7 @@ const allTags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
   </section>
 
   <section class="container">
-    <div class="post-grid" id="post-grid">
+    <div class="post-grid" id="post-grid" data-reveal-group>
       {posts.map((post) => <PostCard post={post} />)}
     </div>
     <p id="empty-hint" hidden style="color:var(--ink-3);font-size:.9rem;">这个标签下暂时没有文章。</p>

@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 import { SITE } from '../config';
 
 interface Props {
@@ -29,6 +30,7 @@ const currentPath = Astro.url.pathname;
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="application/rss+xml" title={SITE.title} href="/rss.xml" />
     <meta name="generator" content={Astro.generator} />
+    <ClientRouter />
     <script is:inline>
       document.documentElement.classList.add('js');
     </script>
@@ -78,23 +80,41 @@ const currentPath = Astro.url.pathname;
     </footer>
 
     <script>
-      const revealables = document.querySelectorAll('[data-reveal], [data-reveal-group]');
-      if ('IntersectionObserver' in window) {
-        const io = new IntersectionObserver(
+      // 浮现可双向重触发:进入视口 18% 加 .in,完全离开再移除(上下滚动都有转场)
+      function bindReveals() {
+        const ioIn = new IntersectionObserver(
           (entries) => {
             for (const e of entries) {
-              if (e.isIntersecting) {
-                e.target.classList.add('in');
-                io.unobserve(e.target);
-              }
+              if (e.isIntersecting) e.target.classList.add('in');
             }
           },
-          { threshold: 0.12, rootMargin: '0px 0px -6% 0px' }
+          { threshold: 0.18, rootMargin: '0px 0px -6% 0px' }
         );
-        revealables.forEach((el) => io.observe(el));
-      } else {
-        revealables.forEach((el) => el.classList.add('in'));
+        const ioOut = new IntersectionObserver((entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) e.target.classList.remove('in');
+          }
+        });
+        document.querySelectorAll('[data-reveal], [data-reveal-group]').forEach((el) => {
+          if (el.dataset.revealBound) return;
+          el.dataset.revealBound = '1';
+          ioIn.observe(el);
+          ioOut.observe(el);
+        });
       }
+      document.addEventListener('astro:page-load', bindReveals);
+      // 首次加载:astro:page-load 可能在本模块执行前就已触发,直接补一次
+      bindReveals();
+
+      // 渲染探针:后台标签页/预渲染环境里 IO 不触发(渲染帧停止),
+      // 只有确认渲染活跃才启用"隐藏待浮现"状态,内容绝不永久不可见
+      const probe = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          document.documentElement.classList.add('io-ok');
+          probe.disconnect();
+        }
+      });
+      probe.observe(document.body);
     </script>
   </body>
 </html>

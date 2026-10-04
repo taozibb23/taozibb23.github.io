@@ -558,17 +558,21 @@ a.card:active {
   font-weight: 500;
   padding: 0.78em 1.9em;
   border-radius: 980px;
-  transition: background-color 0.25s var(--ease), transform 0.45s var(--ease);
+  box-shadow: 0 6px 18px -8px rgba(0, 113, 227, 0.65);
+  transition: background-color 0.3s var(--ease), transform 0.5s var(--ease-out),
+    box-shadow 0.5s var(--ease-out);
 }
 
 .btn-primary:hover {
   text-decoration: none;
   background: var(--blue-hover);
-  transform: scale(1.02);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 14px 30px -10px rgba(0, 113, 227, 0.75);
 }
 
 .btn-primary:active {
-  transform: scale(0.98);
+  transform: translateY(0) scale(0.97);
+  box-shadow: 0 4px 12px -6px rgba(0, 113, 227, 0.6);
   transition-duration: 0.12s;
 }
 
@@ -576,19 +580,26 @@ a.card:active {
   font-size: 1.02rem;
   color: var(--link);
   font-weight: 500;
+  padding: 0.5em 0.95em;
+  border-radius: 980px;
+  transition: color 0.3s var(--ease), background-color 0.3s var(--ease),
+    transform 0.5s var(--ease-out);
 }
 
 .link-more span {
   display: inline-block;
-  transition: transform 0.3s var(--ease);
+  transition: transform 0.4s var(--ease-out);
 }
 
 .link-more:hover {
   text-decoration: none;
+  color: var(--ink);
+  background: rgba(0, 113, 227, 0.1);
+  transform: translateY(-2px);
 }
 
 .link-more:hover span {
-  transform: translateX(3px);
+  transform: translateX(4px);
 }
 
 /* 终端窗:产品镜头级静置 */
@@ -824,7 +835,7 @@ a.card:active {
   gap: 1.5rem;
   width: max-content;
   /* 环绕:灭点在画廊中心(父级 perspective 属性,不用 preserve-3d/卡内函数——命中安全) */
-  perspective: 1400px;
+  perspective: 1050px;
   perspective-origin: 50% 50%;
 }
 
@@ -846,11 +857,11 @@ a.card:active {
 
 /* 纵深阶梯:中间正常色最大,两侧淡而小且透视侧倾,更远更淡更小(依次类推) */
 @keyframes sc-emphasis {
-  0% { opacity: 0.3; transform: rotateY(14deg) scale(0.7); }
-  25% { opacity: 0.5; transform: rotateY(8deg) scale(0.86); }
-  50% { opacity: 1; transform: rotateY(0deg) scale(1.06); }
-  75% { opacity: 0.5; transform: rotateY(-8deg) scale(0.86); }
-  100% { opacity: 0.3; transform: rotateY(-14deg) scale(0.7); }
+  0% { opacity: 0.26; transform: rotateY(24deg) scale(0.62); }
+  25% { opacity: 0.5; transform: rotateY(12deg) scale(0.84); }
+  50% { opacity: 1; transform: rotateY(0deg) scale(1.08); }
+  75% { opacity: 0.5; transform: rotateY(-12deg) scale(0.84); }
+  100% { opacity: 0.26; transform: rotateY(-24deg) scale(0.62); }
 }
 
 .scroller a.card:hover {

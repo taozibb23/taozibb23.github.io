@@ -565,6 +565,7 @@ a.card:active {
 
 .btn-primary:hover {
   text-decoration: none;
+  color: #fff;
   background: var(--blue-hover);
   transform: translateY(-2px) scale(1.04);
   box-shadow: 0 14px 30px -10px rgba(0, 113, 227, 0.75);
@@ -805,7 +806,7 @@ a.card:active {
 .scroller {
   --sc-w: calc((100vw - 5rem) / 3);
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  scroll-snap-type: x proximity;
   scrollbar-width: none;
   padding-block: 1.2rem 1.8rem;
   padding-inline: max(1.5rem, calc(50% - var(--sc-w) / 2));
@@ -835,7 +836,7 @@ a.card:active {
   gap: 1.5rem;
   width: max-content;
   /* 环绕:灭点在画廊中心(父级 perspective 属性,不用 preserve-3d/卡内函数——命中安全) */
-  perspective: 1050px;
+  perspective: 1250px;
   perspective-origin: 50% 50%;
 }
 
@@ -843,6 +844,7 @@ a.card:active {
   flex: 0 0 auto;
   width: var(--sc-w);
   scroll-snap-align: center;
+  will-change: transform, opacity;
 }
 
 /* 滚动驱动强调必须包 @supports:不支持的浏览器里
@@ -857,11 +859,11 @@ a.card:active {
 
 /* 纵深阶梯:中间正常色最大,两侧淡而小且透视侧倾,更远更淡更小(依次类推) */
 @keyframes sc-emphasis {
-  0% { opacity: 0.26; transform: rotateY(24deg) scale(0.62); }
-  25% { opacity: 0.5; transform: rotateY(12deg) scale(0.84); }
-  50% { opacity: 1; transform: rotateY(0deg) scale(1.08); }
-  75% { opacity: 0.5; transform: rotateY(-12deg) scale(0.84); }
-  100% { opacity: 0.26; transform: rotateY(-24deg) scale(0.62); }
+  0% { opacity: 0.35; transform: rotateY(11deg) scale(0.76); z-index: 1; }
+  25% { opacity: 0.55; transform: rotateY(6deg) scale(0.92); z-index: 2; }
+  50% { opacity: 1; transform: rotateY(0deg) scale(1.05); z-index: 3; }
+  75% { opacity: 0.55; transform: rotateY(-6deg) scale(0.92); z-index: 2; }
+  100% { opacity: 0.35; transform: rotateY(-11deg) scale(0.76); z-index: 1; }
 }
 
 .scroller a.card:hover {

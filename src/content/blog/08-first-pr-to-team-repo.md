@@ -71,11 +71,11 @@ git push -u origin feat/build-skeleton      # 第一次要 -u
 # GitHub 网页 → Compare & pull request → ⚠️ base 选 dev
 ```
 
-## 四、三个值得记的点
+## 四、我自己踩的三个小坑
 
-1. **base 分支选 dev**:开 PR 时 GitHub 默认 base 是 main,选错了合并方向就全错——提交之前多看一眼。
-2. **colcon 在工作区根目录跑**:在包目录里跑不报错,但产物结构不对,后面 `source install/setup.bash` 会找不到。
-3. **CI 绿才算完**:本地 build 过不等于 CI 过,CI 用的依赖和干净环境会暴露本地装了但没写进 `package.xml` 的依赖。
+1. 开 PR 时 GitHub 默认 base 是 main,我差点没注意就往错误的分支合——这个仓的开发分支是 dev,提交前多看了一眼才发现。
+2. colcon 我第一次是在包目录里跑的,不报错,但产物结构不对,后面 `source install/setup.bash` 找不到东西——退回工作区根目录重跑才对。
+3. 本地 build 通过不等于结束——CI 的干净环境会暴露"本地装了但没写进 `package.xml`"的依赖,我的第一次提交就是这样被 CI 抓回来的。
 
 ## 五、小结
 

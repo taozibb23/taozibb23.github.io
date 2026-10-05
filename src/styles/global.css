@@ -1383,6 +1383,69 @@ a.card:active {
   font-size: 0.9rem;
 }
 
+.viewer3d-tip {
+  font-size: 0.82rem;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.pcb-tabs {
+  display: inline-flex;
+  gap: 0.25rem;
+  background: var(--bg-gray);
+  border-radius: 999px;
+  padding: 0.2rem;
+}
+
+.pcb-tab {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--ink-2);
+  padding: 0.28rem 0.85rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.25s var(--ease), color 0.25s var(--ease);
+}
+
+.pcb-tab:hover {
+  color: var(--ink);
+}
+
+.pcb-tab.is-active {
+  background: #fff;
+  color: var(--ink);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+.viewer3d-label {
+  position: absolute;
+  left: 50%;
+  bottom: 0.9rem;
+  transform: translateX(-50%);
+  background: rgba(29, 29, 31, 0.82);
+  color: #fff;
+  font-size: 0.82rem;
+  padding: 0.32rem 0.85rem;
+  border-radius: 999px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .viewer3d-head {
+    flex-wrap: wrap;
+  }
+
+  .pcb-tabs {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* 时间线 */
 .bench-timeline {
   list-style: none;

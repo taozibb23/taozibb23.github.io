@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 
 <Base
   title="工作台"
-  description="大学生方程式车队时期的建模与后来的 PCB、工程图:可旋转的 E32 车架 3D、从 gerber 渲染的电路板。已退役,留作记录。"
+  description="大学生方程式车队时期的建模与后来的 PCB、工程图:可旋转、可点选杆件的 E32 车架 3D,蓝色板底带元器件的电路板 3D。已退役,留作记录。"
 >
   <section class="page-head container-prose" data-reveal="focus">
     <p class="eyebrow">WORKBENCH</p>
@@ -32,7 +32,7 @@ import Base from '../layouts/Base.astro';
           </li>
           <li>
             <span class="t">2026.01 – 2026.07</span>
-            <div><strong>NX (UG) 零件</strong>从 model 练习件到合页、铰链板、夹具、推车、钢板、举升器,20 多个 .prt,其中车架组的模型又回到了 NX 里继续改。</div>
+            <div><strong>NX (UG) 零件与工装</strong>从 model 练习件到合页、铰链板、夹具、推车、钢板,20 多个 .prt;7 月给车队画了举升器的整套工装(上/下支撑架、夹具),全套都有 STEP。</div>
           </li>
           <li>
             <span class="t">现在</span>
@@ -81,12 +81,21 @@ import Base from '../layouts/Base.astro';
       </div>
       <div class="viewer3d-card" data-reveal="focus">
         <div class="viewer3d-head">
-          <strong>STM32 开发板 · 3D</strong>
-          <span>拖动旋转 · 滚轮缩放</span>
+          <strong>PCB 3D · 蓝色板底 + 元器件</strong>
+          <span class="pcb-tabs" role="tablist">
+            <button class="pcb-tab is-active" data-pcb-tab="mcu51">51 核心板</button>
+            <button class="pcb-tab" data-pcb-tab="stm32">STM32</button>
+            <button class="pcb-tab" data-pcb-tab="pcb1">PCB1</button>
+          </span>
+          <span class="viewer3d-tip">拖动旋转 · 滚轮缩放</span>
         </div>
-        <div class="viewer3d" data-viewer="pcb" data-tex-top="/images/workbench/pcb-stm32.png" data-size-w="100" data-size-h="80">
+        <div class="viewer3d" data-viewer="pcb" data-pcb="mcu51"
+             data-tex="/images/workbench/pcb3d-mcu51-tex.png"
+             data-json="/models/pcb3d-mcu51.json"
+             data-tex-stm32="/images/workbench/pcb3d-stm32-tex.png" data-json-stm32="/models/pcb3d-stm32.json"
+             data-tex-pcb1="/images/workbench/pcb3d-pcb1-tex.png" data-json-pcb1="/models/pcb3d-pcb1.json">
           <div class="viewer3d-hint">正在加载 3D 视图…</div>
-          <canvas aria-label="STM32 开发板可旋转 3D 视图"></canvas>
+          <canvas aria-label="PCB 可旋转 3D 视图,蓝色板底与元器件"></canvas>
         </div>
       </div>
     </div>
@@ -96,17 +105,29 @@ import Base from '../layouts/Base.astro';
     <div class="container">
       <div class="section-head" data-reveal="focus">
         <p class="eyebrow">3D MODELS</p>
-        <h2>车架与模型</h2>
-        <p class="sub">模型都可以拖动旋转、滚轮缩放。由 CATIA / NX 导出的 STEP 转成网格直接在浏览器里渲染,不经过截图。</p>
+        <h2>车架与工装</h2>
+        <p class="sub">都可以拖动旋转、滚轮缩放;<strong>点击杆件会高亮并显示件号</strong>,和建模软件里的选中一个意思。模型由 CATIA / NX 导出的 STEP 转成网格,按原始实体逐件分组。</p>
       </div>
       <div class="viewer3d-card" data-reveal="focus">
         <div class="viewer3d-head">
           <strong>E32 车架 · 方程式车队车架组</strong>
-          <span>CATIA 建模 · 2025.12 · 轴距方向约 2.3 m</span>
+          <span>CATIA 建模 · 2025.12 · 101 个实体 · 轴距方向约 2.3 m</span>
         </div>
-        <div class="viewer3d viewer3d--tall" data-viewer="stl" data-src="/models/frame-e32.stl" data-color="frame">
+        <div class="viewer3d viewer3d--tall" data-viewer="glb" data-src="/models/frame-e32.glb" data-pick="1">
           <div class="viewer3d-hint">正在加载 3D 视图…</div>
-          <canvas aria-label="E32 车架可旋转 3D 视图"></canvas>
+          <div class="viewer3d-label" hidden></div>
+          <canvas aria-label="E32 车架可旋转 3D 视图,点击杆件选中"></canvas>
+        </div>
+      </div>
+      <div class="viewer3d-card" style="margin-top:1.4rem;" data-reveal="focus">
+        <div class="viewer3d-head">
+          <strong>举升器工装 · NX 设计</strong>
+          <span>2026.07 · 33 个实体 · 上/下支撑架与夹具</span>
+        </div>
+        <div class="viewer3d" data-viewer="glb" data-src="/models/jack.glb" data-pick="1">
+          <div class="viewer3d-hint">正在加载 3D 视图…</div>
+          <div class="viewer3d-label" hidden></div>
+          <canvas aria-label="举升器工装可旋转 3D 视图,点击零件选中"></canvas>
         </div>
       </div>
       <div class="bench-grid bench-grid--two" style="margin-top:1.4rem;">
@@ -134,7 +155,8 @@ import Base from '../layouts/Base.astro';
       <div class="card bench-note" style="margin-top:1.4rem;" data-reveal="focus">
         <h3 class="bench-note-title">关于 NX 和 SolidWorks 的文件</h3>
         <p class="bench-note-text">
-          NX 的 20 多个零件(model 练习件、合页、夹具、推车、推杆、钢板、举升器、车架组模型)是 .prt 私有格式,浏览器渲染不了,上面只放了导出过 STEP 的几件。
+          车架的 NX 版(chejia.prt)和夹具、推车、合页等 20 多个 .prt 是私有格式,浏览器渲染不了;
+          上面只放导出过 STEP 的部分——车架的 CATIA 版、举升器全套工装、铰链板和仿真几何。
           SolidWorks 装了,还没有正式的模型文件。等有新的 STEP 导出,我会继续补进来。
         </p>
       </div>
@@ -175,8 +197,8 @@ import Base from '../layouts/Base.astro';
   import * as THREE from 'three';
   import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-  // 渲染探针:标签页不可见时 IO 不触发,查看器保持未初始化(占位可见),绝不白屏
   function makeViewer(holder) {
     const canvas = holder.querySelector('canvas');
     const hint = holder.querySelector('.viewer3d-hint');
@@ -202,20 +224,6 @@ import Base from '../layouts/Base.astro';
     controls.enableDamping = true;
     controls.dampingFactor = 0.08;
 
-    function fit(obj, dist = 1.9) {
-      const box = new THREE.Box3().setFromObject(obj);
-      const sphere = box.getBoundingSphere(new THREE.Sphere());
-      const c = sphere.center.clone();
-      obj.position.sub(c);
-      camera.position.set(c.x + sphere.radius * dist * 0.7, c.y + sphere.radius * dist * 0.55, c.z + sphere.radius * dist);
-      camera.lookAt(0, 0, 0);
-      controls.target.set(0, 0, 0);
-      camera.near = sphere.radius / 100;
-      camera.far = sphere.radius * 40;
-      camera.updateProjectionMatrix();
-      return sphere.radius;
-    }
-
     function resize() {
       const w = holder.clientWidth || 600;
       const h = holder.clientHeight || 400;
@@ -227,27 +235,31 @@ import Base from '../layouts/Base.astro';
     resize();
 
     let visible = true;
-    let dirty = true;
-    controls.addEventListener('change', () => { dirty = true; });
     new IntersectionObserver((es) => { visible = es.some((e) => e.isIntersecting); }).observe(holder);
-    const clock = new THREE.Clock();
     (function loop() {
       requestAnimationFrame(loop);
       if (!visible) return;
       controls.update();
-      if (dirty || controls.dampingFactor > 0) {
-        renderer.render(scene, camera);
-        dirty = false;
-      }
-      clock.getDelta();
+      renderer.render(scene, camera);
     })();
-    return { scene, camera, controls, fit, renderer };
+    return { scene, camera, controls, renderer };
   }
 
-  const COLORS = {
-    frame: 0x9aa2ad,
-    steel: 0x8f979f,
-  };
+  function radiusOf(obj) {
+    const box = new THREE.Box3().setFromObject(obj);
+    return box.getBoundingSphere(new THREE.Sphere()).radius;
+  }
+
+  function centerAtOrigin(obj) {
+    obj.updateMatrixWorld(true); // 载入后矩阵可能是过期的,先全量刷新再算包围盒
+    const box = new THREE.Box3().setFromObject(obj);
+    const c = box.getCenter(new THREE.Vector3());
+    obj.position.sub(c);
+    obj.updateMatrixWorld(true);
+    return box.getBoundingSphere(new THREE.Sphere()).radius;
+  }
+
+  const COLORS = { steel: 0x8f979f };
 
   function initStl(holder) {
     const v = makeViewer(holder);
@@ -256,57 +268,167 @@ import Base from '../layouts/Base.astro';
       holder.dataset.src,
       (geo) => {
         geo.computeVertexNormals();
-        const mat = new THREE.MeshStandardMaterial({
-          color: COLORS[holder.dataset.color] || 0x9aa2ad,
-          metalness: 0.35,
-          roughness: 0.5,
-        });
-        const mesh = new THREE.Mesh(geo, mat);
+        const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
+          color: COLORS[holder.dataset.color] || 0x9aa2ad, metalness: 0.35, roughness: 0.5,
+        }));
         v.scene.add(mesh);
-        v.fit(mesh);
+        const r = centerAtOrigin(mesh);
+        v.camera.position.set(r * 0.7, r * 0.55, r * 1.9);
+        v.controls.target.set(0, 0, 0);
+        v.camera.near = r / 100; v.camera.far = r * 40; v.camera.updateProjectionMatrix();
         holder.querySelector('.viewer3d-hint')?.remove();
       },
       undefined,
-      () => {
-        const h = holder.querySelector('.viewer3d-hint');
-        if (h) h.textContent = '模型加载失败。';
-      }
+      () => { const h = holder.querySelector('.viewer3d-hint'); if (h) h.textContent = '模型加载失败。'; }
     );
+  }
+
+  // ---- GLB:按原始实体逐件分组,点击选中 ----
+  function initGlb(holder) {
+    const v = makeViewer(holder);
+    if (!v) return;
+    const canvas = holder.querySelector('canvas');
+    const label = holder.querySelector('.viewer3d-label');
+    const parts = [];
+    new GLTFLoader().load(
+      holder.dataset.src,
+      (gltf) => {
+        const root = gltf.scene;
+        v.scene.add(root);
+        const r = centerAtOrigin(root);
+        root.updateMatrixWorld(true);
+        if (location.search.includes('debug')) window.__wb = { parts, camera: v.camera, controls: v.controls, root, THREE };
+        root.traverse((o) => {
+          if (o.isMesh) {
+            o.material = new THREE.MeshStandardMaterial({
+              color: 0x9aa2ad, metalness: 0.35, roughness: 0.5,
+              emissive: 0x000000, emissiveIntensity: 0.5,
+            });
+            parts.push(o);
+          }
+        });
+        v.camera.position.set(r * 0.7, r * 0.55, r * 1.9);
+        v.controls.target.set(0, 0, 0);
+        v.camera.near = r / 100; v.camera.far = r * 40; v.camera.updateProjectionMatrix();
+        holder.querySelector('.viewer3d-hint')?.remove();
+
+        let selected = null;
+        const ray = new THREE.Raycaster();
+        const ptr = new THREE.Vector2();
+        let downX = 0, downY = 0;
+        if (location.search.includes('debug')) window.__wbPick = { n: 0, ptr: null, hit: null, parts: parts.length };
+        canvas.addEventListener('pointerdown', (e) => { downX = e.clientX; downY = e.clientY; });
+        canvas.addEventListener('pointerup', (e) => {
+          try {
+            if (Math.hypot(e.clientX - downX, e.clientY - downY) > 6) return; // 拖动不是点选
+            v.controls.update(); // 隐藏标签页里 RAF 不跑:补一次 update 让相机朝向/矩阵就位
+            v.scene.updateMatrixWorld(true);
+            v.camera.updateMatrixWorld();
+            const rect = canvas.getBoundingClientRect();
+            ptr.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+            ptr.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+            ray.setFromCamera(ptr, v.camera);
+            const hit = ray.intersectObjects(parts, false)[0];
+            if (location.search.includes('debug')) Object.assign(window.__wbPick, { n: window.__wbPick.n + 1, ptr: [ptr.x, ptr.y], hit: hit ? hit.object.name : null, cam: v.camera.position.toArray().map(Math.round) });
+            if (selected) { selected.material.emissive.set(0x000000); selected = null; }
+            if (hit) {
+              selected = hit.object;
+              selected.material.emissive.set(0x1c66d6);
+              selected.material.emissiveIntensity = 0.55;
+              if (label) {
+                label.textContent = selected.name || '未命名零件';
+                label.hidden = false;
+              }
+            } else if (label) {
+              label.hidden = true;
+            }
+          } catch (err) {
+            if (location.search.includes('debug')) window.__wbPick.err = String(err);
+          }
+        });
+      },
+      undefined,
+      () => { const h = holder.querySelector('.viewer3d-hint'); if (h) h.textContent = '模型加载失败。'; }
+    );
+  }
+
+  // ---- PCB 3D:蓝色板底 + 助焊膏层聚类出的元器件,三块板切换 ----
+  const PCB_CACHE = {};
+  function loadPcbData(holder, key) {
+    const tex = holder.dataset['tex' + key.charAt(0).toUpperCase() + key.slice(1)] || holder.dataset.tex;
+    const json = holder.dataset['json' + key.charAt(0).toUpperCase() + key.slice(1)] || holder.dataset.json;
+    return Promise.all([
+      new Promise((res, rej) => new THREE.TextureLoader().load(tex, res, undefined, rej)),
+      fetch(json).then((r) => r.json()),
+    ]);
   }
 
   function initPcb(holder) {
     const v = makeViewer(holder);
     if (!v) return;
-    const w = (parseFloat(holder.dataset.sizeW) || 100) / 1000; // mm -> m
-    const h = (parseFloat(holder.dataset.sizeH) || 80) / 1000;
-    const t = 0.0016;
-    const loader = new THREE.TextureLoader();
-    loader.load(holder.dataset.texTop, (tex) => {
-      tex.colorSpace = THREE.SRGBColorSpace;
-      const edge = new THREE.MeshStandardMaterial({ color: 0x35413a, roughness: 0.9 });
-      const top = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.55, metalness: 0.25 });
-      const bottom = new THREE.MeshStandardMaterial({ color: 0x8a4a3a, roughness: 0.7, metalness: 0.2 });
-      const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, t, h), [edge, edge, top, bottom, edge, edge]);
-      v.scene.add(mesh);
-      const r = v.fit(mesh, 2.3);
-      // 薄板看侧面是黑的:相机抬高成俯视,板面朝上(此处覆盖 fit 的机位,dist 不生效)
-      v.camera.position.set(r * 0.5, r * 1.9, r * 1.7);
-      v.controls.target.set(0, 0, 0);
-      v.controls.update();
-      holder.querySelector('.viewer3d-hint')?.remove();
+    const hint = holder.querySelector('.viewer3d-hint');
+    const boardGroup = new THREE.Group();
+    v.scene.add(boardGroup);
+
+    function build(key) {
+      loadPcbData(holder, key).then(([tex, data]) => {
+        tex.colorSpace = THREE.SRGBColorSpace;
+        boardGroup.clear();
+        const W = data.w / 1000, H = data.h / 1000, T = 0.0016;
+        const mask = new THREE.MeshStandardMaterial({ color: 0x16457c, roughness: 0.65, metalness: 0.05 });
+        const top = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.5, metalness: 0.15 });
+        const mesh = new THREE.Mesh(new THREE.BoxGeometry(W, T, H), [mask, mask, top, mask, mask, mask]);
+        boardGroup.add(mesh);
+        // 元器件:按助焊膏层 pad 聚类的包围盒摆简易实体
+        const compMat = new THREE.MeshStandardMaterial({ color: 0x23272d, roughness: 0.45, metalness: 0.35 });
+        const geo = new THREE.BoxGeometry(1, 1, 1);
+        const inst = new THREE.InstancedMesh(geo, compMat, data.comps.length);
+        const m = new THREE.Matrix4();
+        let i = 0;
+        for (const c of data.comps) {
+          const cw = (c.w / 1000), ch = (c.h / 1000);
+          const big = Math.max(cw, ch);
+          const ch3 = big < 0.0015 ? 0.00045 : big < 0.004 ? 0.0011 : 0.0026;
+          m.makeScale(cw, ch3, ch);
+          m.setPosition(c.x / 1000 - W / 2, T / 2 + ch3 / 2, c.y / 1000 - H / 2);
+          inst.setMatrixAt(i++, m);
+        }
+        inst.instanceMatrix.needsUpdate = true;
+        boardGroup.add(inst);
+        const r = centerAtOrigin(boardGroup);
+        v.camera.position.set(r * 0.5, r * 1.9, r * 1.7);
+        v.controls.target.set(0, 0, 0);
+        v.camera.near = r / 100; v.camera.far = r * 40; v.camera.updateProjectionMatrix();
+        hint?.remove();
+      }).catch(() => { if (hint) hint.textContent = '加载失败。'; });
+    }
+    build(holder.dataset.pcb);
+
+    // tab 按钮在 .viewer3d-head 里,是 holder 的兄弟节点——从卡片容器找
+    const card = holder.closest('.viewer3d-card') || document;
+    card.querySelectorAll('[data-pcb-tab]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        card.querySelectorAll('[data-pcb-tab]').forEach((b) => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        build(btn.dataset.pcbTab);
+      });
     });
   }
 
   function bind() {
+    const nolazy = location.search.includes('nolazy'); // 渲染探针:隐藏标签页 IO 不触发,测试用直通参数
     document.querySelectorAll('[data-viewer]').forEach((holder) => {
       if (holder.dataset.vBound) return;
       holder.dataset.vBound = '1';
-      const init = holder.dataset.viewer === 'pcb' ? initPcb : initStl;
+      const kind = holder.dataset.viewer;
+      const init = kind === 'pcb' ? initPcb : kind === 'glb' ? initGlb : initStl;
+      const start = () => init(holder);
+      if (nolazy) { start(); return; }
       // 进入视口再初始化,省显存
       const io = new IntersectionObserver((es) => {
         if (es.some((e) => e.isIntersecting)) {
           io.disconnect();
-          init(holder);
+          start();
         }
       }, { rootMargin: '120px' });
       io.observe(holder);

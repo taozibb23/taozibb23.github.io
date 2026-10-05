@@ -81,7 +81,7 @@ import Base from '../layouts/Base.astro';
       </div>
       <div class="viewer3d-card" data-reveal="focus">
         <div class="viewer3d-head">
-          <strong>PCB 3D · 蓝色板底 + 元器件</strong>
+          <strong>PCB 3D · 蓝色板底 + 元器件(KiCad 官方模型)</strong>
           <span class="pcb-tabs" role="tablist">
             <button class="pcb-tab is-active" data-pcb-tab="mcu51">51 核心板</button>
             <button class="pcb-tab" data-pcb-tab="stm32">STM32</button>
@@ -216,6 +216,7 @@ import Base from '../layouts/Base.astro';
   import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   import { STLLoader } from 'three/addons/loaders/STLLoader.js';
   import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+  import { VRMLLoader } from 'three/addons/loaders/VRMLLoader.js';
 
   function makeViewer(holder) {
     const canvas = holder.querySelector('canvas');
@@ -227,7 +228,7 @@ import Base from '../layouts/Base.astro';
       hint.textContent = '当前浏览器不支持 WebGL,3D 视图无法显示。';
       return null;
     }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(38, 1, 0.001, 100);
     scene.add(new THREE.HemisphereLight(0xffffff, 0x50555c, 1.1));
@@ -370,15 +371,93 @@ import Base from '../layouts/Base.astro';
     );
   }
 
-  // ---- PCB 3D:蓝色板底 + 助焊膏层聚类出的元器件,三块板切换 ----
-  const PCB_CACHE = {};
-  function loadPcbData(holder, key) {
-    const tex = holder.dataset['tex' + key.charAt(0).toUpperCase() + key.slice(1)] || holder.dataset.tex;
-    const json = holder.dataset['json' + key.charAt(0).toUpperCase() + key.slice(1)] || holder.dataset.json;
-    return Promise.all([
-      new Promise((res, rej) => new THREE.TextureLoader().load(tex, res, undefined, rej)),
-      fetch(json).then((r) => r.json()),
-    ]);
+  // ---- PCB 3D:蓝色板底 + KiCad 官方元器件模型 + 聚类阻容,三块板切换 ----
+  const COMP_BASE = '/models/comps/';
+  const wrlCache = {};
+  function loadWrl(name) {
+    if (!wrlCache[name]) {
+      wrlCache[name] = new Promise((res, rej) => new VRMLLoader().load(COMP_BASE + name + '.wrl', res, undefined, rej));
+    }
+    return wrlCache[name];
+  }
+
+  // 摆放表:坐标 mm(板左上原,y 向下),r=绕 Y 旋转角度。位置按布线图丝印/焊盘定的。
+  const PCBS = {
+    mcu51: {
+      w: 70, h: 40,
+      tex: '/images/workbench/pcb3d-mcu51-tex.png', json: '/models/pcb3d-mcu51.json',
+      parts: [
+        { m: 'DIP-40_W15.24mm', x: 26, y: 17, r: 90 },
+        { m: 'USB_Mini-B_Lumberg_2486_01_Horizontal', x: 3.6, y: 27.5, r: 90 },
+        { m: 'SW_PUSH_6mm', x: 12.4, y: 27.5, r: 0 },
+        { m: 'SW_PUSH_6mm', x: 12.6, y: 8.6, r: 0 },
+        { m: 'Crystal_HC49-U-3Pin_Vertical', x: 28.5, y: 33.5, r: 0 },
+        { m: 'CP_Radial_D8.0mm_P3.50mm', x: 8.5, y: 17.5, r: 0 },
+        { m: 'LED_D5.0mm', x: 20.5, y: 33.5, r: 0 },
+        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 33.5, y: 2.6, r: 0, len: 26 },
+        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 33.5, y: 37.4, r: 0, len: 26 },
+        { m: 'PinHeader_2x20_P2.54mm_Vertical', x: 64.5, y: 20, r: 90, len: 21 },
+      ],
+    },
+    stm32: {
+      w: 100, h: 80,
+      tex: '/images/workbench/pcb3d-stm32-tex.png', json: '/models/pcb3d-stm32.json',
+      parts: [
+        { m: 'LQFP-100_14x14mm_P0.5mm', x: 52.9, y: 38.8, r: 0 },
+        { m: 'Crystal_HC49-U-3Pin_Vertical', x: 33.6, y: 62.3, r: 90 },
+        { m: 'SW_PUSH_6mm', x: 77.5, y: 17.2, r: 0 },
+        { m: 'SW_PUSH_6mm', x: 29.7, y: 16.1, r: 0 },
+        { m: 'USB_Mini-B_Lumberg_2486_01_Horizontal', x: 16.9, y: 4.8, r: 180 },
+        { m: 'CP_Radial_D8.0mm_P3.50mm', x: 8, y: 72, r: 0 },
+        { m: 'CP_Radial_D8.0mm_P3.50mm', x: 18, y: 72, r: 0 },
+        { m: 'LED_D5.0mm', x: 87, y: 72, r: 0 },
+        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 3.5, y: 35, r: 90, len: 50 },
+        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 96.5, y: 33, r: 90, len: 50 },
+        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 30, y: 76.8, r: 0, len: 14 },
+        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 46, y: 76.8, r: 0, len: 14 },
+      ],
+    },
+    pcb1: {
+      w: 100, h: 30,
+      tex: '/images/workbench/pcb3d-pcb1-tex.png', json: '/models/pcb3d-pcb1.json',
+      parts: [
+        { m: 'USB_Mini-B_Lumberg_2486_01_Horizontal', x: 11.7, y: 17, r: 90 },
+        { m: 'SW_PUSH_6mm', x: 36.9, y: 6.5, r: 0 },
+        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 74.2, y: 15.4, r: 90, len: 22 },
+        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 94.4, y: 15.4, r: 90, len: 22 },
+      ],
+    },
+  };
+
+  // 剩余聚类 → 双色调阻容/芯片黑盒
+  function buildPassives(group, comps, usedNear, W, H) {
+    const bodyMat = new THREE.MeshStandardMaterial({ color: 0x2e3238, roughness: 0.4, metalness: 0.3 });
+    const endMat = new THREE.MeshStandardMaterial({ color: 0xb9c0c8, roughness: 0.3, metalness: 0.8 });
+    const chipMat = new THREE.MeshStandardMaterial({ color: 0x191d22, roughness: 0.35, metalness: 0.25 });
+    for (const c of comps) {
+      if (usedNear.some((p) => Math.hypot(p.x - c.x, p.y - c.y) < 5)) continue;
+      const cw = Math.max(c.w / 1000, 0.0008), ch = Math.max(c.h / 1000, 0.0008);
+      const px = c.x / 1000 - W / 2, pz = c.y / 1000 - H / 2;
+      if (c.w >= 5 && c.h >= 4) {
+        // 大一点的贴片:黑色芯片体
+        const box = new THREE.Mesh(new THREE.BoxGeometry(cw, 0.0016, ch), chipMat);
+        box.position.set(px, 0.0008 + 0.0016 / 2, pz);
+        group.add(box);
+        continue;
+      }
+      // 阻容:本体 + 两端金属
+      const long = Math.max(cw, ch), short = Math.min(cw, ch);
+      const body = new THREE.Mesh(new THREE.BoxGeometry(cw * 0.62, 0.0006, ch * 0.9), bodyMat);
+      body.position.set(px, 0.0008 + 0.0003, pz);
+      group.add(body);
+      const endG = new THREE.BoxGeometry(cw * 0.19, 0.0007, ch * 0.9);
+      const e1 = new THREE.Mesh(endG, endMat);
+      e1.position.set(px - cw * 0.4, 0.0008 + 0.00035, pz);
+      const e2 = new THREE.Mesh(endG, endMat);
+      e2.position.set(px + cw * 0.4, 0.0008 + 0.00035, pz);
+      group.add(e1, e2);
+      void long; void short;
+    }
   }
 
   function initPcb(holder) {
@@ -387,40 +466,68 @@ import Base from '../layouts/Base.astro';
     const hint = holder.querySelector('.viewer3d-hint');
     const boardGroup = new THREE.Group();
     v.scene.add(boardGroup);
+    const aniso = v.renderer.capabilities.getMaxAnisotropy();
 
-    function build(key) {
-      loadPcbData(holder, key).then(([tex, data]) => {
-        tex.colorSpace = THREE.SRGBColorSpace;
-        boardGroup.clear();
-        const W = data.w / 1000, H = data.h / 1000, T = 0.0016;
-        const mask = new THREE.MeshStandardMaterial({ color: 0x16457c, roughness: 0.65, metalness: 0.05 });
-        const top = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.5, metalness: 0.15 });
-        const mesh = new THREE.Mesh(new THREE.BoxGeometry(W, T, H), [mask, mask, top, mask, mask, mask]);
-        boardGroup.add(mesh);
-        // 元器件:按助焊膏层 pad 聚类的包围盒摆简易实体
-        const compMat = new THREE.MeshStandardMaterial({ color: 0x23272d, roughness: 0.45, metalness: 0.35 });
-        const geo = new THREE.BoxGeometry(1, 1, 1);
-        const inst = new THREE.InstancedMesh(geo, compMat, data.comps.length);
-        const m = new THREE.Matrix4();
-        let i = 0;
-        for (const c of data.comps) {
-          const cw = (c.w / 1000), ch = (c.h / 1000);
-          const big = Math.max(cw, ch);
-          const ch3 = big < 0.0015 ? 0.00045 : big < 0.004 ? 0.0011 : 0.0026;
-          m.makeScale(cw, ch3, ch);
-          m.setPosition(c.x / 1000 - W / 2, T / 2 + ch3 / 2, c.y / 1000 - H / 2);
-          inst.setMatrixAt(i++, m);
-        }
-        inst.instanceMatrix.needsUpdate = true;
-        boardGroup.add(inst);
-        const r = centerAtOrigin(boardGroup);
-        v.camera.position.set(r * 0.5, r * 1.9, r * 1.7);
-        v.controls.target.set(0, 0, 0);
-        v.camera.near = r / 100; v.camera.far = r * 40; v.camera.updateProjectionMatrix();
-        hint?.remove();
-      }).catch(() => { if (hint) hint.textContent = '加载失败。'; });
+    async function build(key) {
+      const cfg = PCBS[key];
+      const W = cfg.w / 1000, H = cfg.h / 1000, T = 0.0016;
+      const [tex, data] = await Promise.all([
+        new Promise((res, rej) => new THREE.TextureLoader().load(cfg.tex, res, undefined, rej)),
+        fetch(cfg.json).then((r) => r.json()),
+      ]);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = aniso;
+      boardGroup.clear();
+
+      const mask = new THREE.MeshStandardMaterial({ color: 0x16457c, roughness: 0.65, metalness: 0.05 });
+      const top = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.5, metalness: 0.15 });
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(W, T, H), [mask, mask, top, mask, mask, mask]);
+      boardGroup.add(mesh);
+
+      // 元器件模型(KiCad 官方 WRL:mm 单位、经验系数 0.00254 才是真实米制尺寸)
+      const used = [];
+      for (const p of cfg.parts) {
+        used.push(p);
+        try {
+          const scene = await loadWrl(p.m);
+          // 关键:包围盒要在任何缩放之前、对 loader 原始对象取,否则拿到过期矩阵
+          const rawBox = new THREE.Box3().setFromObject(scene);
+          const rawSize = rawBox.getSize(new THREE.Vector3()); // mm
+          const rawLong = Math.max(rawSize.x, rawSize.y, rawSize.z);
+          let k = 0.00254;
+          if (p.len) k = (p.len / 1000) / Math.max(rawLong * 0.00254, 1e-5) * 0.00254;
+          const inst = scene.clone(true);
+          inst.scale.set(k, k, k);
+          inst.rotation.x = -Math.PI / 2; // 模型 Y-up 长/高排布 → 板面朝上
+          const outer = new THREE.Group();
+          outer.add(inst);
+          outer.userData.isComp = true;
+          outer.rotation.y = -(p.r || 0) * Math.PI / 180;
+          outer.position.set(p.x / 1000 - W / 2, T / 2, p.y / 1000 - H / 2);
+          boardGroup.add(outer);
+        } catch (e) { /* 单个模型失败不阻塞整板 */ }
+      }
+
+      // 剩余聚类 → 阻容/芯片
+      buildPassives(boardGroup, data.comps, used, W, H);
+
+      if (location.search.includes('debug')) {
+        boardGroup.updateMatrixWorld(true);
+        window.__pcbBoxes = boardGroup.children
+          .filter((o) => o.userData && o.userData.isComp)
+          .map((o) => {
+            const b = new THREE.Box3().setFromObject(o);
+            const s = b.getSize(new THREE.Vector3()).multiplyScalar(1000);
+            return { dx: +s.x.toFixed(1), dy: +s.y.toFixed(1), dz: +s.z.toFixed(1) };
+          });
+      }
+      const r = centerAtOrigin(boardGroup);
+      v.camera.position.set(r * 0.5, r * 1.9, r * 1.7);
+      v.controls.target.set(0, 0, 0);
+      v.camera.near = r / 100; v.camera.far = r * 40; v.camera.updateProjectionMatrix();
+      hint?.remove();
     }
-    build(holder.dataset.pcb);
+    build(holder.dataset.pcb).catch(() => { if (hint) hint.textContent = '加载失败。'; });
 
     // tab 按钮在 .viewer3d-head 里,是 holder 的兄弟节点——从卡片容器找
     const card = holder.closest('.viewer3d-card') || document;

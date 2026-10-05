@@ -1352,7 +1352,7 @@ a.card:active {
   position: relative;
   height: 380px;
   background:
-    radial-gradient(120% 90% at 50% 10%, #f7f8fa 0%, #eceef1 60%, #e3e6ea 100%);
+    radial-gradient(120% 90% at 50% 35%, #33373d 0%, #232629 55%, #191b1e 100%);
 }
 
 .viewer3d--tall {
@@ -1379,7 +1379,7 @@ a.card:active {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--ink-3);
+  color: #9aa0a8;
   font-size: 0.9rem;
 }
 

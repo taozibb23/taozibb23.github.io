@@ -1304,10 +1304,20 @@ a.card:active {
   white-space: nowrap;
 }
 
+.bench-grid--two {
+  grid-template-columns: 1fr 1fr;
+}
+
 .bench-note .tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+.bench-note-title {
+  margin: 0 0 0.4rem;
+  font-size: 1.25rem;
+  letter-spacing: -0.015em;
 }
 
 .bench-note-text {
@@ -1367,8 +1377,13 @@ a.bench-mini:hover {
 
 @media (max-width: 860px) {
   .bench-grid,
-  .bench-strip {
+  .bench-strip,
+  .bench-grid--two {
     grid-template-columns: 1fr;
+  }
+
+  .bench-grid--two .bench-stage img {
+    max-height: 420px;
   }
 
   .bench-stage {

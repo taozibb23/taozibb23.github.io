@@ -35,8 +35,8 @@ import Base from '../layouts/Base.astro';
             <div><strong>NX (UG) 零件与工装</strong>从 model 练习件到合页、铰链板、夹具、推车、钢板,20 多个 .prt;7 月给车队画了举升器的整套工装(上/下支撑架、夹具),全套 STEP 和方管切割下料的 CAD 出图都在。</div>
           </li>
           <li>
-            <span class="t">现在</span>
-            <div><strong>已退役</strong>车队的事告一段落,这些模型、板子和图纸留在这里当记录。</div>
+            <span class="t">2026.08 底</span>
+            <div><strong>退出车队</strong>方程式的事到这个夏天告一段落,这些模型、板子和图纸留在这里当记录。</div>
           </li>
         </ul>
       </div>
@@ -381,40 +381,36 @@ import Base from '../layouts/Base.astro';
     return wrlCache[name];
   }
 
-  // 摆放表:坐标 mm(板左上原,y 向下),r=绕 Y 旋转角度。位置按布线图丝印/焊盘定的。
+  // 摆放表:坐标 mm(板左上原,y 向下),r=绕 Y 旋转,s=整体缩放,len=排针裁长(mm)。
+  // 位置来自钻孔层(排针/端子的孔位)和顶层助焊膏聚类(贴片件),不是手估。
   const PCBS = {
     mcu51: {
       w: 70, h: 40,
       tex: '/images/workbench/pcb3d-mcu51-tex.png', json: '/models/pcb3d-mcu51.json',
       parts: [
-        { m: 'DIP-40_W15.24mm', x: 26, y: 17, r: 90 },
-        { m: 'USB_Mini-B_Lumberg_2486_01_Horizontal', x: 3.6, y: 27.5, r: 90 },
-        { m: 'SW_PUSH_6mm', x: 12.4, y: 27.5, r: 0 },
-        { m: 'SW_PUSH_6mm', x: 12.6, y: 8.6, r: 0 },
-        { m: 'Crystal_HC49-U-3Pin_Vertical', x: 28.5, y: 33.5, r: 0 },
-        { m: 'CP_Radial_D8.0mm_P3.50mm', x: 8.5, y: 17.5, r: 0 },
-        { m: 'LED_D5.0mm', x: 20.5, y: 33.5, r: 0 },
-        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 33.5, y: 2.6, r: 0, len: 26 },
-        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 33.5, y: 37.4, r: 0, len: 26 },
-        { m: 'PinHeader_2x20_P2.54mm_Vertical', x: 64.5, y: 20, r: 90, len: 21 },
+        { m: 'LQFP-100_14x14mm_P0.5mm', x: 39.6, y: 21.5, s: 0.72 },
+        { m: 'USB_Mini-B_Lumberg_2486_01_Horizontal', x: 6.2, y: 25.5, r: 90, len: 9.7 },
+        { m: 'SW_PUSH_6mm', x: 12.4, y: 27.5, s: 0.65 },
+        { m: 'SW_PUSH_6mm', x: 19.2, y: 10.2, s: 0.55 },
+        { m: 'Crystal_HC49-U-3Pin_Vertical', x: 24.9, y: 19, s: 0.35 },
+        { m: 'CP_Radial_D8.0mm_P3.50mm', x: 54, y: 17.9, s: 0.55 },
+        { m: 'CP_Radial_D8.0mm_P3.50mm', x: 54, y: 26.8, s: 0.55 },
+        { m: 'LED_D5.0mm', x: 20.4, y: 16.1, s: 0.45 },
+        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 39, y: 1.9, r: 0, len: 40.6 },
+        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 33.6, y: 38, r: 0, len: 50.8 },
+        { m: 'PinHeader_2x20_P2.54mm_Vertical', x: 65.4, y: 22.1, r: 90, len: 17.8 },
       ],
     },
     stm32: {
       w: 100, h: 80,
       tex: '/images/workbench/pcb3d-stm32-tex.png', json: '/models/pcb3d-stm32.json',
       parts: [
-        { m: 'LQFP-100_14x14mm_P0.5mm', x: 52.9, y: 38.8, r: 0 },
-        { m: 'Crystal_HC49-U-3Pin_Vertical', x: 33.6, y: 62.3, r: 90 },
-        { m: 'SW_PUSH_6mm', x: 77.5, y: 17.2, r: 0 },
-        { m: 'SW_PUSH_6mm', x: 29.7, y: 16.1, r: 0 },
+        { m: 'LQFP-100_14x14mm_P0.5mm', x: 52.9, y: 38.8 },
+        { m: 'Crystal_HC49-U-3Pin_Vertical', x: 33.6, y: 62.3, r: 90, s: 0.8 },
+        { m: 'SW_PUSH_6mm', x: 77.5, y: 17.2 },
+        { m: 'SW_PUSH_6mm', x: 29.7, y: 16.1 },
         { m: 'USB_Mini-B_Lumberg_2486_01_Horizontal', x: 16.9, y: 4.8, r: 180 },
-        { m: 'CP_Radial_D8.0mm_P3.50mm', x: 8, y: 72, r: 0 },
-        { m: 'CP_Radial_D8.0mm_P3.50mm', x: 18, y: 72, r: 0 },
-        { m: 'LED_D5.0mm', x: 87, y: 72, r: 0 },
-        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 3.5, y: 35, r: 90, len: 50 },
-        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 96.5, y: 33, r: 90, len: 50 },
-        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 30, y: 76.8, r: 0, len: 14 },
-        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 46, y: 76.8, r: 0, len: 14 },
+        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 36.2, y: 4.8, r: 0, len: 12 },
       ],
     },
     pcb1: {
@@ -422,9 +418,9 @@ import Base from '../layouts/Base.astro';
       tex: '/images/workbench/pcb3d-pcb1-tex.png', json: '/models/pcb3d-pcb1.json',
       parts: [
         { m: 'USB_Mini-B_Lumberg_2486_01_Horizontal', x: 11.7, y: 17, r: 90 },
-        { m: 'SW_PUSH_6mm', x: 36.9, y: 6.5, r: 0 },
-        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 74.2, y: 15.4, r: 90, len: 22 },
-        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 94.4, y: 15.4, r: 90, len: 22 },
+        { m: 'SW_PUSH_6mm', x: 36.9, y: 3.1, s: 0.95 },
+        { m: 'PinHeader_2x20_P2.54mm_Vertical', x: 74.2, y: 15.4, r: 90, len: 17.4 },
+        { m: 'PinHeader_2x20_P2.54mm_Vertical', x: 94.4, y: 15.4, r: 90, len: 17.4 },
       ],
     },
   };
@@ -494,8 +490,9 @@ import Base from '../layouts/Base.astro';
           const rawBox = new THREE.Box3().setFromObject(scene);
           const rawSize = rawBox.getSize(new THREE.Vector3()); // mm
           const rawLong = Math.max(rawSize.x, rawSize.y, rawSize.z);
-          let k = 0.00254;
-          if (p.len) k = (p.len / 1000) / Math.max(rawLong * 0.00254, 1e-5) * 0.00254;
+          const sm = p.s || 1;
+          let k = 0.00254 * sm;
+          if (p.len) k = ((p.len / 1000) / (rawLong * 0.00254)) * 0.00254 * sm;
           const inst = scene.clone(true);
           inst.scale.set(k, k, k);
           inst.rotation.x = -Math.PI / 2; // 模型 Y-up 长/高排布 → 板面朝上

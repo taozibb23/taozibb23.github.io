@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="工作台"
+  description="视觉代码之外的动手记录:工程图练习、建模和硬件小玩意。玩乐向,不是主线。"
+>
+  <section class="page-head container-prose" data-reveal="focus">
+    <p class="eyebrow">WORKBENCH</p>
+    <h1><span class="grad">工作台</span></h1>
+    <p class="desc">
+      视觉代码之外,我动手玩的部分:工程图、建模、硬件。这里只做记录,不是主线——但机器人是软硬一体的,这些东西最终都会回到机器人上。
+    </p>
+  </section>
+
+  <section class="band band--gray" style="margin-top:2.6rem;">
+    <div class="container">
+      <div class="section-head" data-reveal="focus">
+        <p class="eyebrow">CAD</p>
+        <h2>工程图练习</h2>
+        <p class="sub">课程练习里画得还行的两张。从 DXF 矢量数据原样描线重新渲染,不是软件截图。</p>
+      </div>
+      <div class="bench-grid" data-reveal-group>
+        <figure class="bench-card">
+          <div class="bench-stage">
+            <img src="/images/workbench/cad-01.svg" alt="零件轮廓练习:带弧形顶部、腰型槽和挂钩缺口的支架轮廓线稿" loading="lazy" />
+          </div>
+          <figcaption>
+            <strong>零件轮廓</strong>
+            <span>2025.12 · DXF 线稿</span>
+          </figcaption>
+        </figure>
+        <figure class="bench-card">
+          <div class="bench-stage">
+            <img src="/images/workbench/cad-02.svg" alt="三视图练习:组合体支架的主视图、俯视图与中心线线稿" loading="lazy" />
+          </div>
+          <figcaption>
+            <strong>三视图</strong>
+            <span>2026.03 · DXF 线稿</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--white">
+    <div class="container">
+      <div class="section-head" data-reveal="focus">
+        <p class="eyebrow">PCB / HARDWARE</p>
+        <h2>硬件这边</h2>
+        <p class="sub">在玩的方向和工具。板子画完、gerber 导出之后,会记录到这里。</p>
+      </div>
+      <div class="card bench-note" data-reveal="focus">
+        <div class="tags">
+          <span class="tag">NX (UG) 建模</span>
+          <span class="tag">ANSYS 仿真</span>
+          <span class="tag">立创EDA 专业版</span>
+          <span class="tag">Keil MDK</span>
+          <span class="tag">STM32CubeMX</span>
+        </div>
+        <p class="bench-note-text">
+          目前在学工程图和建模,画过一些零件轮廓和三视图练习;PCB 在立创EDA 里,等板子真正打样回来再把 gerber 和实物照挂上来。
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

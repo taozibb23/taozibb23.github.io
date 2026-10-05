@@ -57,6 +57,7 @@ const currentPath = Astro.url.pathname;
           <a href="/" aria-current={currentPath === '/' ? 'page' : undefined}>首页</a>
           <a href="/blog/" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>博客</a>
           <a href="/projects/" aria-current={currentPath.startsWith('/projects') ? 'page' : undefined}>项目</a>
+          <a href="/workbench/" aria-current={currentPath.startsWith('/workbench') ? 'page' : undefined}>工作台</a>
           <a href="/about/" aria-current={currentPath.startsWith('/about') ? 'page' : undefined}>关于</a>
           <a href={SITE.social.github} target="_blank" rel="noopener" aria-label="GitHub" class="icon-btn" style="margin-left:.35rem">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">

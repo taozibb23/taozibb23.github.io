@@ -1244,6 +1244,144 @@ a.card:active {
 }
 
 /* ==========================================================================
+   工作台:工程图线稿卡 + 硬件记录
+   ========================================================================== */
+.bench-grid {
+  display: grid;
+  gap: 1.4rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+.bench-card {
+  margin: 0;
+  background: var(--card-solid, #fff);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 1.6rem 1.6rem 1.3rem;
+  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease);
+}
+
+.bench-card:hover {
+  transform: scale(1.008);
+  box-shadow: var(--shadow-hover);
+}
+
+.bench-stage {
+  background: #fff;
+  border-radius: calc(var(--radius-card) - 10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
+}
+
+.bench-stage img {
+  width: 100%;
+  height: auto;
+  max-height: 480px;
+  object-fit: contain;
+}
+
+.bench-card figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-top: 1.1rem;
+  padding: 0 0.2rem;
+}
+
+.bench-card figcaption strong {
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
+
+.bench-card figcaption span {
+  font-size: 0.82rem;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.bench-note .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.bench-note-text {
+  color: var(--ink-2);
+  margin: 1.1rem 0 0.2rem;
+  font-size: 0.98rem;
+}
+
+.bench-strip {
+  display: grid;
+  gap: 1.4rem;
+  grid-template-columns: 1fr 1fr;
+}
+
+a.bench-mini {
+  display: flex;
+  align-items: center;
+  gap: 1.3rem;
+  background: var(--card-solid, #fff);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 1.2rem 1.5rem;
+  color: var(--ink);
+  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease);
+}
+
+a.bench-mini:hover {
+  text-decoration: none;
+  transform: scale(1.012);
+  box-shadow: var(--shadow-hover);
+}
+
+.bench-mini img {
+  width: 74px;
+  height: 74px;
+  object-fit: contain;
+  flex: none;
+}
+
+.bench-mini .t {
+  min-width: 0;
+}
+
+.bench-mini .t strong {
+  display: block;
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+}
+
+.bench-mini .t span {
+  display: block;
+  color: var(--ink-2);
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 860px) {
+  .bench-grid,
+  .bench-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .bench-stage {
+    min-height: 200px;
+  }
+
+  .bench-stage img {
+    max-height: 380px;
+  }
+}
+
+
+/* ==========================================================================
    页面标题区
    ========================================================================== */
 .page-head {

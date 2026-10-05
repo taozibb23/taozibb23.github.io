@@ -1320,6 +1320,116 @@ a.card:active {
   letter-spacing: -0.015em;
 }
 
+/* 3D 查看器 */
+.viewer3d-card {
+  background: var(--card-solid, #fff);
+  border: 1px solid var(--hairline-soft);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.viewer3d-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1.1rem 1.4rem 0.9rem;
+}
+
+.viewer3d-head strong {
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+}
+
+.viewer3d-head span {
+  font-size: 0.82rem;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+
+.viewer3d {
+  position: relative;
+  height: 380px;
+  background:
+    radial-gradient(120% 90% at 50% 10%, #f7f8fa 0%, #eceef1 60%, #e3e6ea 100%);
+}
+
+.viewer3d--tall {
+  height: 520px;
+}
+
+.viewer3d canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  cursor: grab;
+}
+
+.viewer3d canvas:active {
+  cursor: grabbing;
+}
+
+.viewer3d-hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-3);
+  font-size: 0.9rem;
+}
+
+/* 时间线 */
+.bench-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.bench-timeline li {
+  display: grid;
+  grid-template-columns: 10.5rem 1fr;
+  gap: 1.1rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--hairline-soft);
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+.bench-timeline li:first-child {
+  border-top: 0;
+  padding-top: 0.2rem;
+}
+
+.bench-timeline li:last-child {
+  padding-bottom: 0.2rem;
+}
+
+.bench-timeline .t {
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .bench-timeline li {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .viewer3d {
+    height: 300px;
+  }
+
+  .viewer3d--tall {
+    height: 380px;
+  }
+}
+
 .bench-note-text {
   color: var(--ink-2);
   margin: 1.1rem 0 0.2rem;

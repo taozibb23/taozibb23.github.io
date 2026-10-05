@@ -4,51 +4,41 @@ import Base from '../layouts/Base.astro';
 
 <Base
   title="工作台"
-  description="视觉代码之外的动手记录:工程图、PCB 画板、车架建模与仿真。玩乐向,不是主线。"
+  description="大学生方程式车队时期的建模与后来的 PCB、工程图:可旋转的 E32 车架 3D、从 gerber 渲染的电路板。已退役,留作记录。"
 >
   <section class="page-head container-prose" data-reveal="focus">
     <p class="eyebrow">WORKBENCH</p>
     <h1><span class="grad">工作台</span></h1>
     <p class="desc">
-      视觉代码之外,我动手玩的部分:工程图、PCB、建模和仿真。这里只做记录,不是主线——但机器人是软硬一体的,这些东西最终都会回到机器人上。
+      视觉代码之外,我动手做的部分。大学生方程式车队(车架组)时期攒下的建模和仿真,退役前后的 PCB 和工程图——不是主线,但机器人是软硬一体的,这些最终都会回到机器人上。
     </p>
   </section>
 
   <section class="band band--gray" style="margin-top:2.6rem;">
     <div class="container">
       <div class="section-head" data-reveal="focus">
-        <p class="eyebrow">PCB</p>
-        <h2>画过的板子</h2>
-        <p class="sub">从立创EDA 的原理图到布局布线,再导出 gerber 交板厂。下面是直接从 gerber 文件渲染出来的顶层铜,不是软件截图。</p>
+        <p class="eyebrow">TIMELINE</p>
+        <h2>这几年都做了什么</h2>
       </div>
-      <div class="bench-grid" data-reveal-group>
-        <figure class="bench-card">
-          <div class="bench-stage">
-            <img src="/images/workbench/pcb-mcu51.png" alt="51 单片机核心板顶层铜走线渲染图" loading="lazy" />
-          </div>
-          <figcaption>
-            <strong>51 单片机核心板</strong>
-            <span>2026.01 · gerber 渲染</span>
-          </figcaption>
-        </figure>
-        <figure class="bench-card">
-          <div class="bench-stage">
-            <img src="/images/workbench/pcb-stm32.png" alt="STM32F103VET6 开发板顶层铜走线渲染图" loading="lazy" />
-          </div>
-          <figcaption>
-            <strong>STM32F103VET6 开发板</strong>
-            <span>2026.02 · gerber 渲染</span>
-          </figcaption>
-        </figure>
-        <figure class="bench-card">
-          <div class="bench-stage">
-            <img src="/images/workbench/pcb-pcb1.png" alt="窄长型练习板顶层铜走线渲染图" loading="lazy" />
-          </div>
-          <figcaption>
-            <strong>PCB1 · 窄长练习板</strong>
-            <span>2026.01 · gerber 渲染</span>
-          </figcaption>
-        </figure>
+      <div class="card bench-note" data-reveal="focus">
+        <ul class="bench-timeline">
+          <li>
+            <span class="t">2025.10 – 2025.12</span>
+            <div><strong>方程式车队 · 车架组(CATIA)</strong>练零件建模,画了 20 多个零件,最后一个完整的 E32 车架,导出 STEP 进 ANSYS 做了仿真。</div>
+          </li>
+          <li>
+            <span class="t">2026.01 – 2026.03</span>
+            <div><strong>PCB(立创EDA)</strong>51 单片机核心板、STM32F103VET6 开发板、一块窄长练习板,导出 gerber;USB 拓展坞画了一半。</div>
+          </li>
+          <li>
+            <span class="t">2026.01 – 2026.07</span>
+            <div><strong>NX (UG) 零件</strong>从 model 练习件到合页、铰链板、夹具、推车、钢板、举升器,20 多个 .prt,其中车架组的模型又回到了 NX 里继续改。</div>
+          </li>
+          <li>
+            <span class="t">现在</span>
+            <div><strong>已退役</strong>车队的事告一段落,这些模型、板子和图纸留在这里当记录。</div>
+          </li>
+        </ul>
       </div>
     </div>
   </section>
@@ -56,30 +46,102 @@ import Base from '../layouts/Base.astro';
   <section class="band band--white">
     <div class="container">
       <div class="section-head" data-reveal="focus">
-        <p class="eyebrow">CAD / CAE</p>
-        <h2>建模与仿真</h2>
-        <p class="sub">车辆工程的主业,也是玩得最久的一部分。</p>
+        <p class="eyebrow">PCB</p>
+        <h2>画过的板子</h2>
+        <p class="sub">从立创EDA 的原理图到布局布线,再导出 gerber。布线图直接从 gerber 文件分层渲染(红=顶层铜,蓝=底层铜,白=丝印),不是软件截图。</p>
       </div>
-      <div class="card bench-note" data-reveal="focus">
-        <h3 class="bench-note-title">E32 车架:CATIA 建模 → ANSYS 仿真</h3>
-        <p class="bench-note-text">
-          从 2025 年 10 月开始练 CATIA 零件建模,一路画到 12 月,攒下 20 多个零件文件,其中最完整的是一套 E32 车架。
-          车架模型导出 STEP 之后,又进了 ANSYS 做仿真工程。CATIA 的零件文件没法直接在网页里渲染,等我把 STEP 转成可展示的渲染图再补上来;
-          还有 USB 拓展坞的板子画了一半,导出 gerber 后也记录在这里。
-        </p>
-        <div class="tags">
-          <span class="tag">CATIA 建模</span>
-          <span class="tag">ANSYS 仿真</span>
-          <span class="tag">NX (UG)</span>
-          <span class="tag">立创EDA 专业版</span>
-          <span class="tag">Keil MDK</span>
-          <span class="tag">STM32CubeMX</span>
+      <div class="bench-grid bench-grid--two" data-reveal-group>
+        <figure class="bench-card">
+          <div class="bench-stage">
+            <img src="/images/workbench/pcb2d-mcu51.png" alt="51 单片机核心板布线图:红色顶层铜、蓝色底层铜、白色丝印" loading="lazy" />
+          </div>
+          <figcaption>
+            <strong>51 单片机核心板</strong>
+            <span>2026.01 · 70×40 mm</span>
+          </figcaption>
+        </figure>
+        <figure class="bench-card">
+          <div class="bench-stage">
+            <img src="/images/workbench/pcb2d-stm32.png" alt="STM32F103VET6 开发板布线图:双排引脚、USB、SWD 调试口" loading="lazy" />
+          </div>
+          <figcaption>
+            <strong>STM32F103VET6 开发板</strong>
+            <span>2026.02 · 100×80 mm</span>
+          </figcaption>
+        </figure>
+        <figure class="bench-card">
+          <div class="bench-stage">
+            <img src="/images/workbench/pcb2d-pcb1.png" alt="窄长型练习板布线图" loading="lazy" />
+          </div>
+          <figcaption>
+            <strong>PCB1 · 窄长练习板</strong>
+            <span>2026.01 · 100×30 mm</span>
+          </figcaption>
+        </figure>
+      </div>
+      <div class="viewer3d-card" data-reveal="focus">
+        <div class="viewer3d-head">
+          <strong>STM32 开发板 · 3D</strong>
+          <span>拖动旋转 · 滚轮缩放</span>
+        </div>
+        <div class="viewer3d" data-viewer="pcb" data-tex-top="/images/workbench/pcb-stm32.png" data-size-w="100" data-size-h="80">
+          <div class="viewer3d-hint">正在加载 3D 视图…</div>
+          <canvas aria-label="STM32 开发板可旋转 3D 视图"></canvas>
         </div>
       </div>
     </div>
   </section>
 
   <section class="band band--gray">
+    <div class="container">
+      <div class="section-head" data-reveal="focus">
+        <p class="eyebrow">3D MODELS</p>
+        <h2>车架与模型</h2>
+        <p class="sub">模型都可以拖动旋转、滚轮缩放。由 CATIA / NX 导出的 STEP 转成网格直接在浏览器里渲染,不经过截图。</p>
+      </div>
+      <div class="viewer3d-card" data-reveal="focus">
+        <div class="viewer3d-head">
+          <strong>E32 车架 · 方程式车队车架组</strong>
+          <span>CATIA 建模 · 2025.12 · 轴距方向约 2.3 m</span>
+        </div>
+        <div class="viewer3d viewer3d--tall" data-viewer="stl" data-src="/models/frame-e32.stl" data-color="frame">
+          <div class="viewer3d-hint">正在加载 3D 视图…</div>
+          <canvas aria-label="E32 车架可旋转 3D 视图"></canvas>
+        </div>
+      </div>
+      <div class="bench-grid bench-grid--two" style="margin-top:1.4rem;">
+        <div class="viewer3d-card" data-reveal="focus">
+          <div class="viewer3d-head">
+            <strong>铰链板 · NX</strong>
+            <span>2026.04 · STEP</span>
+          </div>
+          <div class="viewer3d" data-viewer="stl" data-src="/models/jiaolian.stl" data-color="steel">
+            <div class="viewer3d-hint">正在加载 3D 视图…</div>
+            <canvas aria-label="铰链板可旋转 3D 视图"></canvas>
+          </div>
+        </div>
+        <div class="viewer3d-card" data-reveal="focus">
+          <div class="viewer3d-head">
+            <strong>仿真几何 · ANSYS</strong>
+            <span>2026.07 · 车架仿真工程里的板件与杆件</span>
+          </div>
+          <div class="viewer3d" data-viewer="stl" data-src="/models/model-731.stl" data-color="steel">
+            <div class="viewer3d-hint">正在加载 3D 视图…</div>
+            <canvas aria-label="仿真几何可旋转 3D 视图"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="card bench-note" style="margin-top:1.4rem;" data-reveal="focus">
+        <h3 class="bench-note-title">关于 NX 和 SolidWorks 的文件</h3>
+        <p class="bench-note-text">
+          NX 的 20 多个零件(model 练习件、合页、夹具、推车、推杆、钢板、举升器、车架组模型)是 .prt 私有格式,浏览器渲染不了,上面只放了导出过 STEP 的几件。
+          SolidWorks 装了,还没有正式的模型文件。等有新的 STEP 导出,我会继续补进来。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--white">
     <div class="container">
       <div class="section-head" data-reveal="focus">
         <p class="eyebrow">CAD</p>
@@ -108,4 +170,149 @@ import Base from '../layouts/Base.astro';
       </div>
     </div>
   </section>
+
+<script>
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+  import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+
+  // 渲染探针:标签页不可见时 IO 不触发,查看器保持未初始化(占位可见),绝不白屏
+  function makeViewer(holder) {
+    const canvas = holder.querySelector('canvas');
+    const hint = holder.querySelector('.viewer3d-hint');
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    } catch (e) {
+      hint.textContent = '当前浏览器不支持 WebGL,3D 视图无法显示。';
+      return null;
+    }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(38, 1, 0.001, 100);
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x50555c, 1.1));
+    const key = new THREE.DirectionalLight(0xffffff, 1.6);
+    key.position.set(3, 5, 4);
+    scene.add(key);
+    const fill = new THREE.DirectionalLight(0xdde3ff, 0.5);
+    fill.position.set(-4, -2, -3);
+    scene.add(fill);
+
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.08;
+
+    function fit(obj, dist = 1.9) {
+      const box = new THREE.Box3().setFromObject(obj);
+      const sphere = box.getBoundingSphere(new THREE.Sphere());
+      const c = sphere.center.clone();
+      obj.position.sub(c);
+      camera.position.set(c.x + sphere.radius * dist * 0.7, c.y + sphere.radius * dist * 0.55, c.z + sphere.radius * dist);
+      camera.lookAt(0, 0, 0);
+      controls.target.set(0, 0, 0);
+      camera.near = sphere.radius / 100;
+      camera.far = sphere.radius * 40;
+      camera.updateProjectionMatrix();
+      return sphere.radius;
+    }
+
+    function resize() {
+      const w = holder.clientWidth || 600;
+      const h = holder.clientHeight || 400;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    new ResizeObserver(resize).observe(holder);
+    resize();
+
+    let visible = true;
+    let dirty = true;
+    controls.addEventListener('change', () => { dirty = true; });
+    new IntersectionObserver((es) => { visible = es.some((e) => e.isIntersecting); }).observe(holder);
+    const clock = new THREE.Clock();
+    (function loop() {
+      requestAnimationFrame(loop);
+      if (!visible) return;
+      controls.update();
+      if (dirty || controls.dampingFactor > 0) {
+        renderer.render(scene, camera);
+        dirty = false;
+      }
+      clock.getDelta();
+    })();
+    return { scene, camera, controls, fit, renderer };
+  }
+
+  const COLORS = {
+    frame: 0x9aa2ad,
+    steel: 0x8f979f,
+  };
+
+  function initStl(holder) {
+    const v = makeViewer(holder);
+    if (!v) return;
+    new STLLoader().load(
+      holder.dataset.src,
+      (geo) => {
+        geo.computeVertexNormals();
+        const mat = new THREE.MeshStandardMaterial({
+          color: COLORS[holder.dataset.color] || 0x9aa2ad,
+          metalness: 0.35,
+          roughness: 0.5,
+        });
+        const mesh = new THREE.Mesh(geo, mat);
+        v.scene.add(mesh);
+        v.fit(mesh);
+        holder.querySelector('.viewer3d-hint')?.remove();
+      },
+      undefined,
+      () => {
+        const h = holder.querySelector('.viewer3d-hint');
+        if (h) h.textContent = '模型加载失败。';
+      }
+    );
+  }
+
+  function initPcb(holder) {
+    const v = makeViewer(holder);
+    if (!v) return;
+    const w = (parseFloat(holder.dataset.sizeW) || 100) / 1000; // mm -> m
+    const h = (parseFloat(holder.dataset.sizeH) || 80) / 1000;
+    const t = 0.0016;
+    const loader = new THREE.TextureLoader();
+    loader.load(holder.dataset.texTop, (tex) => {
+      tex.colorSpace = THREE.SRGBColorSpace;
+      const edge = new THREE.MeshStandardMaterial({ color: 0x35413a, roughness: 0.9 });
+      const top = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.55, metalness: 0.25 });
+      const bottom = new THREE.MeshStandardMaterial({ color: 0x8a4a3a, roughness: 0.7, metalness: 0.2 });
+      const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, t, h), [edge, edge, top, bottom, edge, edge]);
+      v.scene.add(mesh);
+      const r = v.fit(mesh, 2.3);
+      // 薄板看侧面是黑的:相机抬高成俯视,板面朝上(此处覆盖 fit 的机位,dist 不生效)
+      v.camera.position.set(r * 0.5, r * 1.9, r * 1.7);
+      v.controls.target.set(0, 0, 0);
+      v.controls.update();
+      holder.querySelector('.viewer3d-hint')?.remove();
+    });
+  }
+
+  function bind() {
+    document.querySelectorAll('[data-viewer]').forEach((holder) => {
+      if (holder.dataset.vBound) return;
+      holder.dataset.vBound = '1';
+      const init = holder.dataset.viewer === 'pcb' ? initPcb : initStl;
+      // 进入视口再初始化,省显存
+      const io = new IntersectionObserver((es) => {
+        if (es.some((e) => e.isIntersecting)) {
+          io.disconnect();
+          init(holder);
+        }
+      }, { rootMargin: '120px' });
+      io.observe(holder);
+    });
+  }
+  bind();
+  document.addEventListener('astro:page-load', bind);
+</script>
 </Base>

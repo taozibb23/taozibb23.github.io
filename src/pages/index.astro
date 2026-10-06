@@ -110,12 +110,13 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
         <p class="eyebrow">团队 · RoboMaster 战队视觉</p>
         <h3>战队视觉模块 · 我负责的部分</h3>
         <p>
-          暑假通过招新考核后正式入队,负责视觉方向:装甲板检测跟踪、多源态势融合、弹道解算与机间通信接口。
-          相关模块仓库公开,可直接查看代码:
+          暑假通过招新考核后正式入队:从零搭起 ROS2 包骨架(PR #1),之后装甲板检测接口、敌我三态识别、
+          云台角解算防御、整车状态估计 EKF 逐个落进 foray_auto_aim;另参与 RoboLink 上下位机协议评审。
+          全部代码公开,可直接查看:
         </p>
         <div class="metrics">
-          <div class="metric"><span class="num">2</span><span class="label">已合并模块</span></div>
-          <div class="metric"><span class="num">1</span><span class="label">包骨架 PR</span></div>
+          <div class="metric"><span class="num">4</span><span class="label">PR 全部已合并</span></div>
+          <div class="metric"><span class="num">14</span><span class="label">gtest 全绿</span></div>
         </div>
         <div class="links">
           <a href="https://github.com/ZQU-Foray/foray_vision" target="_blank" rel="noopener">foray_vision →</a>

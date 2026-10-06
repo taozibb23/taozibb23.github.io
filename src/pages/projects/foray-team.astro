@@ -1,0 +1,71 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+
+<Base title="战队视觉模块 · ZQU-Foray" description="从 ROS2 包骨架到整车状态估计 EKF:4 个 PR 全部合并、14 条 gtest 全绿,含协方差对照实验与仿真数据。">
+  <section class="page-head container-prose" data-reveal="focus" transition:name="proj-team">
+    <p class="eyebrow">PROJECT · 团队项目 · 2026.09 - 至今</p>
+    <h1>战队视觉模块 · 我负责的部分</h1>
+    <p class="desc">ZQU-Foray 视觉组:在战队仓库里从零搭起 ROS2 包骨架,之后装甲板检测接口、敌我识别、云台角解算、整车状态估计 EKF 逐个合入。4 个 PR 全部合并,14 条 gtest 全绿,CI 全绿。</p>
+    <div class="hero-cta" style="margin:1.6rem 0 0;">
+      <a class="btn-primary" href="https://github.com/ZQU-Foray/foray_auto_aim" target="_blank" rel="noopener">foray_auto_aim</a>
+      <a class="link-more" href="/projects/">返回项目 <span aria-hidden="true">›</span></a>
+    </div>
+  </section>
+
+  <section class="container-prose prose" style="margin-top:1rem;" data-reveal>
+
+    <h2>四个 PR,一条线</h2>
+    <ol>
+      <li><strong>PR #1 · 包骨架</strong>:从零搭起 ROS2 包骨架(ament_cmake、目录约定、lint 与 CI),让"能被编译、能被 CI 看见"先于"写功能"。</li>
+      <li><strong>PR #2 · 敌我三态识别</strong>:敌我需区分且不能误伤友军——三态枚举(敌 / 友 / 未知)+ 纯函数接口,未知目标保守丢弃,7 条 gtest。</li>
+      <li><strong>PR #3 · 云台角解算防御</strong>:解算带失效标记(解算不可信时不接管云台),d→0 退化防御,5 条 gtest;同分支顺带提交了装甲板检测接口(只留接口不做实现,实现归 detector)。</li>
+      <li><strong>PR #4 · 整车状态估计 EKF</strong>:11 维状态估计,含仿真测试,已合并。</li>
+    </ol>
+
+    <h2>整车状态估计 EKF:为什么和怎么做</h2>
+    <p>
+      只跟踪单块装甲板,换板瞬间位置会跳变,滤波器以为目标瞬移。所以估计的不是"这块板的位置",
+      而是<strong>车体中心 / 速度 / 朝向 / 角速度 / 板半径与板间差</strong>组成的 11 维状态——任意一块板的观测都修正同一个状态。
+    </p>
+    <p>
+      跟踪环硬实时、禁止动态分配:F / Q 全部用<strong>固定尺寸 Eigen 矩阵</strong>(零堆分配);H(3×11)解析推导;
+      协方差更新用 <strong>Joseph form</strong> 保证正定性。
+    </p>
+
+    <h2>对照实验:估计比不滤波还差的时候</h2>
+    <p>
+      第一版跑出来,估计误差比不滤波还差。用对照实验定位:把初值协方差当变量,
+      全维给 1.0 时位置 RMSE 0.0452 m,比不滤波(观测 0.0169 m)还差;逐维按量测噪声给定后降到 <strong>0.0060 m</strong>。
+      同一套代码,只动了 P0——"滤波器没用"和"初值协方差没调"是两个完全不同的结论。
+    </p>
+    <table>
+      <tr><th>场景</th><th>位置 RMSE</th></tr>
+      <tr><td>观测(不滤波)</td><td>0.0169 m</td></tr>
+      <tr><td>EKF,初值协方差全维 1.0</td><td>0.0452 m(更差)</td></tr>
+      <tr><td>EKF,逐维按量测噪声给定</td><td><strong>0.0060 m</strong></td></tr>
+    </table>
+    <p>
+      仿真测试:静止目标收敛;1 m/s 匀速目标速度估计 RMSE <strong>0.004 m/s</strong>。
+    </p>
+
+    <h2>协作纪律</h2>
+    <p>
+      注释过 lint-c、提交走 PR + 组长 review、CI 全绿才合并;commit 按类型拆分(feat / style / docs 分开),
+      接口先行、实现延后的决定会写成 docs 记录。RoboLink 上下位机协议评审中提出 4 项接口问题(2 项获明确答复),
+      并指出总纲文档的帧头长与 CRC 宽度不一致。
+    </p>
+
+    <h2>数据一览</h2>
+    <table>
+      <tr><th>项</th><th>数值</th><th>出处</th></tr>
+      <tr><td>PR</td><td>4 个,全部合并</td><td>foray_auto_aim dev 分支</td></tr>
+      <tr><td>gtest</td><td>14 条全绿</td><td>CI 运行记录</td></tr>
+      <tr><td>EKF 状态维度</td><td>11 维</td><td>target 模块源码</td></tr>
+      <tr><td>EKF 位置 RMSE(调参后)</td><td>0.0060 m</td><td>仿真对照实验</td></tr>
+      <tr><td>速度 RMSE(1 m/s 匀速)</td><td>0.004 m/s</td><td>同上</td></tr>
+      <tr><td>协议评审</td><td>4 项问题,2 项获答复</td><td>foray_interfaces 评审记录</td></tr>
+    </table>
+
+  </section>
+</Base>

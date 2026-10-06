@@ -14,7 +14,7 @@ import Base from '../layouts/Base.astro';
   <section class="container" style="margin-top:2rem;">
     <div class="proj-grid" data-reveal-group>
       <article class="proj-card" transition:name="proj-rmav">
-        <p class="eyebrow">个人项目 · 2026.06 - 至今</p>
+        <p class="eyebrow">个人项目 · 2026 暑假 - 至今</p>
         <h3><a href="/projects/rm-armor-vision/">rm-armor-vision · 装甲板视觉识别全链路</a></h3>
         <p>
           一条完整走通的视觉工程链路:用 ultralytics 的 yolo26-pose 结构文件配合自己的数据集配置,从随机初始化训练关键点模型
@@ -24,13 +24,13 @@ import Base from '../layouts/Base.astro';
         </p>
         <p>
           排错记录:用 <code>ldd</code> / <code>readelf -d</code> 定位 SONAME 与 rpath 缺失;分段计时定位 CPU 推理瓶颈;
-          标定误差从 2.96 px 逐批降到 0.48 px(定位到棋盘格平整度与视场覆盖两个根因)。
+          标定误差从 2.96 px 逐批降到 0.48 px;节点帧率低定位到相机读取,换 MJPG 从 4 FPS 调到 15 FPS。
         </p>
         <div class="metrics">
           <div class="metric"><span class="num">0.842</span><span class="label">检测框 mAP50</span></div>
           <div class="metric"><span class="num">0.675</span><span class="label">角点 mAP50</span></div>
           <div class="metric"><span class="num">0.48<small> px</small></span><span class="label">标定重投影误差</span></div>
-          <div class="metric"><span class="num">≈1<small> mm</small></span><span class="label">1 米处定位精度</span></div>
+          <div class="metric"><span class="num">15<small> FPS</small></span><span class="label">节点采集(MJPG)</span></div>
         </div>
         <div class="tags" style="display:flex;flex-wrap:wrap;gap:.4rem;">
           <span class="tag">C++</span><span class="tag">ONNX Runtime</span><span class="tag">ultralytics</span>
@@ -44,7 +44,7 @@ import Base from '../layouts/Base.astro';
       </article>
 
       <article class="proj-card" transition:name="proj-rmp">
-        <p class="eyebrow">个人项目 · 2026.04 - 2026.06</p>
+        <p class="eyebrow">个人项目 · 2026.08 - 2026.09</p>
         <h3><a href="/projects/rm-project/">RM_project · 装甲板灯条传统视觉</a></h3>
         <p>
           深度学习之前打基础的项目:HSV 阈值 → 轮廓提取 → 灯条几何配对 → 装甲板分类 → 测距 → 串口输出,25 个 commit 从零走到能跑。
@@ -65,27 +65,24 @@ import Base from '../layouts/Base.astro';
         </div>
       </article>
 
-      <article class="proj-card">
+      <article class="proj-card" transition:name="proj-team">
         <p class="eyebrow">团队项目 · 2026.09 - 至今</p>
-        <h3>战队视觉模块 · 我负责的部分</h3>
+        <h3><a href="/projects/foray-team/">战队视觉模块 · 我负责的部分</a></h3>
         <p>
-          暑假完成招新考核(YOLO 训练部署 / UART 二进制协议解析与回发 / ROS2 图像话题),考核要求"用题目提供的推理代码跑通",
-          我额外把推理管线自己重构了一遍。9 月正式入队,负责视觉方向:装甲板检测跟踪、多源态势融合、弹道解算与机间通信接口。
+          暑假完成招新考核(YOLO 训练部署 / UART 二进制协议解析与回发 / ROS2 图像话题,考核要求"用题目提供的推理代码跑通",
+          我额外把推理管线自己重构了一遍)。9 月正式入队后,在战队仓库里从 ROS2 包骨架开始:装甲板检测接口、敌我三态识别、
+          云台角解算防御、整车状态估计 EKF 逐个合入,并参与 RoboLink 上下位机协议评审。
         </p>
-        <ul style="font-size:.94rem;color:var(--ink-2);padding-left:1.3rem;">
-          <li><code>foray_vision</code>:装甲板检测跟踪 · 多源态势融合 · WorldSnapshot 生成;</li>
-          <li><code>foray_auto_aim</code>:弹道解算 · 多源目标融合 · 装甲板跟踪;</li>
-          <li><code>foray_interfaces</code>:上位机接口契约,msg/srv/action · 机间态势协议 · 裁判系统消息。</li>
-        </ul>
         <div class="metrics">
-          <div class="metric"><span class="num">2</span><span class="label">已合并模块</span></div>
-          <div class="metric"><span class="num">1</span><span class="label">包骨架 PR</span></div>
+          <div class="metric"><span class="num">4</span><span class="label">PR 全部已合并</span></div>
+          <div class="metric"><span class="num">14</span><span class="label">gtest 全绿</span></div>
+          <div class="metric"><span class="num">0.006<small> m</small></span><span class="label">EKF 位置 RMSE</span></div>
         </div>
         <div class="tags" style="display:flex;flex-wrap:wrap;gap:.4rem;">
-          <span class="tag">ROS2</span><span class="tag">C++</span><span class="tag">EKF</span><span class="tag">团队协作</span>
+          <span class="tag">ROS2</span><span class="tag">C++</span><span class="tag">Eigen</span><span class="tag">EKF</span><span class="tag">gtest / CI</span>
         </div>
         <div class="links">
-          <a href="https://github.com/ZQU-Foray/foray_vision" target="_blank" rel="noopener">foray_vision →</a>
+          <a href="/projects/foray-team/">查看详情 <span aria-hidden="true">›</span></a>
           <a href="https://github.com/ZQU-Foray/foray_auto_aim" target="_blank" rel="noopener">foray_auto_aim →</a>
           <a href="https://github.com/ZQU-Foray/foray_interfaces" target="_blank" rel="noopener">foray_interfaces →</a>
         </div>

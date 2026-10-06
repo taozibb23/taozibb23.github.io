@@ -212,6 +212,10 @@ import Base from '../layouts/Base.astro';
   </section>
 
 <script>
+  if (typeof location !== 'undefined' && location.search.includes('debug')) {
+    window.addEventListener('error', (e) => { document.title = 'ERR:' + e.message; });
+    window.addEventListener('unhandledrejection', (e) => { document.title = 'REJ:' + (e.reason && e.reason.message || e.reason); });
+  }
   import * as THREE from 'three';
   import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
   import { STLLoader } from 'three/addons/loaders/STLLoader.js';
@@ -231,13 +235,16 @@ import Base from '../layouts/Base.astro';
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(38, 1, 0.001, 100);
-    scene.add(new THREE.HemisphereLight(0xffffff, 0x50555c, 1.1));
-    const key = new THREE.DirectionalLight(0xffffff, 1.6);
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x60646a, 1.7));
+    const key = new THREE.DirectionalLight(0xffffff, 2.4);
     key.position.set(3, 5, 4);
     scene.add(key);
-    const fill = new THREE.DirectionalLight(0xdde3ff, 0.5);
+    const fill = new THREE.DirectionalLight(0xdde3ff, 1.0);
     fill.position.set(-4, -2, -3);
     scene.add(fill);
+    const rim = new THREE.DirectionalLight(0xffffff, 1.2);
+    rim.position.set(0, -3, -5);
+    scene.add(rim);
 
     const controls = new OrbitControls(camera, canvas);
     controls.enableDamping = true;
@@ -261,6 +268,9 @@ import Base from '../layouts/Base.astro';
       controls.update();
       renderer.render(scene, camera);
     })();
+    if (typeof location !== 'undefined' && location.search.includes('debug')) {
+      (window.__wbViewers = window.__wbViewers || []).push({ renderer, scene, camera, controls, holder });
+    }
     return { scene, camera, controls, renderer };
   }
 
@@ -288,7 +298,7 @@ import Base from '../layouts/Base.astro';
       (geo) => {
         geo.computeVertexNormals();
         const mesh = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
-          color: COLORS[holder.dataset.color] || 0x9aa2ad, metalness: 0.35, roughness: 0.5,
+          color: COLORS[holder.dataset.color] || 0xaeb6c0, metalness: 0.12, roughness: 0.55,
         }));
         v.scene.add(mesh);
         const r = centerAtOrigin(mesh);
@@ -320,7 +330,7 @@ import Base from '../layouts/Base.astro';
         root.traverse((o) => {
           if (o.isMesh) {
             o.material = new THREE.MeshStandardMaterial({
-              color: 0x9aa2ad, metalness: 0.35, roughness: 0.5,
+              color: 0xaeb6c0, metalness: 0.12, roughness: 0.55,
               emissive: 0x000000, emissiveIntensity: 0.5,
             });
             parts.push(o);
@@ -396,8 +406,8 @@ import Base from '../layouts/Base.astro';
         { m: 'CP_Radial_D8.0mm_P3.50mm', x: 54, y: 17.9, s: 0.55 },
         { m: 'CP_Radial_D8.0mm_P3.50mm', x: 54, y: 26.8, s: 0.55 },
         { m: 'LED_D5.0mm', x: 20.4, y: 16.1, s: 0.45 },
-        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 39, y: 1.9, r: 0, len: 40.6 },
-        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 33.6, y: 38, r: 0, len: 50.8 },
+        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 39, y: 1.9, r: 90, len: 40.6 },
+        { m: 'PinHeader_1x40_P2.54mm_Vertical', x: 33.6, y: 38, r: 90, len: 50.8 },
         { m: 'PinHeader_2x20_P2.54mm_Vertical', x: 65.4, y: 22.1, r: 90, len: 17.8 },
       ],
     },

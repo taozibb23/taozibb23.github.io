@@ -22,6 +22,9 @@ import Base from '../../layouts/Base.astro';
       <li><strong>PR #3 · 云台角解算防御</strong>:解算带失效标记(解算不可信时不接管云台),d→0 退化防御,5 条 gtest;同分支顺带提交了装甲板检测接口(只留接口不做实现,实现归 detector)。</li>
       <li><strong>PR #4 · 整车状态估计 EKF</strong>:11 维状态估计,含仿真测试,已合并。</li>
     </ol>
+    <p>
+      进行中:<strong>PR #5 · 数据关联收口</strong>——认板逻辑收进 target 模块内部的 <code>associate()</code>,对外只传观测;review 中,并顺带揪出一处"假绿"(误删了 <code>add_library()</code> 和测试注册,colcon 表面全过)。经过记在<a href="/blog/10-ekf-from-scratch/">博客第 10 篇</a>。
+    </p>
 
     <h2>整车状态估计 EKF:为什么和怎么做</h2>
     <p>
@@ -46,7 +49,7 @@ import Base from '../../layouts/Base.astro';
       <tr><td>EKF,逐维按量测噪声给定</td><td><strong>0.0060 m</strong></td></tr>
     </table>
     <p>
-      仿真测试:静止目标收敛;1 m/s 匀速目标速度估计 RMSE <strong>0.004 m/s</strong>。
+      仿真测试:静止目标收敛;1 m/s 匀速目标速度估计 RMSE <strong>0.0305 m/s</strong>。
     </p>
 
     <h2>协作纪律</h2>
@@ -63,7 +66,7 @@ import Base from '../../layouts/Base.astro';
       <tr><td>gtest</td><td>14 条全绿</td><td>CI 运行记录</td></tr>
       <tr><td>EKF 状态维度</td><td>11 维</td><td>target 模块源码</td></tr>
       <tr><td>EKF 位置 RMSE(调参后)</td><td>0.0060 m</td><td>仿真对照实验</td></tr>
-      <tr><td>速度 RMSE(1 m/s 匀速)</td><td>0.004 m/s</td><td>同上</td></tr>
+      <tr><td>速度 RMSE(1 m/s 匀速)</td><td>0.0305 m/s</td><td>同上</td></tr>
       <tr><td>协议评审</td><td>4 项问题,2 项获答复</td><td>foray_interfaces 评审记录</td></tr>
     </table>
 

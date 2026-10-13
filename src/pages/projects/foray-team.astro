@@ -2,11 +2,11 @@
 import Base from '../../layouts/Base.astro';
 ---
 
-<Base title="战队视觉模块 · ZQU-Foray" description="从 ROS2 包骨架到整车状态估计 EKF:4 个 PR 全部合并、14 条 gtest 全绿,含协方差对照实验与仿真数据。">
+<Base title="战队视觉模块 · ZQU-Foray" description="从 ROS2 包骨架到整车状态估计 EKF:4 个 PR 全部合并、17 条测试全绿,新增最近邻认板与 NIS 野值剔除。">
   <section class="page-head container-prose" data-reveal="focus" transition:name="proj-team">
     <p class="eyebrow">PROJECT · 团队项目 · 2026.09 - 至今</p>
     <h1>战队视觉模块 · 我负责的部分</h1>
-    <p class="desc">ZQU-Foray 视觉组:在战队仓库里从零搭起 ROS2 包骨架,之后装甲板检测接口、敌我识别、云台角解算、整车状态估计 EKF 逐个合入。4 个 PR 全部合并,14 条 gtest 全绿,CI 全绿。</p>
+    <p class="desc">ZQU-Foray 视觉组:在战队仓库里从零搭起 ROS2 包骨架,之后装甲板检测接口、敌我识别、云台角解算、整车状态估计 EKF 逐个合入。当前分支继续完成最近邻认板与 NIS 野值剔除,已有 17 条测试全绿。</p>
     <div class="hero-cta" style="margin:1.6rem 0 0;">
       <a class="btn-primary" href="https://github.com/ZQU-Foray/foray_auto_aim" target="_blank" rel="noopener">foray_auto_aim</a>
       <a class="link-more" href="/projects/">返回项目 <span aria-hidden="true">›</span></a>
@@ -23,7 +23,7 @@ import Base from '../../layouts/Base.astro';
       <li><strong>PR #4 · 整车状态估计 EKF</strong>:11 维状态估计,含仿真测试,已合并。</li>
     </ol>
     <p>
-      进行中:<strong>PR #5 · 数据关联收口</strong>——认板逻辑收进 target 模块内部的 <code>associate()</code>,对外只传观测;review 中,并顺带揪出一处"假绿"(误删了 <code>add_library()</code> 和测试注册,colcon 表面全过)。经过记在<a href="/blog/10-ekf-from-scratch/">博客第 10 篇</a>。
+      后续收口:<strong>数据关联与野值剔除</strong>——认板逻辑收进 <code>update()</code> 内部,用最近邻确定板号,再用三维观测的 NIS 卡方门限挡掉异常帧。经过记在<a href="/blog/19-ekf-association-and-nis/">博客第 19 篇</a>。
     </p>
 
     <h2>整车状态估计 EKF:为什么和怎么做</h2>
@@ -63,7 +63,7 @@ import Base from '../../layouts/Base.astro';
     <table>
       <tr><th>项</th><th>数值</th><th>出处</th></tr>
       <tr><td>PR</td><td>4 个,全部合并</td><td>foray_auto_aim dev 分支</td></tr>
-      <tr><td>gtest</td><td>14 条全绿</td><td>CI 运行记录</td></tr>
+      <tr><td>测试</td><td>17 条全绿</td><td>foray_auto_aim plan.md</td></tr>
       <tr><td>EKF 状态维度</td><td>11 维</td><td>target 模块源码</td></tr>
       <tr><td>EKF 位置 RMSE(调参后)</td><td>0.0060 m</td><td>仿真对照实验</td></tr>
       <tr><td>速度 RMSE(1 m/s 匀速)</td><td>0.0305 m/s</td><td>同上</td></tr>

@@ -6,7 +6,7 @@ import Base from '../../layouts/Base.astro';
   <section class="page-head container-prose" data-reveal="focus" transition:name="proj-team">
     <p class="eyebrow">PROJECT · 团队项目 · 2026.09 - 至今</p>
     <h1>战队视觉模块 · 我负责的部分</h1>
-    <p class="desc">ZQU-Foray 视觉组:在战队仓库里从零搭起 ROS2 包骨架,之后装甲板检测接口、敌我识别、云台角解算、整车状态估计 EKF 逐个合入。当前公开记录按层拆分为 Vision 的 10 个合成/单元测试与 Platform 的 4 个无硬件测试；跨包和实机链路仍在验证。</p>
+    <p class="desc">参与 ZQU-Foray 视觉仓库的模块建设:从 ROS2 包骨架、装甲板检测接口、敌我识别、云台角解算到整车状态估计 EKF 逐步推进。当前公开记录按层拆分为 Vision 的 10 个合成/单元测试与 Platform 的 4 个无硬件测试；跨包和实机链路仍在验证。</p>
     <div class="hero-cta" style="margin:1.6rem 0 0;">
       <a class="btn-primary" href="https://github.com/ZQU-Foray/foray_auto_aim" target="_blank" rel="noopener">foray_auto_aim</a>
       <a class="link-more" href="/projects/">返回项目 <span aria-hidden="true">›</span></a>
@@ -23,7 +23,7 @@ import Base from '../../layouts/Base.astro';
       <li><strong>PR #4 · 整车状态估计 EKF</strong>:11 维状态估计,含仿真测试,已合并。</li>
     </ol>
     <p>
-      后续收口:<strong>数据关联与野值剔除</strong>——认板逻辑收进 <code>update()</code> 内部,用最近邻确定板号,再用三维观测的 NIS 卡方门限挡掉异常帧。最近又把 Vision 与 Platform 的可验证证据按层拆开，记录在<a href="/blog/21-vision-evidence-and-usb-cdc/">博客第 21 篇</a>。
+      后续收口:<strong>数据关联与野值剔除</strong>——认板逻辑收进 <code>update()</code> 内部,用最近邻确定板号,再用三维观测的 NIS 卡方门限挡掉异常帧。最近又把 Vision、Platform 和 RoboLink 的可验证证据按层拆开，记录在<a href="/blog/21-vision-evidence-and-usb-cdc/">博客第 21 篇</a>与<a href="/blog/22-robolink-bytes-and-boundaries/">第 22 篇</a>。
     </p>
 
     <h2>整车状态估计 EKF:为什么和怎么做</h2>
@@ -66,6 +66,7 @@ import Base from '../../layouts/Base.astro';
       <tr><td>Vision 测试</td><td>10 个合成/单元用例，0 失败</td><td>2026-10-18 gtest XML</td></tr>
       <tr><td>Platform 测试</td><td>4 个无硬件用例，0 失败</td><td>2026-10-20 gtest XML</td></tr>
       <tr><td>Auto Aim</td><td>跨包构建与实机链路待复验</td><td>当前工作区代码</td></tr>
+      <tr><td>RoboLink</td><td>候选格式与软件测试；未完成真机对账</td><td>2026-10-22 学习记录</td></tr>
       <tr><td>EKF 状态维度</td><td>11 维</td><td>target 模块源码</td></tr>
       <tr><td>EKF 位置 RMSE(调参后)</td><td>0.0060 m</td><td>仿真对照实验</td></tr>
       <tr><td>速度 RMSE(1 m/s 匀速)</td><td>0.0305 m/s</td><td>同上</td></tr>

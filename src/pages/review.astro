@@ -1,0 +1,130 @@
+---
+import Base from '../layouts/Base.astro';
+
+const cases = [
+  {
+    id: 'camera', level: 'camera', eyebrow: '案例 01 · 个人项目 · 真实相机',
+    title: '奥尼 C33：先排查采集链路，再谈标定结果',
+    ownership: '本人负责采集棋盘格、固定变量、补足画面覆盖、识别异常样本并做实验取舍；标定工具主体由 AI 辅助生成，不写成本人独立实现标定算法。项目于 2026-09-28 左右收尾。',
+    steps: ['第一次重投影误差约 2.96 px。检查后发现纸张可能弯曲、左侧画面覆盖不足，并定位到一张单图误差异常。','固定棋盘格、补足覆盖、剔除异常图像并复测，重投影误差降到约 0.483 px。','ROS2 采集节点曾约 2.8 FPS；逐项排除日志、分辨率/格式和 USB 口后，定位瓶颈在相机读取，640×480 MJPG 由约 4 FPS 调到 15 FPS。'],
+    boundary: '个人真实相机。重投影误差不是三维定位精度；结果不能外推到战队海康相机、今年装甲特征或整条检测—控制链路。',
+    pitch: '我用覆盖、姿态和异常样本做控制变量，把标定重投影误差从 2.96 px 降到 0.483 px，并通过分段排查确认采集帧率瓶颈在相机读取。',
+    questions: ['为什么重投影误差下降不等于 PnP 三维精度提高？','怎样区分采集数据问题与标定模型问题？','为什么换 MJPG 和 USB 口属于定位实验？'],
+    links: [['/blog/04-camera-calibration/','标定复盘'],['/projects/rm-armor-vision/','项目详情'],['https://github.com/taozibb23/rm-armor-vision','GitHub']]
+  },
+  {
+    id: 'ekf', level: 'synthetic', eyebrow: '案例 02 · 战队 PR · 合成单测',
+    title: 'PR #5：把“滤波器能跑”拆成关联、更新和统计验收',
+    ownership: '本人提交的 foray_auto_aim PR #1–#5 均合入 dev；具体文件有 AI/协作参与，不等于五个模块全部独立手写。PR #5 的公开描述与测试结果可追溯。',
+    steps: ['问题不是只让 EKF 输出数字，而是错误关联会把错误新息送入状态估计；关联失败时需要拒绝更新。','PR 合入时记录 17 条 gtest 通过；合成 1 m/s 匀速目标速度 RMSE 为 0.0305 m/s。','四板轮换合成场景的车心位置 RMSE 为 0.00694 m，并用 NIS 排除统计异常观测。'],
+    boundary: '合成单测、PR 合入时版本。不是实车跟踪、云台闭环或命中率；后续本地未提交改动不能自动继承这些结果。',
+    pitch: '我把状态估计验收拆成关联拒绝、更新路径和可复算指标，在合成场景中验证速度与车心估计，而没有把单测包装成实机效果。',
+    questions: ['为什么有 NIS 仍需要前置关联门限？','关联失败时为何应跳过更新？','RMSE 的对象、真值和有效帧应该怎样说明？'],
+    links: [['https://github.com/ZQU-Foray/foray_auto_aim/pull/5','PR #5'],['/blog/19-ekf-association-and-nis/','关联与 NIS'],['/projects/foray-team/','战队项目页']]
+  },
+  {
+    id: 'simulation', level: 'simulation', eyebrow: '案例 03 · 旧模型诊断 · 仿真/离线回放',
+    title: '“白框还是会偏移”：把前端偏差和 Tracker 问题分开',
+    ownership: '本人提出“白框还是会偏移”和分档采样要求；适配器、批量运行和部分统计由 AI 辅助。SP、奇点等开源只用于机制对照，不写成本队或本人已经集成的成果。',
+    steps: ['先用同一 PnP 比较旧模型候选与理想角点：静止仿真中板位置相差约 0.1277 m，即使候选重投影误差仍小于 0.1 px。','再对 2/4/5/10 rad/s 各采集旧模型与理想输入 300 帧，共 2400 帧。理想输入可稳定跟踪，旧模型组车心平均 XY 误差约 0.49–0.62 m。','由此把问题拆成前端角点/PnP 系统偏差、重复/漏板、关联拒绝和未观测高度，而不是继续同时调 P0、Q、R 与门限。'],
+    boundary: '仿真/离线诊断，使用旧赛季模型；模型组和理想组不是严格同帧 A/B。没有控制、开火或实机数据，不能写成新赛季适配或命中性能。',
+    pitch: '我用理想输入作后端对照，再按四档转速保存 2400 帧日志，确认主要误差在 EKF 之前，并把重复候选、关联和高度不可观测拆开验证。',
+    questions: ['为什么小重投影误差不能证明角点物理定义正确？','理想输入稳定能证明什么，又不能证明什么？','为什么不能直接放宽关联门限吞下偏差观测？'],
+    links: [['/blog/20-worldsnapshot-and-vision-boundary/','接口与边界'],['https://github.com/TongjiSuperPower/sp_vision_25','SP 对照来源'],['https://github.com/NOMANE-0/QD_Vision2026','奇点对照来源']]
+  },
+  {
+    id: 'usb', level: 'synthetic', eyebrow: '案例 04 · 平台接口 · 软件/无硬件测试',
+    title: 'Vision 与 USB CDC：先把“测试通过”的边界写清楚',
+    ownership: '本人参与模块建设和接口理解；USB CDC 的资源管理代码由本人编写，测试补充、构建配置和候选协议解读有 AI 辅助。候选协议不是本人独立完成的完整通信链路。',
+    steps: ['Vision 曾记录 10 个合成/单元测试、0 失败；USB CDC 曾记录 4 个无硬件测试、0 失败。它们来自不同时间的日志，不能相加成一次完整测试。','USB CDC 覆盖缺少设备、打开/关闭/重开、未打开读取和读取容量等资源管理路径。','O_NONBLOCK/EAGAIN、真实串口配置、RoboLink 真机收发、时间同步和云台动作仍需各自验收。'],
+    boundary: '软件/合成与无硬件测试。CRC 通过只证明字节未被检测到损坏，不证明 MCU 接受、执行或云台完成动作。',
+    pitch: '我把“通过测试”拆成输入、失败路径和验证级别，先证明资源管理与接口契约，再把真机通信和执行反馈列为独立验收。',
+    questions: ['CRC 通过为什么不等于命令被执行？','哪些路径只能接真实设备后验证？','怎样区分本人代码、AI 辅助测试与开源协议参考？'],
+    links: [['/blog/21-vision-evidence-and-usb-cdc/','Vision/USB CDC'],['/blog/22-robolink-bytes-and-boundaries/','RoboLink 复盘'],['https://github.com/ZQU-Foray/foray_platform','foray_platform']]
+  }
+];
+---
+
+<Base title="项目复盘与复习" description="按真实相机、合成单测与仿真证据复习做过的项目，保留问题、实验、贡献归属和验证边界。">
+  <section class="page-head container-prose review-hero" data-reveal="focus">
+    <p class="eyebrow">REVIEW LAB · 随时复习自己做过的东西</p>
+    <h1><span class="grad">项目复盘与复习</span></h1>
+    <p class="desc">不背漂亮结论，沿着“问题 → 证据 → 取舍 → 边界”重新走一遍。每张卡都标出本人、AI 与开源归属，适合手机上快速复习和模拟面试。</p>
+    <div class="review-stats" aria-label="复习栏目概览">
+      <div><strong>152</strong><span>笔记文件已建立索引</span></div>
+      <div><strong>4</strong><span>首批证据复盘卡</span></div>
+      <div><strong>3</strong><span>严格区分的验证级别</span></div>
+    </div>
+  </section>
+
+  <section class="container-prose review-map" data-reveal>
+    <h2>先看证据等级</h2>
+    <div class="evidence-ladder">
+      <div><span>01</span><strong>合成/软件测试</strong><small>证明接口、算法路径或失败处理</small></div>
+      <div><span>02</span><strong>仿真/离线回放</strong><small>证明特定场景下的诊断与对照</small></div>
+      <div><span>03</span><strong>真实相机</strong><small>证明采集、标定或真实图像链路</small></div>
+      <div class="pending"><span>→</span><strong>仍待验收</strong><small>手眼外参、云台执行、闭环与命中实验</small></div>
+    </div>
+  </section>
+
+  <section class="container-prose review-browser" data-reveal>
+    <div class="review-toolbar">
+      <div><p class="eyebrow">复习卡片</p><h2>按证据类型筛选</h2></div>
+      <div class="review-filters" role="group" aria-label="筛选复习卡">
+        <button class="active" type="button" data-filter="all">全部</button>
+        <button type="button" data-filter="camera">真实相机</button>
+        <button type="button" data-filter="synthetic">合成/软件</button>
+        <button type="button" data-filter="simulation">仿真</button>
+      </div>
+    </div>
+    <div class="review-list">
+      {cases.map((item) => (
+        <article class="review-card" data-review-card data-level={item.level} id={item.id}>
+          <p class="eyebrow">{item.eyebrow}</p><h2>{item.title}</h2>
+          <details open><summary>项目与贡献归属</summary><p>{item.ownership}</p></details>
+          <details><summary>关键错误 → 证据 → 修复/取舍</summary><ol>{item.steps.map((step) => <li>{step}</li>)}</ol></details>
+          <div class="boundary"><strong>验证边界</strong><p>{item.boundary}</p></div>
+          <blockquote><strong>面试一句话</strong><br />{item.pitch}</blockquote>
+          <details class="quiz"><summary>展开 3 个自测题</summary><ol>{item.questions.map((question) => <li>{question}</li>)}</ol></details>
+          <p class="source-links"><strong>原始链接：</strong>{item.links.map(([href,label], index) => (<><a href={href} target={href.startsWith('http') ? '_blank' : undefined} rel={href.startsWith('http') ? 'noopener' : undefined}>{label}</a>{index < item.links.length - 1 && <span> · </span>}</>))}</p>
+        </article>
+      ))}
+    </div>
+    <p class="review-empty" hidden data-review-empty>这个筛选下暂时没有已核对案例。</p>
+  </section>
+
+  <section class="container-prose pending-board" data-reveal>
+    <p class="eyebrow">正在学习，不提前写成成果</p><h2>下一批复盘入口</h2>
+    <ul>
+      <li><strong>双 Detector / 新赛季模型：</strong>仍需真实图像、类别/角点、耗时和失败样本验收。</li>
+      <li><strong>本队海康内参与手眼：</strong>已有初步内参拟合；手眼外参仍需姿态新鲜度、多姿态样本和留出验证。</li>
+      <li><strong>RoboLink 与云台：</strong>只收数、发包、云台执行和图像—姿态同步是不同等级，不能互相替代。</li>
+    </ul>
+  </section>
+
+  <script>
+    function bindReviewFilters() {
+      const buttons = Array.from(document.querySelectorAll('[data-filter]'));
+      const cards = Array.from(document.querySelectorAll('[data-review-card]'));
+      const empty = document.querySelector('[data-review-empty]');
+      if (!buttons.length || !cards.length) return;
+      for (const button of buttons) {
+        if (button.dataset.bound) continue;
+        button.dataset.bound = '1';
+        button.addEventListener('click', () => {
+          const filter = button.dataset.filter;
+          let visible = 0;
+          for (const other of buttons) other.classList.toggle('active', other === button);
+          for (const card of cards) {
+            const show = filter === 'all' || card.dataset.level === filter;
+            card.hidden = !show;
+            if (show) visible += 1;
+          }
+          if (empty) empty.hidden = visible !== 0;
+        });
+      }
+    }
+    document.addEventListener('astro:page-load', bindReviewFilters);
+    bindReviewFilters();
+  </script>
+</Base>

@@ -7,7 +7,8 @@ const topics = [
   { icon:'CAM', title:'相机、标定与手眼', text:'内参、畸变、重投影误差、采集覆盖；手眼仍按真实姿态与留出样本验收。', links:[['/blog/04-camera-calibration/','相机标定'],['#camera','真实相机案例']] },
   { icon:'PnP', title:'PnP 与坐标系', text:'像素角点到三维位姿、物理点定义、坐标链和单位；小重投影误差不保证物理点正确。', links:[['/projects/rm-armor-vision/','PnP 项目'],['#simulation','仿真诊断']] },
   { icon:'DET', title:'Detector 与角点', text:'8400 输出解码、NMS、重复/漏板、类别与角点物理定义。', links:[['/blog/01-8400-cards-to-box/','输出解码'],['/blog/06-nms-clusters-geometry/','NMS']] },
-  { icon:'EKF', title:'EKF、关联与 NIS', text:'状态、预测、更新、协方差与认板；NIS 是 PR #5 合入时版本的历史验证，不能直接代表当前分支。', links:[['/blog/19-ekf-association-and-nis/','关联与 NIS'],['#ekf','PR #5 案例']] },
+  { icon:'EKF', title:'观测器、EKF 与关联', text:'从最小 KF 读懂预测、新息、P/Q/R，再对照整车状态、板号关联和失败观测；历史 NIS 验证不等于当前分支。', links:[['/blog/23-observer-to-gimbal-planning/','我的学习过程'],['#ekf','PR #5 案例']] },
+  { icon:'CTRL', title:'云台轨迹与加速度', text:'目标状态估计和云台轨迹规划分两层；从角度/角速度/角加速度指令、限幅与反馈讨论响应。', links:[['/blog/23-observer-to-gimbal-planning/','观测器到云台'],['/projects/foray-team/','战队进展']] },
   { icon:'IO', title:'通信与 RoboLink', text:'字节序、帧、CRC、资源生命周期，以及接收、执行、反馈三个不同验收层。', links:[['/blog/22-robolink-bytes-and-boundaries/','协议字节'],['#usb','USB CDC 案例']] },
   { icon:'LAB', title:'调试与对照实验', text:'把观感拆成可复现问题，一次改变一个变量，保留失败样本和验证边界。', links:[['#simulation','2400 帧诊断'],['#camera','标定排错']] }
 ];
@@ -56,20 +57,20 @@ const cases = [
 ];
 ---
 
-<Base title="学习复盘与关键词" description="按 C++、ROS2、标定、PnP、Detector、EKF、通信与实验方法复习，并用真实案例核对证据边界。">
+<Base title="学习过程与复盘" description="按知识点记录学习、源码对照、实验与求职回顾；保留已验证结果和仍待验收的问题。">
   <section class="page-head container-prose review-hero" data-reveal="focus">
-    <p class="eyebrow">REVIEW LAB · 从关键词回到原理和亲手做过的实验</p>
-    <h1><span class="grad">学习复盘与关键词</span></h1>
-    <p class="desc">不要求每篇学习记录都属于某个项目。可以先按 PnP、EKF、Detector、通信等关键词复习概念，再回到“问题 → 证据 → 取舍 → 边界”的真实案例。</p>
+    <p class="eyebrow">LEARNING LOG · 从问题到原理、实验和下一步</p>
+    <h1><span class="grad">学习过程与复盘</span></h1>
+    <p class="desc">这里既是我自己的复习笔记，也是给别人看得懂的学习记录。不要求每篇都属于某个项目：我会记录新问题、源码对照、失败实验、尚未验证的想法；求职时再从中提炼有证据的成果。</p>
     <div class="review-stats" aria-label="复习栏目概览">
       <div><strong>分层</strong><span>按证据等级复盘</span></div>
-      <div><strong>8</strong><span>关键词学习入口</span></div>
+      <div><strong>9</strong><span>关键词学习入口</span></div>
       <div><strong>4</strong><span>证据复盘案例</span></div>
     </div>
   </section>
 
   <section class="container review-topics" data-reveal>
-    <div class="container-prose topic-heading"><p class="eyebrow">关键词地图</p><h2>今天想复习什么？</h2><p>先选知识点，不必记得它属于哪个项目。</p></div>
+    <div class="container-prose topic-heading"><p class="eyebrow">关键词地图</p><h2>今天想继续学什么？</h2><p>先选知识点，不必记得它属于哪个项目；每条记录都区分“已理解、已验证、准备验证”。</p></div>
     <div class="topic-grid">
       {topics.map((topic) => (
         <article class="topic-card">

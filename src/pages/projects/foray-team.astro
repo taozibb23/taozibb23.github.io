@@ -21,7 +21,7 @@ import Base from '../../layouts/Base.astro';
       <li><strong>PR #2 · 敌我三态识别</strong>:敌我需区分且不能误伤友军——三态枚举(敌 / 友 / 未知)+ 纯函数接口,未知目标保守丢弃,7 条 gtest。</li>
       <li><strong>PR #3 · 云台角解算防御</strong>:解算带失效标记(解算不可信时不接管云台),d→0 退化防御,5 条 gtest;同分支顺带提交了装甲板检测接口(只留接口不做实现,实现归 detector)。</li>
       <li><strong>PR #4 · 整车状态估计 EKF</strong>:11 维状态估计,含仿真测试,已合并。</li>
-      <li><strong>PR #5 · 数据关联与野值剔除</strong>:把认板逻辑收进更新路径，用最近邻确定板号，再用三维观测的 NIS 门限拒绝异常观测；合入时 17 条 gtest 通过。</li>
+      <li><strong>PR #5 · 数据关联与野值剔除</strong>:合入时版本把认板逻辑收进更新路径，用最近邻确定板号，再用三维观测的 NIS 门限拒绝异常观测；当时 17 条 gtest 通过。当前工作分支的 target.cpp 没有保留该 NIS 门限，历史结果不代表当前代码。</li>
     </ol>
     <p>
       最近又把 Vision、Platform 和 RoboLink 的可验证证据按层拆开，记录在<a href="/blog/21-vision-evidence-and-usb-cdc/">博客第 21 篇</a>与<a href="/blog/22-robolink-bytes-and-boundaries/">第 22 篇</a>。
@@ -33,7 +33,11 @@ import Base from '../../layouts/Base.astro';
       <strong>Detector 输出契约、坐标变换、Tracker 状态、平台通信、时间戳、硬件反馈和安全门</strong>。我学到的不只是多写几个模块，
       而是先定义接口和单位，再分层验证；遇到白框漂移时，也要区分前端角点、PnP、关联、滤波和显示，而不能把问题都归给 EKF。
     </p>
-    <p>这条系统主线仍在推进：双 Detector、手眼外参、云台执行与闭环命中都要等各自证据完成，当前不会提前写成已交付成果。可在<a href="/review/">学习复盘与关键词</a>按知识点回看。</p>
+    <p>这条系统主线仍在推进：双 Detector 的正式处理路径已经连到 PnP，但真实图像验收未完成；手眼候选外参未达到控制可用标准，云台执行与闭环命中也不能提前写成已交付成果。可在<a href="/review/">学习复盘与关键词</a>按知识点回看。</p>
+
+    <h2>近期进展与下一步 · 2026-11</h2>
+    <p>Vision 功能分支已把双 Detector 接入 <code>process_armor_frame()</code> 并连到 PnP；现有真实图像夹具测试仍跳过，下一步是采集真实相机图像，核对类别、角点、耗时和失败样本。AutoAim 继续以 Foray 为基线，在功能分支加入可选的 SP 近三候选关联策略；它是局部机制借鉴，不是整体迁移 SP。两个功能分支已推送，但这里不将其写成已合并。</p>
+    <p>海康相机与 IMU 手眼采集共 61 张图，其中 38 组用于拟合、11 组留出验证；留出一致性平均误差约 29.1 mm / 2.36°，因此候选外参暂不用于控制。RoboLink 已完成主控只收数短测，尚未证明下发控制、执行反馈或整链路同步。</p>
 
     <h2>整车状态估计 EKF:为什么和怎么做</h2>
     <p>
@@ -74,8 +78,8 @@ import Base from '../../layouts/Base.astro';
       <tr><td>PR</td><td>5 个，全部合入 dev</td><td>公开 PR #1–#5</td></tr>
       <tr><td>Vision 测试快照</td><td>14 个非跳过用例，0 失败</td><td>2026-10-31 XML；非当前重跑</td></tr>
       <tr><td>Platform 测试</td><td>4 个无硬件用例，0 失败</td><td>2026-10-20 gtest XML</td></tr>
-      <tr><td>Auto Aim</td><td>跨包构建与实机链路待复验</td><td>当前工作区代码</td></tr>
-      <tr><td>RoboLink</td><td>候选格式与软件测试；未完成真机对账</td><td>2026-10-22 学习记录</td></tr>
+      <tr><td>Auto Aim</td><td>Foray 基线 + 可选 SP 近三候选策略；实机待验收</td><td>2026-11 功能分支</td></tr>
+      <tr><td>RoboLink</td><td>主控只收数短测完成；收发对账与执行待验收</td><td>2026-11 实物记录</td></tr>
       <tr><td>EKF 状态维度</td><td>11 维</td><td>target 模块源码</td></tr>
       <tr><td>EKF 位置 RMSE(调参后)</td><td>0.0060 m</td><td>仿真对照实验</td></tr>
       <tr><td>速度 RMSE(1 m/s 匀速)</td><td>0.0305 m/s</td><td>同上</td></tr>

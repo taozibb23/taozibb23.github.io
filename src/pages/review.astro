@@ -7,7 +7,7 @@ const topics = [
   { icon:'CAM', title:'相机、标定与手眼', text:'内参、畸变、重投影误差、采集覆盖；手眼仍按真实姿态与留出样本验收。', links:[['/blog/04-camera-calibration/','相机标定'],['#camera','真实相机案例']] },
   { icon:'PnP', title:'PnP 与坐标系', text:'像素角点到三维位姿、物理点定义、坐标链和单位；小重投影误差不保证物理点正确。', links:[['/projects/rm-armor-vision/','PnP 项目'],['#simulation','仿真诊断']] },
   { icon:'DET', title:'Detector 与角点', text:'8400 输出解码、NMS、重复/漏板、类别与角点物理定义。', links:[['/blog/01-8400-cards-to-box/','输出解码'],['/blog/06-nms-clusters-geometry/','NMS']] },
-  { icon:'EKF', title:'EKF、关联与 NIS', text:'状态、预测、更新、协方差、认板与野值拒绝；先关联再做统计检验。', links:[['/blog/19-ekf-association-and-nis/','关联与 NIS'],['#ekf','PR #5 案例']] },
+  { icon:'EKF', title:'EKF、关联与 NIS', text:'状态、预测、更新、协方差与认板；NIS 是 PR #5 合入时版本的历史验证，不能直接代表当前分支。', links:[['/blog/19-ekf-association-and-nis/','关联与 NIS'],['#ekf','PR #5 案例']] },
   { icon:'IO', title:'通信与 RoboLink', text:'字节序、帧、CRC、资源生命周期，以及接收、执行、反馈三个不同验收层。', links:[['/blog/22-robolink-bytes-and-boundaries/','协议字节'],['#usb','USB CDC 案例']] },
   { icon:'LAB', title:'调试与对照实验', text:'把观感拆成可复现问题，一次改变一个变量，保留失败样本和验证边界。', links:[['#simulation','2400 帧诊断'],['#camera','标定排错']] }
 ];
@@ -28,7 +28,7 @@ const cases = [
     title: 'PR #5：把“滤波器能跑”拆成关联、更新和统计验收',
     ownership: '本人提交的 foray_auto_aim PR #1–#5 均合入 dev；具体文件有 AI/协作参与，不等于五个模块全部独立手写。PR #5 的公开描述与测试结果可追溯。',
     steps: ['问题不是只让 EKF 输出数字，而是错误关联会把错误新息送入状态估计；关联失败时需要拒绝更新。','PR 合入时记录 17 条 gtest 通过；合成 1 m/s 匀速目标速度 RMSE 为 0.0305 m/s。','四板轮换合成场景的车心位置 RMSE 为 0.00694 m，并用 NIS 排除统计异常观测。'],
-    boundary: '合成单测、PR 合入时版本。不是实车跟踪、云台闭环或命中率；后续本地未提交改动不能自动继承这些结果。',
+    boundary: '合成单测、PR 合入时版本。当前工作分支的 target.cpp 未保留当时的 NIS 门限，不能把历史 17 条测试和指标当作当前代码的统一验收；也不是实车跟踪或命中率。',
     pitch: '我把状态估计验收拆成关联拒绝、更新路径和可复算指标，在合成场景中验证速度与车心估计，而没有把单测包装成实机效果。',
     questions: ['为什么有 NIS 仍需要前置关联门限？','关联失败时为何应跳过更新？','RMSE 的对象、真值和有效帧应该怎样说明？'],
     links: [['https://github.com/ZQU-Foray/foray_auto_aim/pull/5','PR #5'],['/blog/19-ekf-association-and-nis/','关联与 NIS'],['/projects/foray-team/','战队项目页']]
@@ -36,9 +36,9 @@ const cases = [
   {
     id: 'simulation', level: 'simulation', eyebrow: '案例 03 · 旧模型诊断 · 仿真/离线回放',
     title: '“白框还是会偏移”：把前端偏差和 Tracker 问题分开',
-    ownership: '本人提出“白框还是会偏移”和分档采样要求；适配器、批量运行和部分统计由 AI 辅助。SP、奇点等开源只用于机制对照，不写成本队或本人已经集成的成果。',
-    steps: ['先用同一 PnP 比较旧模型候选与理想角点：静止仿真中板位置相差约 0.1277 m，即使候选重投影误差仍小于 0.1 px。','再对 2/4/5/10 rad/s 各采集旧模型与理想输入 300 帧，共 2400 帧。理想输入可稳定跟踪，旧模型组车心平均 XY 误差约 0.49–0.62 m。','由此把问题拆成前端角点/PnP 系统偏差、重复/漏板、关联拒绝和未观测高度，而不是继续同时调 P0、Q、R 与门限。'],
-    boundary: '仿真/离线诊断，使用旧赛季模型；模型组和理想组不是严格同帧 A/B。没有控制、开火或实机数据，不能写成新赛季适配或命中性能。',
+    ownership: '本人提出“白框还是会偏移”和分档采样要求；适配器、批量运行和部分统计由 AI 辅助。SP、奇点曾作为开源机制对照；现在 AutoAim 在 Foray 基线上加入可选的 SP 近三候选关联策略，不等于迁入整个 SP 后端。',
+    steps: ['先用同一 PnP 比较旧模型候选与理想角点：静止仿真中板位置相差约 0.1277 m，即使候选重投影误差仍小于 0.1 px。','再对 2/4/5/10 rad/s 各采集旧模型与理想输入 300 帧，共 2400 帧。理想输入可稳定跟踪，旧模型组车心平均 XY 误差约 0.49–0.62 m。','同观测 4 rad/s、300 帧对照：SP / Foray 的车心平均误差为 0.256 / 0.127 m，单帧超过 0.20 m 的跳变为 2 / 13 次；Foray 均值更准但跳动更多。由此分别追查前端系统偏差与后端关联平滑性。'],
+    boundary: '仿真/离线诊断，使用旧赛季模型；2400 帧的旧模型组与理想组不是严格同帧 A/B。SP / Foray 同观测对照不代表实机命中。可选 SP 策略在另一随机序列的跳变数字不能与这里的 13 次直接相减，不能声称因果改善。',
     pitch: '我用理想输入作后端对照，再按四档转速保存 2400 帧日志，确认主要误差在 EKF 之前，并把重复候选、关联和高度不可观测拆开验证。',
     questions: ['为什么小重投影误差不能证明角点物理定义正确？','理想输入稳定能证明什么，又不能证明什么？','为什么不能直接放宽关联门限吞下偏差观测？'],
     links: [['/blog/20-worldsnapshot-and-vision-boundary/','接口与边界'],['https://github.com/TongjiSuperPower/sp_vision_25','SP 对照来源'],['https://github.com/NOMANE-0/QD_Vision2026','奇点对照来源']]
@@ -47,7 +47,7 @@ const cases = [
     id: 'usb', level: 'synthetic', eyebrow: '案例 04 · 平台接口 · 软件/无硬件测试',
     title: 'Vision 与 USB CDC：先把“测试通过”的边界写清楚',
     ownership: '本人参与模块建设和接口理解；USB CDC 的资源管理代码由本人编写，测试补充、构建配置和候选协议解读有 AI 辅助。候选协议不是本人独立完成的完整通信链路。',
-    steps: ['Vision 曾记录 10 个合成/单元测试、0 失败；USB CDC 曾记录 4 个无硬件测试、0 失败。它们来自不同时间的日志，不能相加成一次完整测试。','USB CDC 覆盖缺少设备、打开/关闭/重开、未打开读取和读取容量等资源管理路径。','O_NONBLOCK/EAGAIN、真实串口配置、RoboLink 真机收发、时间同步和云台动作仍需各自验收。'],
+    steps: ['Vision 曾记录 10 个合成/单元测试、0 失败；USB CDC 曾记录 4 个无硬件测试、0 失败。它们来自不同时间的日志，不能相加成一次完整测试。','USB CDC 覆盖缺少设备、打开/关闭/重开、未打开读取和读取容量等资源管理路径。','RoboLink 后来做过主控只收数的短测；收发对账、控制执行、图像与姿态同步和云台动作仍需分别验收。'],
     boundary: '软件/合成与无硬件测试。CRC 通过只证明字节未被检测到损坏，不证明 MCU 接受、执行或云台完成动作。',
     pitch: '我把“通过测试”拆成输入、失败路径和验证级别，先证明资源管理与接口契约，再把真机通信和执行反馈列为独立验收。',
     questions: ['CRC 通过为什么不等于命令被执行？','哪些路径只能接真实设备后验证？','怎样区分本人代码、AI 辅助测试与开源协议参考？'],
@@ -62,7 +62,7 @@ const cases = [
     <h1><span class="grad">学习复盘与关键词</span></h1>
     <p class="desc">不要求每篇学习记录都属于某个项目。可以先按 PnP、EKF、Detector、通信等关键词复习概念，再回到“问题 → 证据 → 取舍 → 边界”的真实案例。</p>
     <div class="review-stats" aria-label="复习栏目概览">
-      <div><strong>152</strong><span>笔记文件已建立索引</span></div>
+      <div><strong>分层</strong><span>按证据等级复盘</span></div>
       <div><strong>8</strong><span>关键词学习入口</span></div>
       <div><strong>4</strong><span>证据复盘案例</span></div>
     </div>
@@ -119,9 +119,9 @@ const cases = [
   <section class="container-prose pending-board" data-reveal>
     <p class="eyebrow">正在学习，不提前写成成果</p><h2>下一批复盘入口</h2>
     <ul>
-      <li><strong>双 Detector / 新赛季模型：</strong>仍需真实图像、类别/角点、耗时和失败样本验收。</li>
-      <li><strong>本队海康内参与手眼：</strong>已有初步内参拟合；手眼外参仍需姿态新鲜度、多姿态样本和留出验证。</li>
-      <li><strong>RoboLink 与云台：</strong>只收数、发包、云台执行和图像—姿态同步是不同等级，不能互相替代。</li>
+      <li><strong>双 Detector / 新赛季模型：</strong>正式 process_armor_frame() 已连到 PnP，位于已推送的功能分支；真实图像的类别、角点、耗时与失败样本仍待验收，夹具测试跳过不算通过。</li>
+      <li><strong>本队海康手眼：</strong>真实采集 61 张，38 组拟合、11 组留出；留出一致性平均误差约 29.1 mm / 2.36°。候选外参暂不能用于控制，需继续排查同步与姿态质量。</li>
+      <li><strong>RoboLink 与云台：</strong>已有主控只收数短测；发包对账、云台执行和图像—姿态同步仍是不同等级，不能互相替代。</li>
     </ul>
   </section>
 

@@ -7,7 +7,7 @@ import Base from '../layouts/Base.astro';
     <p class="eyebrow">PROJECTS</p>
     <h1><span class="grad">项目</span></h1>
     <p class="desc">
-      三个板块串成一条成长线:传统视觉打基础 → 深度学习全链路 → 战队真实系统。每个数字都来自实测,来源可查。
+      从传统视觉、深度学习到战队系统，再进入重装机械臂视觉抓取。已验证结果与刚开始的项目分开呈现；数字按各自实验条件阅读。
     </p>
   </section>
 
@@ -87,6 +87,15 @@ import Base from '../layouts/Base.astro';
           <a href="https://github.com/ZQU-Foray/foray_auto_aim" target="_blank" rel="noopener">foray_auto_aim →</a>
           <a href="https://github.com/ZQU-Foray/foray_interfaces" target="_blank" rel="noopener">foray_interfaces →</a>
         </div>
+      </article>
+      <article class="proj-card">
+        <p class="eyebrow">团队项目 · 2026.11 开始 · 进行中</p>
+        <h3><a href="/projects/arm-vision/">重装机械臂 · 末端相机视觉抓取</a></h3>
+        <p>从实际任务开始学习：相机装在末端，先把头部的相机系位姿通过正运动学与手眼关系转换到底座系，再定义抓取点。当前已明确坐标链并做二维旋转/平移教学练习；下一步是离线已知答案与真实样件定位。尚无实机抓取成果。</p>
+        <div class="tags" style="display:flex;flex-wrap:wrap;gap:.4rem;">
+          <span class="tag">Eye-in-hand</span><span class="tag">坐标变换</span><span class="tag">正运动学</span><span class="tag">进行中</span>
+        </div>
+        <div class="links"><a href="/projects/arm-vision/">查看学习与验收计划 <span aria-hidden="true">›</span></a></div>
       </article>
     </div>
   </section>

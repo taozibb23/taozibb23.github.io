@@ -37,7 +37,8 @@ import Base from '../../layouts/Base.astro';
 
     <h2>近期进展与下一步 · 2026-11</h2>
     <p>Vision 功能分支已把双 Detector 接入 <code>process_armor_frame()</code> 并连到 PnP；现有真实图像夹具测试仍跳过，下一步是采集真实相机图像，核对类别、角点、耗时和失败样本。AutoAim 继续以 Foray 为基线，在功能分支加入可选的 SP 近三候选关联策略；它是局部机制借鉴，不是整体迁移 SP。两个功能分支已推送，但这里不将其写成已合并。</p>
-    <p>海康相机与 IMU 手眼采集共 61 张图，其中 38 组用于拟合、11 组留出验证；留出一致性平均误差约 29.1 mm / 2.36°，因此候选外参暂不用于控制。RoboLink 已完成主控只收数短测，尚未证明下发控制、执行反馈或整链路同步。</p>
+    <p>海康相机与 IMU 手眼采集共 61 张图，早期其中 38 组拟合、11 组留出的一致性平均误差约 29.1 mm / 2.36°。本人后来允许候选外参带风险用于初步功能验证；这不等于绝对精度验收。</p>
+    <p><strong>11 月 11 日进展：</strong>旧入口完成了 Direct-PnP 受限实机短测，另一个入口接入 Tracker/EKF 后发现半径估计漂移。最新统一 C++ 入口已通过软件测试，但尚未重做实机运动验收。各次条件与未通过项见<a href="/blog/24-vision-to-gimbal-staged-validation/">分阶段验证复盘</a>；不能将旧入口的数据直接归给新入口。</p>
 
     <h2>整车状态估计 EKF:为什么和怎么做</h2>
     <p>
@@ -79,7 +80,7 @@ import Base from '../../layouts/Base.astro';
       <tr><td>Vision 测试快照</td><td>14 个非跳过用例，0 失败</td><td>2026-10-31 XML；非当前重跑</td></tr>
       <tr><td>Platform 测试</td><td>4 个无硬件用例，0 失败</td><td>2026-10-20 gtest XML</td></tr>
       <tr><td>Auto Aim</td><td>Foray 基线 + 可选 SP 近三候选策略；实机待验收</td><td>2026-11 功能分支</td></tr>
-      <tr><td>RoboLink</td><td>主控只收数短测完成；收发对账与执行待验收</td><td>2026-11 实物记录</td></tr>
+      <tr><td>RoboLink</td><td>旧入口受限控制已见姿态响应；新 C++ 入口运动待复测</td><td>2026-11 分阶段记录</td></tr>
       <tr><td>EKF 状态维度</td><td>11 维</td><td>target 模块源码</td></tr>
       <tr><td>EKF 位置 RMSE(调参后)</td><td>0.0060 m</td><td>仿真对照实验</td></tr>
       <tr><td>速度 RMSE(1 m/s 匀速)</td><td>0.0305 m/s</td><td>同上</td></tr>

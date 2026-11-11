@@ -4,11 +4,12 @@ import Base from '../layouts/Base.astro';
 const topics = [
   { icon:'C++', title:'C++ 与工程接口', text:'指针、构造与封装、回调、固定尺寸矩阵、包与模块边界。', links:[['/blog/13-cpp-ctor-init-list/','构造与初始化'],['/blog/15-cpp-project-encapsulation/','封装']] },
   { icon:'ROS', title:'ROS2 与系统边界', text:'节点、消息、依赖、跨包契约，以及“接口通过”不等于整链路通过。', links:[['/blog/03-yolo-armor-ros2/','ROS2 链路'],['/blog/20-worldsnapshot-and-vision-boundary/','边界']] },
-  { icon:'CAM', title:'相机、标定与手眼', text:'内参、畸变、重投影误差、采集覆盖；手眼仍按真实姿态与留出样本验收。', links:[['/blog/04-camera-calibration/','相机标定'],['#camera','真实相机案例']] },
+  { icon:'CAM', title:'相机、标定与手眼', text:'内参、畸变、重投影误差与跨姿态留出；候选外参可以受限试用，不等于精度验收。', links:[['/blog/25-learning-map-arm-handeye-and-engineering-judgment/','近期学习地图'],['#camera','真实相机案例']] },
   { icon:'PnP', title:'PnP 与坐标系', text:'像素角点到三维位姿、物理点定义、坐标链和单位；小重投影误差不保证物理点正确。', links:[['/projects/rm-armor-vision/','PnP 项目'],['#simulation','仿真诊断']] },
   { icon:'DET', title:'Detector 与角点', text:'8400 输出解码、NMS、重复/漏板、类别与角点物理定义。', links:[['/blog/01-8400-cards-to-box/','输出解码'],['/blog/06-nms-clusters-geometry/','NMS']] },
   { icon:'EKF', title:'观测器、EKF 与关联', text:'从最小 KF 读懂预测、新息、P/Q/R，再对照整车状态、板号关联和失败观测；历史 NIS 验证不等于当前分支。', links:[['/blog/23-observer-to-gimbal-planning/','我的学习过程'],['#ekf','PR #5 案例']] },
-  { icon:'CTRL', title:'云台轨迹与加速度', text:'目标状态估计和云台轨迹规划分两层；从角度/角速度/角加速度指令、限幅与反馈讨论响应。', links:[['/blog/23-observer-to-gimbal-planning/','观测器到云台'],['/projects/foray-team/','战队进展']] },
+  { icon:'CTRL', title:'云台轨迹与加速度', text:'目标估计、受约束轨迹、通信执行分层；旧入口实机短测与新 C++ 入口不能混作一次验收。', links:[['/blog/23-observer-to-gimbal-planning/','观测器到云台'],['/blog/24-vision-to-gimbal-staged-validation/','分阶段验证']] },
+  { icon:'ARM', title:'末端相机与机械臂', text:'先画底座、末端、相机、物体、抓取点的坐标链；目前是理论与离线预研，不是实机抓取。', links:[['/blog/25-learning-map-arm-handeye-and-engineering-judgment/','学习地图'],['/projects/foray-team/','团队项目']] },
   { icon:'IO', title:'通信与 RoboLink', text:'字节序、帧、CRC、资源生命周期，以及接收、执行、反馈三个不同验收层。', links:[['/blog/22-robolink-bytes-and-boundaries/','协议字节'],['#usb','USB CDC 案例']] },
   { icon:'LAB', title:'调试与对照实验', text:'把观感拆成可复现问题，一次改变一个变量，保留失败样本和验证边界。', links:[['#simulation','2400 帧诊断'],['#camera','标定排错']] }
 ];
@@ -61,10 +62,10 @@ const cases = [
   <section class="page-head container-prose review-hero" data-reveal="focus">
     <p class="eyebrow">LEARNING LOG · 从问题到原理、实验和下一步</p>
     <h1><span class="grad">学习过程与复盘</span></h1>
-    <p class="desc">这里既是我自己的复习笔记，也是给别人看得懂的学习记录。不要求每篇都属于某个项目：我会记录新问题、源码对照、失败实验、尚未验证的想法；求职时再从中提炼有证据的成果。</p>
+    <p class="desc">这里既是我自己的复习笔记，也是给别人看得懂的学习记录。不要求每篇都属于某个项目：我会记录新问题、源码对照、失败实验、尚未验证的想法；求职时再从中提炼有证据的成果。<a href="/blog/25-learning-map-arm-handeye-and-engineering-judgment/">先看近期跨对话学习地图 →</a></p>
     <div class="review-stats" aria-label="复习栏目概览">
       <div><strong>分层</strong><span>按证据等级复盘</span></div>
-      <div><strong>9</strong><span>关键词学习入口</span></div>
+      <div><strong>10</strong><span>关键词学习入口</span></div>
       <div><strong>4</strong><span>证据复盘案例</span></div>
     </div>
   </section>
@@ -121,8 +122,8 @@ const cases = [
     <p class="eyebrow">正在学习，不提前写成成果</p><h2>下一批复盘入口</h2>
     <ul>
       <li><strong>双 Detector / 新赛季模型：</strong>正式 process_armor_frame() 已连到 PnP，位于已推送的功能分支；真实图像的类别、角点、耗时与失败样本仍待验收，夹具测试跳过不算通过。</li>
-      <li><strong>本队海康手眼：</strong>真实采集 61 张，38 组拟合、11 组留出；留出一致性平均误差约 29.1 mm / 2.36°。候选外参暂不能用于控制，需继续排查同步与姿态质量。</li>
-      <li><strong>RoboLink 与云台：</strong>已有主控只收数短测；发包对账、云台执行和图像—姿态同步仍是不同等级，不能互相替代。</li>
+      <li><strong>本队海康手眼：</strong>真实采集 61 张，早期38组拟合、11组留出的一致性平均误差约 29.1 mm / 2.36°。后来允许候选外参参与受限功能验证，但跨场景参数差与实际指向精度仍未验收。</li>
+      <li><strong>RoboLink 与云台：</strong>已有旧入口的受限实机跟随短测；新 C++ 入口目前是软件测试与真实只观察，须重新实测运动。通信、姿态响应和准确瞄准不能互相替代。</li>
     </ul>
   </section>
 

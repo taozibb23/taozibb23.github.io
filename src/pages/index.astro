@@ -109,18 +109,11 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
         </div>
       </article>
       <article class="proj-card">
-        <p class="eyebrow">团队 · RoboMaster 战队视觉</p>
-        <h3>战队视觉模块 · 我负责的部分</h3>
+        <p class="eyebrow">团队 · RoboMaster 战队视觉 · 项目推进中</p>
+        <h3>战队视觉系统 · 我负责整体推进</h3>
         <p>
-          暑假通过招新考核后开始参与仓库建设:从零搭起 ROS2 包骨架(PR #1),之后装甲板检测接口、敌我三态识别、
-          云台角解算防御、整车状态估计 EKF 逐步进入团队代码。后续双模型、C++ 后端与通讯做了分级实物验证，台架已见真实云台姿态响应；几何漂移、动态响应、手眼绝对精度与命中仍待验收。现有前后端也开始承载机械臂业务，三主动轴几何仍是待实物核对的原型。
-          全部代码公开,可直接查看:
+          从视觉前端、PnP 几何、目标跟踪，到控制时序和 RoboLink 通信，我负责串起系统路线、接口与分阶段验证。真实图像到云台姿态响应的受限台架通路已有记录；几何漂移、动态响应、手眼绝对精度与命中仍待验收。机械臂视觉抓取已启动接口与几何原型，尚非实机抓取。
         </p>
-        <div class="metrics">
-          <div class="metric"><span class="num">5</span><span class="label">PR 合入 dev</span></div>
-          <div class="metric"><span class="num">2</span><span class="label">装甲板模型 · 识别/图案</span></div>
-          <div class="metric"><span class="num">3</span><span class="label">机械臂主动轴 · 几何草案</span></div>
-        </div>
         <div class="links">
           <a href="/projects/foray-team/">查看详情 <span aria-hidden="true">›</span></a>
           <a href="/projects/arm-vision/">机械臂进度 →</a>

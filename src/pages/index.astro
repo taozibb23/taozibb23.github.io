@@ -20,6 +20,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 
     <div class="hero-cta">
       <a class="btn-primary" href="/projects/">查看项目</a>
+      <a class="link-more" href="/status/">当前进度 <span aria-hidden="true">›</span></a>
       <a class="link-more" href="/blog/">阅读博客 <span aria-hidden="true">›</span></a>
     </div>
 
@@ -111,7 +112,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
         <h3>战队视觉模块 · 我负责的部分</h3>
         <p>
           暑假通过招新考核后开始参与仓库建设:从零搭起 ROS2 包骨架(PR #1),之后装甲板检测接口、敌我三态识别、
-          云台角解算防御、整车状态估计 EKF 逐个落进 foray_auto_aim。近期双 Detector 已在功能分支连到 PnP，AutoAim 在 Foray 基线上试验可选 SP 关联策略；真实图像与实机闭环仍待验收。
+          云台角解算防御、整车状态估计 EKF 逐步进入团队代码。后续双模型、C++ 后端与通讯做了分级实物验证，台架已见真实云台姿态响应；几何漂移、动态响应、手眼绝对精度与命中仍待验收。现有前后端也开始承载机械臂业务。
           全部代码公开,可直接查看:
         </p>
         <div class="metrics">

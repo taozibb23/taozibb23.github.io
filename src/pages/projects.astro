@@ -2,12 +2,12 @@
 import Base from '../layouts/Base.astro';
 ---
 
-<Base title="项目" description="rm-armor-vision 装甲板视觉全链路、RM_project 传统视觉与串口协议。">
+<Base title="项目" description="从个人装甲板视觉到团队自瞄与机械臂；已验证结果和进行中工作分开记录。">
   <section class="page-head container" data-reveal="focus" transition:name="projects-stage">
     <p class="eyebrow">PROJECTS</p>
     <h1><span class="grad">项目</span></h1>
     <p class="desc">
-      从传统视觉、深度学习到战队系统，再进入重装机械臂视觉抓取。已验证结果与刚开始的项目分开呈现；数字按各自实验条件阅读。
+      从传统视觉、深度学习到团队自瞄与机械臂。旧项目的指标按当时条件阅读；<a href="/status/">当前进度与新旧版本边界在这里 →</a>
     </p>
   </section>
 
@@ -71,7 +71,7 @@ import Base from '../layouts/Base.astro';
         <p>
           暑假完成招新考核(YOLO 训练部署 / UART 二进制协议解析与回发 / ROS2 图像话题,考核要求"用题目提供的推理代码跑通",
           我额外把推理管线自己重构了一遍)。随后参与战队仓库建设,从 ROS2 包骨架开始:装甲板检测接口、敌我三态识别、
-          云台角解算防御、整车状态估计 EKF 逐个合入。近期 Vision 双 Detector 已在功能分支接入 PnP，AutoAim 继续以 Foray 为基线试验可选关联策略；RoboLink 已做只收数短测，真实图像与控制闭环仍待验收。
+          云台角解算防御、整车状态估计 EKF 逐个合入。后来双模型前端、后端和通信进入实物分级验证：受限台架跟随已见真实姿态响应，但车心几何、手眼精度、动态响应和命中尚未通过验收。近期业务按视觉前端/后端整理，机械臂也纳入其中。
         </p>
         <div class="metrics">
           <div class="metric"><span class="num">5</span><span class="label">PR 合入 dev</span></div>
@@ -91,7 +91,7 @@ import Base from '../layouts/Base.astro';
       <article class="proj-card">
         <p class="eyebrow">团队项目 · 2026.11 开始 · 进行中</p>
         <h3><a href="/projects/arm-vision/">重装机械臂 · 末端相机视觉抓取</a></h3>
-        <p>从实际任务开始学习：相机装在末端，先把头部的相机系位姿通过正运动学与手眼关系转换到底座系，再定义抓取点。当前已明确坐标链并做二维旋转/平移教学练习；下一步是离线已知答案与真实样件定位。尚无实机抓取成果。</p>
+        <p>从末端相机定位与抓取目标位姿开始，已形成任务/接口草案、简化三轴几何模块和独立教学仿真。仿真用四轴示例，不是实物数字孪生；真实相机、关节反馈、夹爪与装配验收仍待推进。</p>
         <div class="tags" style="display:flex;flex-wrap:wrap;gap:.4rem;">
           <span class="tag">Eye-in-hand</span><span class="tag">坐标变换</span><span class="tag">正运动学</span><span class="tag">进行中</span>
         </div>

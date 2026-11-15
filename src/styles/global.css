@@ -753,6 +753,21 @@ a.card:active {
   border-left: 1px solid var(--hairline-soft);
 }
 
+.hero-evidence {
+  max-width: 58rem;
+  margin: -2.5rem auto 3rem;
+  color: var(--ink-2);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.hero-evidence a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 /* 关键词跑马灯:极低调 */
 .ticker {
   margin: 0 -1.5rem;

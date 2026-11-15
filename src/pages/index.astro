@@ -44,22 +44,23 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 
     <div class="cloud-row">
       <div class="metric">
-        <span class="num">0.842</span>
-        <span class="label">检测框 mAP50</span>
+        <span class="num">5</span>
+        <span class="label">本人 PR 合入团队 dev</span>
       </div>
       <div class="metric">
-        <span class="num">0.48<small> px</small></span>
-        <span class="label">标定误差(三批迭代)</span>
+        <span class="num">3.249<small> px</small></span>
+        <span class="label">Pose 候选角点误差 · 同匹配 630 目标</span>
       </div>
       <div class="metric">
-        <span class="num">≈1<small> mm</small></span>
-        <span class="label">1 米定位精度(PnP)</span>
+        <span class="num">5.5<small> ms</small></span>
+        <span class="label">Pattern 320 · 本机 CPU 单模型</span>
       </div>
       <div class="metric">
-        <span class="num">36.8<small> FPS</small></span>
-        <span class="label">CPU 推理帧率(离线管线)</span>
+        <span class="num">31.2<small> ms</small></span>
+        <span class="label">短时台架跟随 · 图像年龄 P50</span>
       </div>
     </div>
+    <p class="hero-evidence">不同实验阶段的记录，不代表整车精度或命中率；Pose 候选召回略降，仍未替换默认模型。<a href="/status/">查看口径与当前限制 →</a></p>
   </div>
   </section>
 

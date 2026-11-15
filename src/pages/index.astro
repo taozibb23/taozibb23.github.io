@@ -113,16 +113,17 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
         <h3>战队视觉模块 · 我负责的部分</h3>
         <p>
           暑假通过招新考核后开始参与仓库建设:从零搭起 ROS2 包骨架(PR #1),之后装甲板检测接口、敌我三态识别、
-          云台角解算防御、整车状态估计 EKF 逐步进入团队代码。后续双模型、C++ 后端与通讯做了分级实物验证，台架已见真实云台姿态响应；几何漂移、动态响应、手眼绝对精度与命中仍待验收。现有前后端也开始承载机械臂业务。
+          云台角解算防御、整车状态估计 EKF 逐步进入团队代码。后续双模型、C++ 后端与通讯做了分级实物验证，台架已见真实云台姿态响应；几何漂移、动态响应、手眼绝对精度与命中仍待验收。现有前后端也开始承载机械臂业务，三主动轴几何仍是待实物核对的原型。
           全部代码公开,可直接查看:
         </p>
         <div class="metrics">
           <div class="metric"><span class="num">5</span><span class="label">PR 合入 dev</span></div>
-          <div class="metric"><span class="num">14</span><span class="label">Vision XML 快照</span></div>
-          <div class="metric"><span class="num">4</span><span class="label">USB CDC 无硬件测</span></div>
+          <div class="metric"><span class="num">2</span><span class="label">装甲板模型 · 识别/图案</span></div>
+          <div class="metric"><span class="num">3</span><span class="label">机械臂主动轴 · 几何草案</span></div>
         </div>
         <div class="links">
           <a href="/projects/foray-team/">查看详情 <span aria-hidden="true">›</span></a>
+          <a href="/projects/arm-vision/">机械臂进度 →</a>
           <a href="https://github.com/ZQU-Foray/foray_vision" target="_blank" rel="noopener">foray_vision →</a>
           <a href="https://github.com/ZQU-Foray/foray_auto_aim" target="_blank" rel="noopener">foray_auto_aim →</a>
         </div>

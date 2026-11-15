@@ -12,7 +12,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 <Base>
   <section class="hero">
     <div class="container hero-inner" data-reveal-group>
-    <p class="eyebrow">ROBOT VISION / 感知 / 部署</p>
+    <p class="eyebrow">ROBOT VISION / 战队视觉项目负责人</p>
     <h1>你好，我是 {SITE.author}。</h1>
     <p class="lead">
       {SITE.intro}
@@ -27,40 +27,40 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
     <div class="term">
       <div class="term-bar">
         <i></i><i></i><i></i>
-        <span class="title">vision-pipeline — zsh</span>
+        <span class="title">foray-vision — project map</span>
       </div>
       <div class="term-body">
-        <div><span class="p">$</span> cat pipeline.md</div>
+        <div><span class="p">$</span> cat current-scope.md</div>
         <div>
-          <span class="c"># 一条完整的视觉工程链路,每一环都亲手跑通并测过数据</span>
+          <span class="c"># 我负责推进的战队视觉系统：从观测到云台响应</span>
         </div>
         <div>
-          YOLO26-pose 训练 <span class="c">→</span> ONNX 导出 <span class="c">→</span> C++ onnxruntime 推理
-          <span class="c">→</span> ROS2 节点 <span class="c">→</span> 相机标定 <span class="c">→</span> PnP 测距
-          <span class="c">→</span> 卡尔曼滤波<span class="cursor"></span>
+          双模型观测 <span class="c">→</span> PnP 几何 <span class="c">→</span> 跟踪 / 状态估计
+          <span class="c">→</span> 控制时序 <span class="c">→</span> RoboLink 通信
+          <span class="c">→</span> 真实云台姿态响应<span class="cursor"></span>
         </div>
       </div>
     </div>
 
     <div class="cloud-row">
       <div class="metric">
-        <span class="num">5</span>
-        <span class="label">本人 PR 合入团队 dev</span>
+        <span class="num">视觉前端</span>
+        <span class="label">相机、双模型、角点与 PnP</span>
       </div>
       <div class="metric">
-        <span class="num">3.249<small> px</small></span>
-        <span class="label">Pose 候选角点误差 · 同匹配 630 目标</span>
+        <span class="num">状态估计</span>
+        <span class="label">目标关联、跟踪与车心诊断</span>
       </div>
       <div class="metric">
-        <span class="num">5.5<small> ms</small></span>
-        <span class="label">Pattern 320 · 本机 CPU 单模型</span>
+        <span class="num">云台链路</span>
+        <span class="label">时序、通信与受限台架响应</span>
       </div>
       <div class="metric">
-        <span class="num">31.2<small> ms</small></span>
-        <span class="label">短时台架跟随 · 图像年龄 P50</span>
+        <span class="num">机械臂</span>
+        <span class="label">视觉抓取接口与三轴几何原型</span>
       </div>
     </div>
-    <p class="hero-evidence">不同实验阶段的记录，不代表整车精度或命中率；Pose 候选召回略降，仍未替换默认模型。<a href="/status/">查看口径与当前限制 →</a></p>
+    <p class="hero-evidence">项目整体由我负责推进；台架已有真实云台姿态响应，命中与机械臂实物抓取仍待验收。<a href="/status/">查看当前进度与实验数据 →</a></p>
   </div>
   </section>
 

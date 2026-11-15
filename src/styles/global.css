@@ -753,6 +753,16 @@ a.card:active {
   border-left: 1px solid var(--hairline-soft);
 }
 
+.cloud-row .metric .num {
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  line-height: 1.2;
+}
+
+.cloud-row .metric .label {
+  font-size: 0.83rem;
+  line-height: 1.45;
+}
+
 .hero-evidence {
   max-width: 58rem;
   margin: -2.5rem auto 3rem;

@@ -12,7 +12,7 @@ export const SITE = {
   description:
     '机器人视觉 / 感知 / 算法部署方向的技术博客:YOLO 训练、ONNX 部署、ROS2 集成、相机标定、PnP 测距、卡尔曼滤波,记录每一步的实测数据与踩坑。',
   /** 一句话自我介绍(首页 hero) */
-  intro: '把视觉算法跑通、部署到真实机器人上——每一个数字都可溯源。',
+  intro: '负责推进战队视觉系统：从相机观测、几何与状态估计，到通信和云台响应；把每一步验证与未解决的问题都记录下来。',
 
   social: {
     github: 'https://github.com/taozibb23',

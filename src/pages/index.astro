@@ -64,29 +64,27 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   </div>
   </section>
 
-  <section class="band band--gray" transition:name="blog-stage">
+  <section class="band band--gray">
     <div class="container">
-    <div class="section-head" data-reveal="focus">
-      <p class="eyebrow">BLOG</p>
-      <h2><span class="grad">最新文章</span></h2>
-      <a class="more" href="/blog/">全部 {posts.length} 篇 <span aria-hidden="true">›</span></a>
-    </div>
-    </div>
-    <div class="scroller" data-scroller>
-      <div class="scroller-track">
-        {posts.map((post) => <PostCard post={post} />)}
+      <div class="section-head" data-reveal="focus">
+        <p class="eyebrow">PIPELINE · 视觉系统如何工作</p>
+        <h2><span class="grad">从像素到毫米，必经五环</span></h2>
+        <p class="sub">一帧装甲板观测，要走过这五环才变成云台响应——每一环我都独立验证、记录失败。</p>
       </div>
-    </div>
-    <div class="scroller-nav container">
-      <button class="scroller-btn" data-sc-prev aria-label="上一张">‹</button>
-      <button class="scroller-btn" data-sc-next aria-label="下一张">›</button>
+      <ol class="pipeline" data-reveal-group>
+        <li class="step"><span class="step-num">01</span><h3>观测</h3><p>相机取流 · 双模型检测 · 角点提取</p></li>
+        <li class="step"><span class="step-num">02</span><h3>几何</h3><p>PnP 单目测距 · 坐标变换 · 相机标定</p></li>
+        <li class="step"><span class="step-num">03</span><h3>估计</h3><p>数据关联 · 整车 EKF 跟踪 · 车心诊断</p></li>
+        <li class="step"><span class="step-num">04</span><h3>控制</h3><p>直瞄解算 · 控制时序 · 新鲜度门限</p></li>
+        <li class="step"><span class="step-num">05</span><h3>通信</h3><p>RoboLink · USB CDC · 云台姿态反馈</p></li>
+      </ol>
     </div>
   </section>
 
   <section class="band band--white" transition:name="projects-stage">
     <div class="container">
     <div class="section-head" data-reveal="focus">
-      <p class="eyebrow">PROJECTS</p>
+      <p class="eyebrow"><span class="sec-num">01</span>PROJECTS</p>
       <h2><span class="grad">项目</span></h2>
       <a class="more" href="/projects/">全部项目 <span aria-hidden="true">›</span></a>
     </div>
@@ -125,10 +123,29 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
     </div>
   </section>
 
-  <section class="band band--gray">
+  <section class="band band--gray" transition:name="blog-stage">
+    <div class="container">
+    <div class="section-head" data-reveal="focus">
+      <p class="eyebrow"><span class="sec-num">02</span>BLOG</p>
+      <h2><span class="grad">最新文章</span></h2>
+      <a class="more" href="/blog/">全部 {posts.length} 篇 <span aria-hidden="true">›</span></a>
+    </div>
+    </div>
+    <div class="scroller" data-scroller>
+      <div class="scroller-track">
+        {posts.map((post) => <PostCard post={post} />)}
+      </div>
+    </div>
+    <div class="scroller-nav container">
+      <button class="scroller-btn" data-sc-prev aria-label="上一张">‹</button>
+      <button class="scroller-btn" data-sc-next aria-label="下一张">›</button>
+    </div>
+  </section>
+
+  <section class="band band--white">
     <div class="container">
       <div class="section-head" data-reveal="focus">
-        <p class="eyebrow">WORKBENCH</p>
+        <p class="eyebrow"><span class="sec-num">03</span>WORKBENCH</p>
         <h2><span class="grad">工作台</span></h2>
         <a class="more" href="/workbench/">进去看看 <span aria-hidden="true">›</span></a>
       </div>
@@ -147,6 +164,18 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
             <span>方程式车架 3D(可点选杆件)· 蓝色板底 PCB 3D · 三块板从立创EDA 到 gerber</span>
           </div>
         </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band band--gray cta-band">
+    <div class="container" data-reveal="focus">
+      <p class="eyebrow">NEXT · 下一步</p>
+      <h2>想看现在做到哪了？</h2>
+      <p class="sub">带日期的进度快照，区分已测、候选与未完成——不把不同证据等级混成“系统已完成”。</p>
+      <div class="hero-cta">
+        <a class="btn-primary" href="/status/">查看当前进度</a>
+        <a class="link-more" href="/about/">关于我 <span aria-hidden="true">›</span></a>
       </div>
     </div>
   </section>

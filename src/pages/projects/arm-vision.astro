@@ -4,12 +4,13 @@ import Base from '../../layouts/Base.astro';
 
 <Base title="重装机械臂视觉抓取 · 进行中" description="机械臂视觉前后端、三轴几何和教学仿真进度；区分原型与真实抓取。">
   <section class="page-head container-prose" data-reveal="focus">
+    <a class="back-link" href="/projects/">← 返回项目</a>
     <p class="eyebrow">PROJECT IN PROGRESS · 重装机械臂</p>
     <h1>从末端相机看到物体，到算出抓取目标</h1>
     <p class="desc">项目已经开始，现有接口草案、简化几何模块和教学仿真；但还没有可验收的实机抓取。目标是把相机观测变成底座系抓取目标，再按反馈确认拾取与装配，而不是只展示一个末端位置。</p>
   </section>
 
-  <section class="container-prose prose" data-reveal>
+  <section class="container-prose prose numbered" data-reveal>
     <h2>这项任务要解决什么</h2>
     <p>相机装在机械臂末端，随末端一起移动。头部样件即使在桌上不动，在相机画面里的位置也会随机械臂姿态改变。上位机不能直接把“相机看到的头部坐标”当成“夹爪该去的坐标”，必须把各段关系按方向接起来。</p>
     <p><code>T_B_G = T_B_E(q) × T_E_C × T_C_H × T_H_G</code>。B 是底座，E 是末端，C 是相机，H 是头部，G 是抓取目标；<code>T_A_B</code> 表示把 B 系坐标换到 A 系。正运动学给 <code>T_B_E(q)</code>，相机刚性安装关系给 <code>T_E_C</code>，视觉定位给 <code>T_C_H</code>，抓取点相对头部的偏移给 <code>T_H_G</code>。</p>

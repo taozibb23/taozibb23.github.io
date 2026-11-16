@@ -24,8 +24,10 @@ const older = idx < all.length - 1 ? all[idx + 1] : undefined;
 ---
 
 <Base title={title} description={description}>
+  <div class="reading-progress" aria-hidden="true"><span></span></div>
   <article>
     <header class="post-header container-prose" transition:name={`post-${post.id}`}>
+      <a class="back-link" href="/blog/">← 返回博客</a>
       <p class="eyebrow">POST</p>
       <h1>{title}</h1>
       <div class="post-meta">
@@ -48,7 +50,7 @@ const older = idx < all.length - 1 ? all[idx + 1] : undefined;
       }
     </header>
 
-    <div class="prose container-prose">
+    <div class="prose container-prose numbered">
       <Content />
     </div>
 
@@ -75,4 +77,24 @@ const older = idx < all.length - 1 ? all[idx + 1] : undefined;
       }
     </nav>
   </article>
+  <script>
+    // 阅读进度条:随滚动填充;ClientRouter 导航后重算,监听只绑一次
+    function bindProgress() {
+      const update = () => {
+        const bar = document.querySelector('.reading-progress span');
+        if (!bar) return;
+        const h = document.documentElement;
+        const max = h.scrollHeight - h.clientHeight;
+        bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+      };
+      if (!window.__rpBound) {
+        window.__rpBound = true;
+        window.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update, { passive: true });
+      }
+      update();
+    }
+    bindProgress();
+    document.addEventListener('astro:page-load', bindProgress);
+  </script>
 </Base>

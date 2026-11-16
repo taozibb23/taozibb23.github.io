@@ -71,7 +71,7 @@ const cases = [
   </section>
 
   <section class="container review-topics" data-reveal>
-    <div class="container-prose topic-heading"><p class="eyebrow">关键词地图</p><h2>今天想继续学什么？</h2><p>先选知识点，不必记得它属于哪个项目；每条记录都区分“已理解、已验证、准备验证”。</p></div>
+    <div class="container-prose topic-heading"><p class="eyebrow"><span class="sec-num">01</span>关键词地图</p><h2>今天想继续学什么？</h2><p>先选知识点，不必记得它属于哪个项目；每条记录都区分“已理解、已验证、准备验证”。</p></div>
     <div class="topic-grid">
       {topics.map((topic) => (
         <article class="topic-card">
@@ -83,6 +83,7 @@ const cases = [
   </section>
 
   <section class="container-prose review-map" data-reveal>
+    <p class="eyebrow"><span class="sec-num">02</span>EVIDENCE</p>
     <h2>先看证据等级</h2>
     <div class="evidence-ladder">
       <div><span>01</span><strong>合成/软件测试</strong><small>证明接口、算法路径或失败处理</small></div>
@@ -94,7 +95,7 @@ const cases = [
 
   <section class="container-prose review-browser" data-reveal>
     <div class="review-toolbar">
-      <div><p class="eyebrow">复习卡片</p><h2>按证据类型筛选</h2></div>
+      <div><p class="eyebrow"><span class="sec-num">03</span>复习卡片</p><h2>按证据类型筛选</h2></div>
       <div class="review-filters" role="group" aria-label="筛选复习卡">
         <button class="active" type="button" data-filter="all">全部</button>
         <button type="button" data-filter="camera">真实相机</button>
@@ -119,7 +120,7 @@ const cases = [
   </section>
 
   <section class="container-prose pending-board" data-reveal>
-    <p class="eyebrow">正在学习，不提前写成成果</p><h2>下一批复盘入口</h2>
+    <p class="eyebrow"><span class="sec-num">04</span>正在学习，不提前写成成果</p><h2>下一批复盘入口</h2>
     <ul>
       <li><strong>双 Detector / 新赛季模型：</strong>新 Pose 离线角点误差改善，但匹配召回与颜色略退；图案模型缩小输入在本机更快，仍需重复实拍难例和端到端精度验证。<a href="/status/">查看当前对照口径</a>。</li>
       <li><strong>本队海康手眼：</strong>真实采集 61 张，早期38组拟合、11组留出的一致性平均误差约 29.1 mm / 2.36°。后来允许候选外参参与受限功能验证，但跨场景参数差与实际指向精度仍未验收。</li>

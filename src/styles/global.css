@@ -1921,3 +1921,106 @@ html.io-ok [data-reveal-group].in > :nth-child(7) { transition-delay: 0.33s; }
   a.card:active, .scroller-btn:active { transform: none; }
   a.card:hover, .proj-card:hover, .bench-card:hover, a.bench-mini:hover, .topic-card:hover { transform: none; }
 }
+
+/* ==========================================================================
+   Apple 式分区系统:顺序编号 · 视觉流水线 · 阅读进度 · 收尾 CTA
+   只优化分区展示与排列,保持 Apple 亮色外观
+   ========================================================================== */
+
+/* 眉标内的分区序号 */
+.eyebrow .sec-num {
+  font-family: var(--mono);
+  color: var(--blue);
+  font-weight: 700;
+  margin-right: 0.55rem;
+  letter-spacing: 0.05em;
+}
+
+/* prose 章节自动编号(Apple 顺序章节感) */
+.numbered { counter-reset: sec; }
+.numbered > h2 { counter-increment: sec; }
+.numbered > h2::before {
+  content: counter(sec, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: 0.6em;
+  font-weight: 700;
+  color: var(--blue);
+  margin-right: 0.75rem;
+  letter-spacing: 0.06em;
+  vertical-align: 0.2em;
+}
+
+/* 返回链接 */
+.back-link {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-size: 0.88rem; font-weight: 500; color: var(--ink-2);
+  margin-bottom: 1.3rem;
+  transition: color 0.2s var(--ease), transform 0.2s var(--ease-out);
+}
+.back-link:hover { color: var(--blue); text-decoration: none; transform: translateX(-3px); }
+
+/* 统计行 */
+.stats-line {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem 1.8rem;
+  margin-top: 1.5rem; font-size: 0.86rem; color: var(--ink-3);
+}
+.stats-line b { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* 视觉流水线:观测→几何→估计→控制→通信 */
+.pipeline {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.15rem;
+}
+.pipeline .step {
+  position: relative;
+  background: var(--card-solid, #fff);
+  border: 1px solid var(--hairline-soft);
+  border-radius: 20px;
+  padding: 1.5rem 1.3rem;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+}
+.pipeline .step-num {
+  display: inline-block; font-family: var(--mono); font-size: 0.76rem; font-weight: 700;
+  color: var(--blue); background: rgba(0, 113, 227, 0.08);
+  padding: 0.25rem 0.6rem; border-radius: 999px; margin-bottom: 0.9rem;
+}
+.pipeline .step h3 { font-size: 1.16rem; margin: 0 0 0.45rem; letter-spacing: -0.01em; }
+.pipeline .step p { font-size: 0.85rem; color: var(--ink-2); margin: 0; line-height: 1.6; }
+.pipeline .step:not(:last-child)::after {
+  content: '→'; position: absolute; right: -1rem; top: 50%; transform: translateY(-50%);
+  color: var(--ink-3); font-size: 1.05rem; z-index: 2;
+}
+@media (hover: hover) and (pointer: fine) {
+  .pipeline .step:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+}
+@media (max-width: 900px) {
+  .pipeline { grid-template-columns: 1fr; gap: 1rem; }
+  .pipeline .step:not(:last-child)::after {
+    content: '↓'; right: auto; left: 50%; top: auto; bottom: -0.95rem; transform: translateX(-50%);
+  }
+}
+
+/* 收尾 CTA */
+.cta-band { text-align: center; }
+.cta-band h2 { font-size: clamp(1.9rem, 3.4vw, 2.7rem); letter-spacing: -0.025em; margin: 0 0 0.7rem; }
+.cta-band .sub { font-size: 1.08rem; color: var(--ink-2); margin: 0 auto 2.1rem; max-width: 36rem; font-weight: 500; }
+.cta-band .hero-cta { margin-bottom: 0; }
+
+/* 阅读进度条(文章页) */
+.reading-progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60;
+  background: transparent; pointer-events: none;
+}
+.reading-progress span {
+  display: block; height: 100%; width: 0;
+  background: linear-gradient(90deg, var(--blue), #5ac8fa);
+}
+
+/* 项目序号 */
+.proj-card .proj-idx { font-family: var(--mono); font-size: 0.78rem; font-weight: 700; color: var(--blue); margin-right: 0.5rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pipeline .step:hover { transform: none; }
+  .back-link:hover { transform: none; }
+}

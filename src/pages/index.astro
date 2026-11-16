@@ -12,7 +12,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 <Base>
   <section class="hero">
     <div class="container hero-inner" data-reveal-group>
-    <p class="eyebrow">ROBOT VISION / 战队视觉项目负责人</p>
+    <div class="reticle" aria-hidden="true"><span></span><span></span><span></span><span></span><i class="cross"></i></div>
+    <p class="eyebrow">ROBOT VISION // 从像素到毫米 · 战队视觉项目负责人</p>
     <h1>你好，我是 {SITE.author}。</h1>
     <p class="lead">
       {SITE.intro}
@@ -133,7 +134,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
         <a class="more" href="/workbench/">进去看看 <span aria-hidden="true">›</span></a>
       </div>
       <div class="bench-strip" data-reveal-group>
-        <a class="bench-mini" href="/workbench/">
+        <a class="bench-mini bench-mini--paper" href="/workbench/">
           <img src="/images/workbench/cad-01.svg" alt="零件轮廓练习线稿" loading="lazy" />
           <div class="t">
             <strong>工程图练习</strong>

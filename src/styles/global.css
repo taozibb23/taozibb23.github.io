@@ -564,7 +564,7 @@ a.card:active {
    首页 hero
    ========================================================================== */
 .hero {
-  padding: 7.5rem 0 4.5rem;
+  padding: 6.5rem 0 3.5rem;
   text-align: center;
   overflow: hidden;
 }
@@ -767,7 +767,7 @@ a.card:active {
 
 .hero-evidence {
   max-width: 58rem;
-  margin: -2.5rem auto 3rem;
+  margin: 1.8rem auto 0;
   color: var(--ink-2);
   font-size: 0.82rem;
   line-height: 1.6;
@@ -1966,39 +1966,44 @@ html.io-ok [data-reveal-group].in > :nth-child(7) { transition-delay: 0.33s; }
 }
 .stats-line b { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
 
-/* 视觉流水线:观测→几何→估计→控制→通信 */
+/* 视觉流水线:观测→几何→估计→控制→通信(节点连接线,无挤压箭头) */
 .pipeline {
   list-style: none; margin: 0; padding: 0;
   display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.15rem;
+  position: relative;
+}
+.pipeline::before {
+  content: ''; position: absolute; top: 2.45rem; left: 9%; right: 9%; height: 2px;
+  background: linear-gradient(90deg, var(--blue), #5ac8fa);
+  opacity: 0.3; z-index: 0;
 }
 .pipeline .step {
-  position: relative;
+  position: relative; z-index: 1;
   background: var(--card-solid, #fff);
   border: 1px solid var(--hairline-soft);
   border-radius: 20px;
-  padding: 1.5rem 1.3rem;
+  padding: 1.4rem 1.3rem 1.5rem;
   box-shadow: var(--shadow-card);
   transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
 }
 .pipeline .step-num {
-  display: inline-block; font-family: var(--mono); font-size: 0.76rem; font-weight: 700;
-  color: var(--blue); background: rgba(0, 113, 227, 0.08);
-  padding: 0.25rem 0.6rem; border-radius: 999px; margin-bottom: 0.9rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 2.1rem; height: 2.1rem; padding: 0 0.5rem;
+  font-family: var(--mono); font-size: 0.8rem; font-weight: 700;
+  color: var(--blue); background: #fff;
+  border: 1.5px solid rgba(0, 113, 227, 0.35);
+  border-radius: 999px; margin-bottom: 1rem;
+  transition: border-color 0.25s var(--ease);
 }
 .pipeline .step h3 { font-size: 1.16rem; margin: 0 0 0.45rem; letter-spacing: -0.01em; }
 .pipeline .step p { font-size: 0.85rem; color: var(--ink-2); margin: 0; line-height: 1.6; }
-.pipeline .step:not(:last-child)::after {
-  content: '→'; position: absolute; right: -1rem; top: 50%; transform: translateY(-50%);
-  color: var(--ink-3); font-size: 1.05rem; z-index: 2;
-}
 @media (hover: hover) and (pointer: fine) {
   .pipeline .step:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+  .pipeline .step:hover .step-num { border-color: var(--blue); }
 }
 @media (max-width: 900px) {
   .pipeline { grid-template-columns: 1fr; gap: 1rem; }
-  .pipeline .step:not(:last-child)::after {
-    content: '↓'; right: auto; left: 50%; top: auto; bottom: -0.95rem; transform: translateX(-50%);
-  }
+  .pipeline::before { display: none; }
 }
 
 /* 收尾 CTA */

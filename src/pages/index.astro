@@ -24,42 +24,6 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
       <a class="link-more" href="/blog/">阅读博客 <span aria-hidden="true">›</span></a>
     </div>
 
-    <div class="term">
-      <div class="term-bar">
-        <i></i><i></i><i></i>
-        <span class="title">foray-vision — project map</span>
-      </div>
-      <div class="term-body">
-        <div><span class="p">$</span> cat current-scope.md</div>
-        <div>
-          <span class="c"># 我负责推进的战队视觉系统：从观测到云台响应</span>
-        </div>
-        <div>
-          双模型观测 <span class="c">→</span> PnP 几何 <span class="c">→</span> 跟踪 / 状态估计
-          <span class="c">→</span> 控制时序 <span class="c">→</span> RoboLink 通信
-          <span class="c">→</span> 真实云台姿态响应<span class="cursor"></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="cloud-row">
-      <div class="metric">
-        <span class="num">视觉前端</span>
-        <span class="label">相机、双模型、角点与 PnP</span>
-      </div>
-      <div class="metric">
-        <span class="num">状态估计</span>
-        <span class="label">目标关联、跟踪与车心诊断</span>
-      </div>
-      <div class="metric">
-        <span class="num">云台链路</span>
-        <span class="label">时序、通信与受限台架响应</span>
-      </div>
-      <div class="metric">
-        <span class="num">机械臂</span>
-        <span class="label">视觉抓取接口与三轴几何原型</span>
-      </div>
-    </div>
     <p class="hero-evidence">项目整体由我负责推进；台架已有真实云台姿态响应，命中与机械臂实物抓取仍待验收。<a href="/status/">查看当前进度与实验数据 →</a></p>
   </div>
   </section>

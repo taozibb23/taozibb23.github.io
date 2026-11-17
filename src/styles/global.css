@@ -609,23 +609,23 @@ a.card:active {
 }
 
 .hero .eyebrow {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .hero h1 {
-  font-size: clamp(2.7rem, 6.4vw, 4.6rem);
+  font-size: clamp(3rem, 7.2vw, 5.4rem);
   letter-spacing: -0.03em;
-  line-height: 1.06;
-  margin: 0 auto 1.2rem;
-  max-width: 21ch;
+  line-height: 1.1;
+  margin: 0 auto 1.9rem;
+  max-width: 24ch;
 }
 
 .hero .lead {
-  font-size: clamp(1.1rem, 1.6vw, 1.32rem);
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
   color: var(--ink-2);
-  max-width: 38rem;
-  margin: 0 auto 2.1rem;
-  line-height: 1.55;
+  max-width: 42rem;
+  margin: 0 auto 3rem;
+  line-height: 1.75;
   font-weight: 500;
 }
 
@@ -634,17 +634,17 @@ a.card:active {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 1.4rem;
-  margin-bottom: 3.1rem;
+  gap: 1.8rem;
+  margin-bottom: 3.6rem;
 }
 
 .btn-primary {
   display: inline-block;
   background: var(--blue);
   color: #fff;
-  font-size: 1.02rem;
+  font-size: 1.08rem;
   font-weight: 500;
-  padding: 0.78em 1.9em;
+  padding: 0.9em 2.4em;
   border-radius: 980px;
   box-shadow: 0 6px 18px -8px rgba(0, 113, 227, 0.65);
   transition: background-color 0.3s var(--ease), transform 0.5s var(--ease-out),
@@ -666,10 +666,10 @@ a.card:active {
 }
 
 .link-more {
-  font-size: 1.02rem;
+  font-size: 1.08rem;
   color: var(--link);
   font-weight: 500;
-  padding: 0.5em 0.95em;
+  padding: 0.6em 1.15em;
   border-radius: 980px;
   transition: color 0.3s var(--ease), background-color 0.3s var(--ease),
     transform 0.5s var(--ease-out);
@@ -786,7 +786,7 @@ a.card:active {
 
 .hero-evidence {
   max-width: 58rem;
-  margin: 1.8rem auto 0;
+  margin: 2.8rem auto 0;
   color: var(--ink-2);
   font-size: 0.82rem;
   line-height: 1.6;
@@ -1812,18 +1812,18 @@ a.bench-mini:hover {
   }
 
   .hero .lead {
-    font-size: 1.02rem;
+    font-size: 1.08rem;
   }
   .hero-cta {
-    gap: 1rem;
-    margin-bottom: 2.8rem;
+    gap: 1.2rem;
+    margin-bottom: 3rem;
   }
   .btn-primary {
-    font-size: 0.95rem;
-    padding: 0.7em 1.6em;
+    font-size: 1rem;
+    padding: 0.8em 2em;
   }
   .link-more {
-    font-size: 0.95rem;
+    font-size: 1rem;
   }
 
   .term {

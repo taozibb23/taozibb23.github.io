@@ -156,10 +156,29 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
       const card = track && track.querySelector('.post-card');
       if (!card) return 400;
       const gap = parseFloat(getComputedStyle(track).gap || '24') || 24;
-      return card.getBoundingClientRect().width + gap;
+      return card.offsetWidth + gap;
     };
-    prev?.addEventListener('click', () => sc.scrollBy({ left: -step(), behavior: 'smooth' }));
-    next?.addEventListener('click', () => sc.scrollBy({ left: step(), behavior: 'smooth' }));
+    // 自定义缓动滚动(强 ease-out,比浏览器 smooth 更丝滑可控)
+    const easeOut = (t) => 1 - Math.pow(1 - t, 4);
+    let glideRAF = 0;
+    const glideTo = (target, dur = 520) => {
+      cancelAnimationFrame(glideRAF);
+      const max = sc.scrollWidth - sc.clientWidth;
+      target = Math.max(0, Math.min(target, max));
+      const from = sc.scrollLeft, delta = target - from;
+      sc.style.scrollSnapType = 'none';
+      if (Math.abs(delta) < 1) { sc.style.scrollSnapType = ''; return; }
+      const t0 = performance.now();
+      const frame = (now) => {
+        const t = Math.min(1, (now - t0) / dur);
+        sc.scrollLeft = from + delta * easeOut(t);
+        if (t < 1) glideRAF = requestAnimationFrame(frame);
+        else sc.style.scrollSnapType = '';
+      };
+      glideRAF = requestAnimationFrame(frame);
+    };
+    prev?.addEventListener('click', () => glideTo(sc.scrollLeft - step()));
+    next?.addEventListener('click', () => glideTo(sc.scrollLeft + step()));
     const update = () => {
       const max = sc.scrollWidth - sc.clientWidth - 1;
       if (prev) prev.disabled = sc.scrollLeft <= 1;
@@ -168,13 +187,16 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
     sc.addEventListener('scroll', update, { passive: true });
     update();
 
-    // 鼠标拖动滑动(触屏走原生;拖后松手吸附最近卡,拖动过的点击不触发导航)
+    // 鼠标拖动:跟手 1:1 + 松手惯性滑行 + 缓动吸附最近卡(触屏走原生惯性)
     let down = false, sx = 0, sl = 0, movedPx = 0;
+    let lastX = 0, lastT = 0, vel = 0, momentumRAF = 0;
     sc.addEventListener('dragstart', (e) => e.preventDefault());
     sc.addEventListener('pointerdown', (e) => {
       if (e.pointerType === 'touch') return;
-      down = true; movedPx = 0;
+      down = true; movedPx = 0; vel = 0;
       sx = e.clientX; sl = sc.scrollLeft;
+      lastX = e.clientX; lastT = performance.now();
+      cancelAnimationFrame(momentumRAF); cancelAnimationFrame(glideRAF);
       sc.style.scrollSnapType = 'none';
       sc.classList.add('dragging');
     });
@@ -183,17 +205,37 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
       const dx = e.clientX - sx;
       movedPx = Math.max(movedPx, Math.abs(dx));
       sc.scrollLeft = sl - dx;
+      const now = performance.now();
+      const dt = now - lastT;
+      if (dt > 0) {
+        const inst = (lastX - e.clientX) / dt; // px/ms
+        vel = Math.max(-2.5, Math.min(2.5, vel * 0.7 + inst * 0.3));
+        lastX = e.clientX; lastT = now;
+      }
     });
+    const snapStep = () => {
+      const card = sc.querySelector('.post-card');
+      const gap = parseFloat(getComputedStyle(sc.querySelector('.scroller-track')).gap || '24') || 24;
+      return card ? card.offsetWidth + gap : 400;
+    };
     const settle = () => {
       if (!down) return;
       down = false;
       sc.classList.remove('dragging');
-      const card = sc.querySelector('.post-card');
-      const gap = parseFloat(getComputedStyle(sc.querySelector('.scroller-track')).gap || '24') || 24;
-      const step = card ? card.getBoundingClientRect().width + gap : 400;
-      const target = Math.round(sc.scrollLeft / step) * step;
-      sc.scrollTo({ left: target, behavior: 'smooth' });
-      setTimeout(() => { sc.style.scrollSnapType = ''; }, 500);
+      const st = snapStep();
+      const snap = () => glideTo(Math.round(sc.scrollLeft / st) * st, 480);
+      if (Math.abs(vel) > 0.08) {
+        // 惯性滑行:速度按帧率无关衰减,停下后吸附
+        let prevT = performance.now();
+        const decay = (now) => {
+          const dt = Math.min(now - prevT, 40); prevT = now;
+          vel *= Math.pow(0.9, dt / 16);
+          if (Math.abs(vel) < 0.02) { snap(); return; }
+          sc.scrollLeft += vel * dt;
+          momentumRAF = requestAnimationFrame(decay);
+        };
+        momentumRAF = requestAnimationFrame(decay);
+      } else snap();
     };
     window.addEventListener('pointerup', settle);
     window.addEventListener('pointercancel', settle);

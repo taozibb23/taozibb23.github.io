@@ -564,7 +564,12 @@ a.card:active {
    首页 hero
    ========================================================================== */
 .hero {
-  padding: 6.5rem 0 3.5rem;
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5.5rem 0 4.5rem;
   text-align: center;
   overflow: hidden;
 }
@@ -572,6 +577,20 @@ a.card:active {
 .hero-inner {
   max-width: 60rem;
   margin: 0 auto;
+}
+
+/* 下滑提示:首屏底部,滚动后淡出 */
+.scroll-cue {
+  position: absolute; left: 50%; bottom: 1.6rem; transform: translateX(-50%);
+  display: inline-flex; flex-direction: column; align-items: center; gap: 0.35rem;
+  color: var(--ink-3); font-size: 0.72rem; letter-spacing: 0.16em;
+  font-family: var(--mono); text-transform: uppercase;
+}
+.scroll-cue svg { animation: cue-bob 1.8s var(--ease-in-out) infinite; }
+@keyframes cue-bob { 0%, 100% { transform: translateY(0); opacity: 0.55; } 50% { transform: translateY(5px); opacity: 1; } }
+@supports (animation-timeline: view()) {
+  .scroll-cue { animation: cue-fade linear both; animation-timeline: view(); animation-range: exit 0% exit 35%; }
+  @keyframes cue-fade { to { opacity: 0; } }
 }
 
 /* 滚动联动:hero 内容随滚动轻微缩小淡出(渐进增强) */
@@ -1750,8 +1769,9 @@ a.bench-mini:hover {
 
 @media (max-width: 640px) {
   .hero {
-    padding: 4rem 0 3rem;
+    padding: 4.5rem 0 4rem;
   }
+  .scroll-cue { bottom: 1.1rem; }
   .scroller {
     --sc-w: 84vw;
     padding-block: 0.8rem 1.4rem;
@@ -2002,8 +2022,14 @@ html.io-ok [data-reveal-group].in > :nth-child(7) { transition-delay: 0.33s; }
   .pipeline .step:hover .step-num { border-color: var(--blue); }
 }
 @media (max-width: 900px) {
-  .pipeline { grid-template-columns: 1fr; gap: 1rem; }
+  .pipeline {
+    display: flex; gap: 0.9rem; overflow-x: auto;
+    scroll-snap-type: x mandatory; scrollbar-width: none;
+    padding-bottom: 0.6rem; margin: 0 -1.5rem; padding-inline: 1.5rem;
+  }
+  .pipeline::-webkit-scrollbar { display: none; }
   .pipeline::before { display: none; }
+  .pipeline .step { flex: 0 0 78%; scroll-snap-align: center; }
 }
 
 /* 收尾 CTA */

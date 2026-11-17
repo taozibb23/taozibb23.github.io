@@ -26,6 +26,10 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 
     <p class="hero-evidence">项目整体由我负责推进；台架已有真实云台姿态响应，命中与机械臂实物抓取仍待验收。<a href="/status/">查看当前进度与实验数据 →</a></p>
   </div>
+  <div class="scroll-cue" aria-hidden="true">
+    <span>向下滚动</span>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+  </div>
   </section>
 
   <section class="band band--gray">

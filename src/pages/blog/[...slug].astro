@@ -12,8 +12,12 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 const { title, description, pubDate, updated, tags, csdn } = post.data;
+const toc = headings.filter((h) => h.depth === 2);
+// 阅读时长:去掉代码块后按中文约 400 字/分钟估算
+const chars = (post.body ?? '').replace(/```[\s\S]*?```/g, '').replace(/\s/g, '').length;
+const readMin = Math.max(1, Math.round(chars / 400));
 
 const all = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
@@ -26,75 +30,162 @@ const older = idx < all.length - 1 ? all[idx + 1] : undefined;
 <Base title={title} description={description}>
   <div class="reading-progress" aria-hidden="true"><span></span></div>
   <article>
-    <header class="post-header container-prose" transition:name={`post-${post.id}`}>
-      <a class="back-link" href="/blog/">← 返回博客</a>
-      <p class="eyebrow">POST</p>
-      <h1>{title}</h1>
-      <div class="post-meta">
-        <FormattedDate date={pubDate} />
-        {updated && (
-          <>
-            <span class="dot">·</span>
-            <span>更新于 <FormattedDate date={updated} /></span>
-          </>
-        )}
-        <span class="dot">·</span>
-        <span>{tags.join(' / ')}</span>
+    <div class="article-layout">
+      <header class="post-header" transition:name={`post-${post.id}`}>
+        <a class="back-link" href="/blog/">← 返回博客</a>
+        <p class="eyebrow">POST</p>
+        <h1>{title}</h1>
+        <div class="post-meta">
+          <FormattedDate date={pubDate} />
+          {updated && (
+            <>
+              <span class="dot">·</span>
+              <span>更新于 <FormattedDate date={updated} /></span>
+            </>
+          )}
+          <span class="dot">·</span>
+          <span>约 {readMin} 分钟</span>
+          <span class="dot">·</span>
+          <span>{tags.join(' / ')}</span>
+        </div>
+        {
+          csdn && (
+            <aside class="csdn-note">
+              本文已同步发布于 <a href={csdn} target="_blank" rel="noopener">我的 CSDN 博客</a>,两边内容一致。
+            </aside>
+          )
+        }
+      </header>
+
+      <div class="prose numbered" id="article-body">
+        <Content />
       </div>
-      {
-        csdn && (
-          <aside class="csdn-note">
-            本文已同步发布于 <a href={csdn} target="_blank" rel="noopener">我的 CSDN 博客</a>,两边内容一致。
-          </aside>
-        )
-      }
-    </header>
 
-    <div class="prose container-prose numbered">
-      <Content />
+      {toc.length > 1 && (
+        <aside class="toc" aria-label="文章目录">
+          <button class="toc-toggle" aria-expanded="false">目录 <span aria-hidden="true">▾</span></button>
+          <p class="toc-title">目录</p>
+          <nav class="toc-nav">
+            <ol>
+              {toc.map((h) => (
+                <li><a href={`#${h.slug}`} data-toc-link>{h.text}</a></li>
+              ))}
+            </ol>
+          </nav>
+        </aside>
+      )}
+
+      <nav class="post-nav">
+        {
+          older ? (
+            <a href={`/blog/${older.id}/`}>
+              <span class="dir">← 上一篇(更早)</span>
+              {older.data.title}
+            </a>
+          ) : (
+            <span />
+          )
+        }
+        {
+          newer ? (
+            <a class="next" href={`/blog/${newer.id}/`}>
+              <span class="dir">下一篇(更新) →</span>
+              {newer.data.title}
+            </a>
+          ) : (
+            <span />
+          )
+        }
+      </nav>
     </div>
-
-    <nav class="post-nav container-prose">
-      {
-        older ? (
-          <a href={`/blog/${older.id}/`}>
-            <span class="dir">← 上一篇(更早)</span>
-            {older.data.title}
-          </a>
-        ) : (
-          <span />
-        )
-      }
-      {
-        newer ? (
-          <a class="next" href={`/blog/${newer.id}/`}>
-            <span class="dir">下一篇(更新) →</span>
-            {newer.data.title}
-          </a>
-        ) : (
-          <span />
-        )
-      }
-    </nav>
   </article>
+
   <script>
-    // 阅读进度条:随滚动填充;ClientRouter 导航后重算,监听只绑一次
-    function bindProgress() {
+    // 阅读进度 + 目录滚动高亮 + 移动端目录折叠 + 代码一键复制
+    function bindArticle() {
+      const bar = document.querySelector('.reading-progress span');
+      const heads = Array.from(document.querySelectorAll<HTMLElement>('#article-body h2[id]'));
+      const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]'));
+      const byHash = new Map(links.map((a) => [a.getAttribute('href')?.slice(1), a]));
+
       const update = () => {
-        const bar = document.querySelector('.reading-progress span');
-        if (!bar) return;
         const h = document.documentElement;
         const max = h.scrollHeight - h.clientHeight;
-        bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+        if (bar) bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+        // 滚动高亮:取当前已过的最后一个 h2
+        if (heads.length && links.length) {
+          const y = window.scrollY + 130;
+          let cur = heads[0];
+          for (const el of heads) {
+            if (el.getBoundingClientRect().top + window.scrollY <= y) cur = el;
+            else break;
+          }
+          links.forEach((a) => a.classList.remove('active'));
+          byHash.get(cur.id)?.classList.add('active');
+        }
       };
-      if (!window.__rpBound) {
-        window.__rpBound = true;
-        window.addEventListener('scroll', update, { passive: true });
-        window.addEventListener('resize', update, { passive: true });
+      if (!(window as any).__artBound) {
+        (window as any).__artBound = true;
+        let ticking = false;
+        const onScroll = () => {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => { update(); ticking = false; });
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
       }
       update();
+
+      // 移动端目录折叠
+      const toc = document.querySelector('.toc');
+      const toggle = toc?.querySelector('.toc-toggle');
+      if (toc && toggle && !(toggle as any).__bound) {
+        (toggle as any).__bound = true;
+        toggle.addEventListener('click', () => {
+          const open = toc.classList.toggle('open');
+          toggle.setAttribute('aria-expanded', String(open));
+        });
+        // 点目录链接后移动端自动收起
+        toc.querySelectorAll('[data-toc-link]').forEach((a) =>
+          a.addEventListener('click', () => {
+            if (window.innerWidth < 1100) {
+              toc.classList.remove('open');
+              toggle.setAttribute('aria-expanded', 'false');
+            }
+          })
+        );
+      }
+
+      // 代码块一键复制
+      document.querySelectorAll('#article-body pre').forEach((pre) => {
+        if ((pre as any).__copyBound) return;
+        (pre as any).__copyBound = true;
+        const wrap = document.createElement('div');
+        wrap.className = 'code-wrap';
+        pre.parentNode?.insertBefore(wrap, pre);
+        wrap.appendChild(pre);
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.type = 'button';
+        btn.textContent = '复制';
+        btn.addEventListener('click', async () => {
+          const code = pre.querySelector('code')?.innerText ?? pre.innerText;
+          try {
+            await navigator.clipboard.writeText(code);
+          } catch {
+            const ta = document.createElement('textarea');
+            ta.value = code; document.body.appendChild(ta); ta.select();
+            document.execCommand('copy'); ta.remove();
+          }
+          btn.textContent = '已复制 ✓';
+          btn.classList.add('done');
+          setTimeout(() => { btn.textContent = '复制'; btn.classList.remove('done'); }, 1600);
+        });
+        wrap.appendChild(btn);
+      });
     }
-    bindProgress();
-    document.addEventListener('astro:page-load', bindProgress);
+    bindArticle();
+    document.addEventListener('astro:page-load', bindArticle);
   </script>
 </Base>

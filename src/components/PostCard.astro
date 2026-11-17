@@ -14,6 +14,7 @@ const { title, description, pubDate, tags } = post.data;
   class="card post-card"
   href={`/blog/${post.id}/`}
   data-tags={tags.join(' ')}
+  data-search={`${title} ${description} ${tags.join(' ')}`.toLowerCase()}
   transition:name={`post-${post.id}`}
 >
   <FormattedDate date={pubDate} />

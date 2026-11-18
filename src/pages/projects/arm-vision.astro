@@ -7,7 +7,7 @@ import Base from '../../layouts/Base.astro';
     <a class="back-link" href="/projects/">← 返回项目</a>
     <p class="eyebrow">PROJECT IN PROGRESS · 重装机械臂</p>
     <h1>从末端相机看到物体，到算出抓取目标</h1>
-    <p class="desc">项目已经开始，现有接口草案、简化几何模块和教学仿真；但还没有可验收的实机抓取。目标是把相机观测变成底座系抓取目标，再按反馈确认拾取与装配，而不是只展示一个末端位置。</p>
+    <p class="desc">项目已经开始，现有接口草案、简化几何模块、教学仿真与一套开源仿真工具集（含 C++ 逆解参考）；但还没有可验收的实机抓取。目标是把相机观测变成底座系抓取目标，再按反馈确认拾取与装配，而不是只展示一个末端位置。</p>
   </section>
 
   <section class="container-prose prose numbered" data-reveal>
@@ -22,6 +22,17 @@ import Base from '../../layouts/Base.astro';
       <li>按实物描述建立简化三主动自由度几何与前后端位姿接口草案。前端处理图像与 PnP，后端处理坐标/运动学；装甲板和机械臂是两个业务模块，不把一个业务的板号逻辑当通用几何。</li>
       <li>本人学习重点转向关节定义、相机/末端的固定关系、实际反馈的采样时刻以及动作反馈的请求 ID。不能用期望角替代实测关节角，也不能用“运动结束”代替“已经抓住”。</li>
     </ul>
+
+    <h2>仿真工具集与 C++ 逆解参考 · 11 月 16 日</h2>
+    <p>硬件反馈链路还没构成，先把能离线验证的部分做成一套可复现的仿真工具，开源在 <a href="https://github.com/taozibb23/rm-engineer-arm-sim" target="_blank" rel="noopener">rm-engineer-arm-sim</a>（AI 辅助搭建，本人学习记录，全部合成/仿真级）。数学核心同源，都对齐战队 C++ 正运动学 <code>level_arm.cpp</code>：</p>
+    <ul>
+      <li><strong>arm_sim_lab</strong>：Python 正/逆运动学手算核对 + 出图，用来核对两关节手算、多解与可达域。</li>
+      <li><strong>arm_sim_web</strong>：零依赖纯 SVG 三维网页模拟器，含坐标链坐标系可视化、闭环视觉模式（合成相机 + 噪声）与页面内学习提示，附无头测试。</li>
+      <li><strong>arm_sitl</strong>：软件在环闭环——合成相机观测 → 手眼坐标链估计 → 任务状态机 → 逆解 → 占位协议帧 → 仿真 MCU → 运动学臂 → 关节反馈；运动学/协议/闭环/抗噪/丢帧单元测试通过。</li>
+      <li><strong>cpp_reference</strong>：三自由度逆解的 C++ 参考实现（<code>level_arm_ik</code>，已编译验证），与战队后端命名一致，供电控接口对齐时参考。</li>
+    </ul>
+    <p>仓库还含抓取演示动图、坐标链/可达域图解与复现脚本，以及一份给电控的臂协议需求清单（现有 RoboLink 只有云台帧，臂控制/反馈帧待电控定义）。</p>
+    <p><strong>边界：</strong>理想运动学，无接触力/动力学/碰撞；手眼/杆长/限位/传动比待实测。仿真抓取成功不代表实机能力，C++ 逆解是参考实现而非已上机验收。</p>
 
     <h2>下一阶段的验收，而不是现在的成果</h2>
     <ol>

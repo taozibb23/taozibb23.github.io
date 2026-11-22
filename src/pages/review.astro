@@ -4,7 +4,7 @@ import Base from '../layouts/Base.astro';
 const topics = [
   { icon:'C++', title:'C++ 与工程接口', text:'指针、构造与封装、回调、固定尺寸矩阵、包与模块边界。', links:[['/blog/13-cpp-ctor-init-list/','构造与初始化'],['/blog/15-cpp-project-encapsulation/','封装']] },
   { icon:'ROS', title:'ROS2 与系统边界', text:'节点、消息、依赖、跨包契约，以及“接口通过”不等于整链路通过。', links:[['/blog/03-yolo-armor-ros2/','ROS2 链路'],['/blog/20-worldsnapshot-and-vision-boundary/','边界']] },
-  { icon:'CAM', title:'相机、标定与手眼', text:'内参、畸变、重投影误差与跨姿态留出；候选外参可以受限试用，不等于精度验收。', links:[['/blog/25-learning-map-arm-handeye-and-engineering-judgment/','近期学习地图'],['#camera','真实相机案例']] },
+  { icon:'CAM', title:'相机、标定与手眼', text:'内参、畸变、镜头视野、曝光与跨姿态留出；候选外参可以受限试用，不等于精度验收。', links:[['/blog/26-camera-lens-selection/','相机镜头选型'],['#camera','标定案例']] },
   { icon:'PnP', title:'PnP 与坐标系', text:'像素角点到三维位姿、物理点定义、坐标链和单位；小重投影误差不保证物理点正确。', links:[['/projects/rm-armor-vision/','PnP 项目'],['#simulation','仿真诊断']] },
   { icon:'DET', title:'Detector 与角点', text:'8400 输出解码、NMS、重复/漏板、类别与角点物理定义。', links:[['/blog/01-8400-cards-to-box/','输出解码'],['/blog/06-nms-clusters-geometry/','NMS']] },
   { icon:'EKF', title:'观测器、EKF 与关联', text:'从最小 KF 读懂预测、新息、P/Q/R，再对照整车状态、板号关联和失败观测；历史 NIS 验证不等于当前分支。', links:[['/blog/23-observer-to-gimbal-planning/','我的学习过程'],['#ekf','PR #5 案例']] },

@@ -13,7 +13,7 @@ import Base from '../layouts/Base.astro';
       <span><b>4</b> 个项目</span>
       <span><b>2</b> 已收尾</span>
       <span><b>2</b> 进行中</span>
-      <span>按 <b>旗舰 → 团队 → 进行中 → 基础</b> 排列</span>
+      <span>按 <b>个人基础 → 团队主线 → 机械臂增量</b> 阅读</span>
     </div>
   </section>
 
@@ -51,20 +51,12 @@ import Base from '../layouts/Base.astro';
 
       <article class="proj-card" transition:name="proj-team">
         <p class="eyebrow"><span class="proj-idx">02</span>团队项目 · 2026.09 - 至今</p>
-        <h3><a href="/projects/foray-team/">战队视觉模块 · 我负责的部分</a></h3>
+        <h3><a href="/projects/foray-team/">战队视觉系统 · 我负责整体推进</a></h3>
         <p>
-          暑假完成招新考核(YOLO 训练部署 / UART 二进制协议解析与回发 / ROS2 图像话题,考核要求"用题目提供的推理代码跑通",
-          我额外把推理管线自己重构了一遍)。随后参与战队仓库建设,从 ROS2 包骨架开始:装甲板检测接口、敌我三态识别、
-          云台角解算防御、整车状态估计 EKF 逐个合入。后来双模型前端、后端和通信进入实物分级验证：受限台架跟随已见真实姿态响应，但车心几何、手眼精度、动态响应和命中尚未通过验收。近期业务按视觉前端/后端整理，机械臂也纳入其中。
+          从早期 ROS2 包骨架与检测接口，推进到双模型观测、PnP、目标跟踪、控制时序和 RoboLink 通信，我负责系统路线、接口与分阶段验证。当前自瞄 C++ 运行链不使用 ROS2；受限台架跟随已见真实云台姿态响应，但车心几何、手眼精度、动态响应和命中仍待验收。视觉前后端也承载机械臂业务，具体实物边界另见项目页。
         </p>
-        <div class="metrics">
-          <div class="metric"><span class="num">5</span><span class="label">PR 合入 dev</span></div>
-          <div class="metric"><span class="num">14</span><span class="label">Vision XML 快照</span></div>
-          <div class="metric"><span class="num">4</span><span class="label">USB CDC 无硬件测</span></div>
-          <div class="metric"><span class="num">0.006<small> m</small></span><span class="label">EKF 位置 RMSE</span></div>
-        </div>
         <div class="tags" style="display:flex;flex-wrap:wrap;gap:.4rem;">
-          <span class="tag">ROS2</span><span class="tag">C++</span><span class="tag">Eigen</span><span class="tag">EKF</span><span class="tag">gtest / CI</span>
+          <span class="tag">C++</span><span class="tag">视觉前端/后端</span><span class="tag">PnP / EKF</span><span class="tag">RoboLink</span><span class="tag">分级验证</span>
         </div>
         <div class="links">
           <a href="/projects/foray-team/">查看详情 <span aria-hidden="true">›</span></a>
@@ -76,7 +68,7 @@ import Base from '../layouts/Base.astro';
       <article class="proj-card">
         <p class="eyebrow"><span class="proj-idx">03</span>团队项目 · 2026.11 开始 · 进行中</p>
         <h3><a href="/projects/arm-vision/">重装机械臂 · 末端相机视觉抓取</a></h3>
-        <p>从末端相机定位与抓取目标位姿开始，已形成任务/接口草案、简化三轴几何模块和独立教学仿真。仿真用四轴示例，不是实物数字孪生；真实相机、关节反馈、夹爪与装配验收仍待推进。</p>
+        <p>从末端相机定位与抓取目标位姿开始，已推进三主动轴几何、图像驱动的顶抓运动仿真，以及停止、回观察位和重新拍摄的恢复分支。仿真相机与标记、关节参数仍是假设；真实相机、关节反馈、夹爪与装配验收尚未打通。旧四轴教学示例另列，不是实物数字孪生。</p>
         <div class="tags" style="display:flex;flex-wrap:wrap;gap:.4rem;">
           <span class="tag">Eye-in-hand</span><span class="tag">坐标变换</span><span class="tag">正运动学</span><span class="tag">进行中</span>
         </div>

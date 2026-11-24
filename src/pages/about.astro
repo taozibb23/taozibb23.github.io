@@ -8,15 +8,13 @@ import { SITE } from '../config';
     <p class="eyebrow">ABOUT</p>
     <h1><span class="grad">关于我</span></h1>
     <p class="desc">
-      视觉感知工程落地型选手:能把视觉算法跑通、调优、部署、集成到真实系统,并独立定位和解决问题。
+      聚焦机器人视觉感知、模型部署与设备联调；负责推进战队视觉系统，并把实验结果与尚未验收的部分分开记录。
     </p>
   </section>
 
   <section class="container-prose prose numbered" style="margin-top:2.2rem;">
     <p>
-      我是 {SITE.author},车辆工程专业本科生。方向是<strong>机器人视觉 / 感知 / 算法部署</strong>——按"上游算法研究、下游应用落地"的分法,我在落地这一端:
-      部署、集成、标定、排错。感知是具身智能的前置条件,机器人连"目标在哪、离多远"都不知道,再强的决策也没用;
-      而这一端也是岗位最多、最看重"能不能把东西跑起来"的地方,正好是我擅长的。
+      我是 {SITE.author}，2024 年入学的车辆工程本科生。长期方向是<strong>机器人视觉与感知</strong>，目前重点做相机、标定、模型部署、几何定位和系统联调。个人项目让我走过训练到 PnP 的链路；战队项目则让我负责把视觉前后端、通信和分阶段验证组织成能排错的系统。
     </p>
     <p>
       我做事有一套自己的纪律:<strong>简历和博客上的每一个数字都必须能当场追溯到文件或命令</strong>。
@@ -42,16 +40,16 @@ import { SITE } from '../config';
     <div class="skill-group">
       <h3>在学</h3>
       <div class="tags">
-        <span class="tag">TensorRT / INT8·FP16 量化</span><span class="tag">TF 坐标变换</span><span class="tag">多传感器融合</span>
+        <span class="tag">Jetson 端模型部署</span><span class="tag">TF 坐标变换</span><span class="tag">多传感器融合</span>
       </div>
     </div>
 
     <h2>时间线</h2>
     <div class="timeline">
       <div class="item">
-        <span class="when">2025.09</span>
+        <span class="when">2024</span>
         <h3>入学 · 车辆工程</h3>
-        <p>不是计算机科班,每个环节都是自己一行行搭起来的。</p>
+        <p>从机械与工程实践出发，逐步转向机器人视觉感知；不把项目管理、协作和工具辅助混写成所有代码均独立手写。</p>
       </div>
       <div class="item">
         <span class="when">2025.10</span>
@@ -86,7 +84,7 @@ import { SITE } from '../config';
       <div class="item">
         <span class="when">2026.09 - 至今</span>
         <h3>从包骨架到整车 EKF</h3>
-        <p>从个人单链路进入团队视觉前端/后端：ROS2 包骨架、检测接口、敌我识别、云台角解算、整车状态估计与数据关联逐步推进。近期已有受限台架云台跟随记录，也开始机械臂三轴几何与教学仿真；历史测试快照、台架设定角误差和真实命中是不同证据。<a href="/status/">查看当前进度</a>。</p>
+        <p>负责推进团队视觉系统：从早期 ROS2 包骨架、检测接口、敌我识别与整车状态估计，逐步走到当前 C++ 视觉前后端、相机与通信联调。当前自瞄运行链不使用 ROS2；受限台架已有云台姿态响应，机械臂则推进到图像驱动运动与恢复仿真。<a href="/status/">查看当前进度</a>。</p>
       </div>
       <div class="item">
         <span class="when">现在</span>

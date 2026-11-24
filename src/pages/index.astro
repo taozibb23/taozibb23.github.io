@@ -37,7 +37,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
       <div class="section-head" data-reveal="focus">
         <p class="eyebrow">PIPELINE · 视觉系统如何工作</p>
         <h2><span class="grad">从像素到毫米，必经五环</span></h2>
-        <p class="sub">一帧装甲板观测，要走过这五环才变成云台响应——每一环我都独立验证、记录失败。</p>
+        <p class="sub">一帧装甲板观测，要走过这五环才变成云台响应；我负责串起链路，分层验证并记录失败。</p>
       </div>
       <ol class="pipeline" data-reveal-group>
         <li class="step"><span class="step-num">01</span><h3>观测</h3><p>相机取流 · 双模型检测 · 角点提取</p></li>
